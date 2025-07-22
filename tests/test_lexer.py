@@ -40,7 +40,18 @@ def test_whitespace_with_input():
     lexer = Lexer("  42  ")
     tokens = lexer.tokenize()
 
-    assert len(tokens) == 1
+    assert len(tokens) == 2
     assert tokens[0].type == TokenType.INTEGER
     assert tokens[0].value == 42
     assert tokens[1].type == TokenType.EOF
+
+def test_whitespace_with_multiple_inputs():
+    lexer = Lexer("  42  73   ")
+    tokens = lexer.tokenize()
+
+    assert len(tokens) == 3
+    assert tokens[0].type == TokenType.INTEGER
+    assert tokens[0].value == 42
+    assert tokens[1].type == TokenType.INTEGER
+    assert tokens[1].value == 73
+    assert tokens[2].type == TokenType.EOF

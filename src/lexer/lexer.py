@@ -11,15 +11,19 @@ class Lexer:
     def tokenize(self) -> List[Token]:
         tokens = []
 
-        # If we find a digit
-        if self.position < len(self.text) and self.text[self.position].isdigit():
-            current_output = ""
-            # If more digits follow
-            while self.position < len(self.text) and self.text[self.position].isdigit():
-                current_output += self.text[self.position]
+        while self.position < len(self.text): # While we still have input remaining
+            if self.text[self.position].isspace():
                 self.position += 1
-            final_integer = int(current_output)
-            tokens.append(Token(TokenType.INTEGER, final_integer))
+                continue
+            # If we find a digit
+            if self.position < len(self.text) and self.text[self.position].isdigit():
+                current_output = ""
+                # If more digits follow
+                while self.position < len(self.text) and self.text[self.position].isdigit():
+                    current_output += self.text[self.position]
+                    self.position += 1
+                final_integer = int(current_output)
+                tokens.append(Token(TokenType.INTEGER, final_integer))
 
         tokens.append(Token(TokenType.EOF, None))
         return tokens
