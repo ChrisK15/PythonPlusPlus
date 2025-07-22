@@ -5,6 +5,7 @@ from typing import Union
 
 class TokenType(Enum):
     INTEGER = auto()
+    BOOLEAN = auto()
     EOF = auto()
 
 
