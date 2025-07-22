@@ -52,3 +52,17 @@ def test_whitespace_with_multiple_inputs():
     assert tokens[1].type == TokenType.INTEGER
     assert tokens[1].value == 73
     assert tokens[2].type == TokenType.EOF
+
+def test_boolean_true():
+    tokens = init_lexer("true")
+    assert len(tokens) == 2
+    assert tokens[0].type == TokenType.BOOLEAN
+    assert tokens[0].value == "true"
+    assert tokens[1].type == TokenType.EOF
+
+def test_boolean_false():
+    tokens = init_lexer("false")
+    assert len(tokens) == 2
+    assert tokens[0].type == TokenType.BOOLEAN
+    assert tokens[0].value == "false"
+    assert tokens[1].type == TokenType.EOF
