@@ -1,6 +1,6 @@
 from typing import List
 
-from .token import Token, TokenType
+from src.lexer.token import Token, TokenType
 
 
 class Lexer:
