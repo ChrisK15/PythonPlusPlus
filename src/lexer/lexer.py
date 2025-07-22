@@ -6,4 +6,4 @@ class Lexer:
         self.text = text
 
     def tokenize(self) -> List[Token]:
-        return [Token(TokenType.EOF, None, 1, 1)]
+        return [Token(TokenType.EOF, None)]

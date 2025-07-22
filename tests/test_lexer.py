@@ -1,5 +1,5 @@
 from src.lexer.token import Token, TokenType
-# from src.lexer.lexer import Lexer
+from src.lexer.lexer import Lexer
 
 def test_empty_input():
     lexer = Lexer("")

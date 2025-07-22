@@ -10,5 +10,3 @@ class TokenType(Enum):
 class Token:
     type: TokenType
     value: any
-    line: int
-    column: int
