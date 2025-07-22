@@ -1,18 +1,19 @@
 from src.lexer.lexer import Lexer
 from src.lexer.token import Token, TokenType
 
+def init_lexer(text_input: str):
+    lexer = Lexer(text_input)
+    return lexer.tokenize()
 
 def test_empty_input():
-    lexer = Lexer("")
-    tokens = lexer.tokenize()
+    tokens = init_lexer("")
 
     assert len(tokens) == 1
     assert tokens[0].type == TokenType.EOF
 
 
 def test_single_integer():
-    lexer = Lexer("8")
-    tokens = lexer.tokenize()
+    tokens = init_lexer("8")
 
     assert len(tokens) == 2
     assert tokens[0].type == TokenType.INTEGER
@@ -21,8 +22,7 @@ def test_single_integer():
 
 
 def test_multiple_digit_integer():
-    lexer = Lexer("42")
-    tokens = lexer.tokenize()
+    tokens = init_lexer("42")
 
     assert len(tokens) == 2
     assert tokens[0].type == TokenType.INTEGER
@@ -30,15 +30,13 @@ def test_multiple_digit_integer():
     assert tokens[1].type == TokenType.EOF
 
 def test_whitespace():
-    lexer = Lexer("   ")
-    tokens = lexer.tokenize()
+    tokens = init_lexer("   ")
 
     assert len(tokens) == 1
     assert tokens[0].type == TokenType.EOF
 
 def test_whitespace_with_input():
-    lexer = Lexer("  42  ")
-    tokens = lexer.tokenize()
+    tokens = init_lexer("  42  ")
 
     assert len(tokens) == 2
     assert tokens[0].type == TokenType.INTEGER
@@ -46,8 +44,7 @@ def test_whitespace_with_input():
     assert tokens[1].type == TokenType.EOF
 
 def test_whitespace_with_multiple_inputs():
-    lexer = Lexer("  42  73   ")
-    tokens = lexer.tokenize()
+    tokens = init_lexer("  42  73   ")
 
     assert len(tokens) == 3
     assert tokens[0].type == TokenType.INTEGER
