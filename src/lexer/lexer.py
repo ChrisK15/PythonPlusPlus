@@ -1,6 +1,7 @@
 from typing import List
 from .token import Token, TokenType
 
+
 class Lexer:
     def __init__(self, text: str):
         self.text = text

@@ -6,6 +6,7 @@ class TokenType(Enum):
     INTEGER = auto()
     EOF = auto()
 
+
 @dataclass
 class Token:
     type: TokenType
