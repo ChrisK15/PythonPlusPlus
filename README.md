@@ -1,6 +1,6 @@
-# P++ (PythonPlusPlus)
+# 🐍 P++ (PythonPlusPlus)
 
-## Target Language: JavaScript
+## ☕ Target Language: JavaScript
 
 ## 🎓 Language Description and Goal:
 
