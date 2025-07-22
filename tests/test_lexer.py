@@ -57,12 +57,12 @@ def test_boolean_true():
     tokens = init_lexer("true")
     assert len(tokens) == 2
     assert tokens[0].type == TokenType.BOOLEAN
-    assert tokens[0].value == "true"
+    assert tokens[0].value == True
     assert tokens[1].type == TokenType.EOF
 
 def test_boolean_false():
     tokens = init_lexer("false")
     assert len(tokens) == 2
     assert tokens[0].type == TokenType.BOOLEAN
-    assert tokens[0].value == "false"
+    assert tokens[0].value == False
     assert tokens[1].type == TokenType.EOF
