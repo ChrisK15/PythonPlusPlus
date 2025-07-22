@@ -225,3 +225,5 @@ test_outputs/
 # Temporary compiler files
 *.tmp
 *.temp
+
+housekeeping.bash
