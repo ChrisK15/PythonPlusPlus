@@ -28,3 +28,19 @@ def test_multiple_digit_integer():
     assert tokens[0].type == TokenType.INTEGER
     assert tokens[0].value == 42
     assert tokens[1].type == TokenType.EOF
+
+def test_whitespace():
+    lexer = Lexer("   ")
+    tokens = lexer.tokenize()
+
+    assert len(tokens) == 1
+    assert tokens[0].type == TokenType.EOF
+
+def test_whitespace_with_input():
+    lexer = Lexer("  42  ")
+    tokens = lexer.tokenize()
+
+    assert len(tokens) == 1
+    assert tokens[0].type == TokenType.INTEGER
+    assert tokens[0].value == 42
+    assert tokens[1].type == TokenType.EOF
