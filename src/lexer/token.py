@@ -19,6 +19,9 @@ class TokenType(Enum):
     BREAK = auto()
     NEW = auto()
     THIS = auto()
+    EXTENDS = auto()
+    SUPER = auto()
+    VOID = auto()
 
     # Operators
     PLUS = auto()  # +
