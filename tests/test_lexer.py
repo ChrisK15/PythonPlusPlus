@@ -241,13 +241,13 @@ cat = New Cat();
 dog = new Dog();
 cat.speak();
 dog.speak();"""
-    
+
     tokens = init_lexer(program)
-    
+
     # Verify key tokens are present
     token_types = [token.type for token in tokens]
     token_values = [token.value for token in tokens if token.value is not None]
-    
+
     # Check that all expected keywords appear
     assert TokenType.CLASS in token_types
     assert TokenType.EXTENDS in token_types
@@ -257,7 +257,7 @@ dog.speak();"""
     assert TokenType.RETURN in token_types
     assert TokenType.SUPER in token_types
     assert TokenType.NEW in token_types
-    
+
     # Check that all expected identifiers appear
     assert "Animal" in token_values
     assert "Cat" in token_values
@@ -266,12 +266,12 @@ dog.speak();"""
     assert "println" in token_values
     assert "cat" in token_values
     assert "dog" in token_values
-    
+
     # Check that expected integers appear
     assert 0 in token_values
     assert 1 in token_values
     assert 2 in token_values
-    
+
     # Check punctuation is present
     assert TokenType.LEFT_BRACE in token_types
     assert TokenType.RIGHT_BRACE in token_types
@@ -280,6 +280,6 @@ dog.speak();"""
     assert TokenType.SEMICOLON in token_types
     assert TokenType.DOT in token_types
     assert TokenType.ASSIGN in token_types
-    
+
     # Verify EOF is last token
     assert tokens[-1].type == TokenType.EOF

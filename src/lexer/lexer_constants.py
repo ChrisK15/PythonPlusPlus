@@ -14,7 +14,7 @@ KEYWORDS = {
     "this": (TokenType.THIS, None),
     "extends": (TokenType.EXTENDS, None),
     "super": (TokenType.SUPER, None),
-    "void": (TokenType.VOID, None)
+    "void": (TokenType.VOID, None),
 }
 
 SINGLE_CHAR_OPERATORS = {
