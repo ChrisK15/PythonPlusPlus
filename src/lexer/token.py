@@ -12,4 +12,4 @@ class TokenType(Enum):
 @dataclass
 class Token:
     type: TokenType
-    value: Union[int, None]
+    value: Union[int, bool, None]

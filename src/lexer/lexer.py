@@ -25,5 +25,17 @@ class Lexer:
                 final_integer = int(current_output)
                 tokens.append(Token(TokenType.INTEGER, final_integer))
 
+            if self.position < len(self.text) and self.text[self.position].isalpha():
+                current_output = ""
+                while self.position < len(self.text) and self.text[self.position].isalnum():
+                    current_output += self.text[self.position]
+                    self.position += 1
+                if current_output == "true":
+                    final_bool = True
+                    tokens.append(Token(TokenType.BOOLEAN, final_bool))
+                elif current_output == "false":
+                    final_bool = False
+                    tokens.append(Token(TokenType.BOOLEAN, final_bool))
+
         tokens.append(Token(TokenType.EOF, None))
         return tokens
