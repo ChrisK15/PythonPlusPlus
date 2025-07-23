@@ -286,6 +286,7 @@ dog.speak();"""
     # Verify EOF is last token
     assert tokens[-1].type == TokenType.EOF
 
+
 def test_invalid_input():
     with pytest.raises(Exception):
         tokens = init_lexer("$")

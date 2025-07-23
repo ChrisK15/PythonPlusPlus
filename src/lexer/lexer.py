@@ -70,7 +70,11 @@ class Lexer:
 
             # If character is NOT valid (i.e: '$', '@')
             else:
-                raise Exception("Invalid character: '" + self.text[self.position] + "' cannot be tokenized!")
+                raise Exception(
+                    "Invalid character: '"
+                    + self.text[self.position]
+                    + "' cannot be tokenized!"
+                )
 
         tokens.append(Token(TokenType.EOF, None))
         return tokens
