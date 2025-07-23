@@ -1,12 +1,9 @@
 from typing import List
 
+from src.lexer.lexer_constants import (AMBIGUOUS_OPERATORS, KEYWORDS,
+                                       MULTI_CHAR_OPERATORS,
+                                       SINGLE_CHAR_OPERATORS)
 from src.lexer.token import Token, TokenType
-from src.lexer.lexer_constants import (
-    KEYWORDS,
-    SINGLE_CHAR_OPERATORS,
-    MULTI_CHAR_OPERATORS,
-    AMBIGUOUS_OPERATORS
-)
 
 
 class Lexer:
@@ -63,15 +60,11 @@ class Lexer:
                     current_operator = (
                         self.text[self.position] + self.text[self.position + 1]
                     )
-                    tokens.append(
-                        Token(MULTI_CHAR_OPERATORS[current_operator], None)
-                    )
+                    tokens.append(Token(MULTI_CHAR_OPERATORS[current_operator], None))
                     self.position += 2
                 else:
                     tokens.append(
-                        Token(
-                            SINGLE_CHAR_OPERATORS[self.text[self.position]], None
-                        )
+                        Token(SINGLE_CHAR_OPERATORS[self.text[self.position]], None)
                     )
                     self.position += 1
 
