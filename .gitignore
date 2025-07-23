@@ -226,5 +226,4 @@ test_outputs/
 *.tmp
 *.temp
 
-housekeeping.bash
 CLAUDE.md
