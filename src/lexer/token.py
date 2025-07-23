@@ -6,7 +6,7 @@ from typing import Union
 class TokenType(Enum):
     INTEGER = auto()
     BOOLEAN = auto()
-    IDENTIFIER = auto() # var names, class names, etc.
+    IDENTIFIER = auto()  # var names, class names, etc.
     EOF = auto()
 
 

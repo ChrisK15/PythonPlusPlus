@@ -8,14 +8,12 @@ class Lexer:
         self.text = text
         self.position = 0
 
-    KEYWORDS = {"true": (TokenType.BOOLEAN, True),
-                "false": (TokenType.BOOLEAN, False)
-    }
+    KEYWORDS = {"true": (TokenType.BOOLEAN, True), "false": (TokenType.BOOLEAN, False)}
 
     def tokenize(self) -> List[Token]:
         tokens = []
 
-        while self.position < len(self.text): # While we still have input remaining
+        while self.position < len(self.text):  # While we still have input remaining
             if self.text[self.position].isspace():
                 self.position += 1
                 continue
@@ -23,7 +21,10 @@ class Lexer:
             # If we find a digit
             if self.position < len(self.text) and self.text[self.position].isdigit():
                 current_output = ""
-                while self.position < len(self.text) and self.text[self.position].isdigit():
+                while (
+                    self.position < len(self.text)
+                    and self.text[self.position].isdigit()
+                ):
                     current_output += self.text[self.position]
                     self.position += 1
                 final_integer = int(current_output)
@@ -32,7 +33,10 @@ class Lexer:
             # If we find a word
             if self.position < len(self.text) and self.text[self.position].isalpha():
                 current_output = ""
-                while self.position < len(self.text) and self.text[self.position].isalnum():
+                while (
+                    self.position < len(self.text)
+                    and self.text[self.position].isalnum()
+                ):
                     current_output += self.text[self.position]
                     self.position += 1
                 if current_output in self.KEYWORDS:
