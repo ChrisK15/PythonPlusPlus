@@ -12,6 +12,9 @@ KEYWORDS = {
     "break": (TokenType.BREAK, None),
     "new": (TokenType.NEW, None),
     "this": (TokenType.THIS, None),
+    "extends": (TokenType.EXTENDS, None),
+    "super": (TokenType.SUPER, None),
+    "void": (TokenType.VOID, None)
 }
 
 SINGLE_CHAR_OPERATORS = {
