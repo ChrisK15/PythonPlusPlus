@@ -165,7 +165,6 @@ def test_punctuation():
     assert tokens[7].type == TokenType.EOF
 
 
-# Single vs. multi-character operators
 def test_assign_vs_equal():
     tokens = init_lexer("= ==")
     assert len(tokens) == 3
@@ -186,7 +185,6 @@ def test_comparison_operators():
     assert tokens[6].type == TokenType.EOF
 
 
-# Mixed expression test
 def test_arithmetic_expression():
     tokens = init_lexer("x + 5 * y")
     assert len(tokens) == 6
@@ -201,7 +199,6 @@ def test_arithmetic_expression():
     assert tokens[5].type == TokenType.EOF
 
 
-# Method call syntax
 def test_method_call_syntax():
     tokens = init_lexer("obj.method(42, true)")
     assert len(tokens) == 9
@@ -220,7 +217,6 @@ def test_method_call_syntax():
     assert tokens[8].type == TokenType.EOF
 
 
-# Complex class inheritance example
 def test_complex_class_inheritance_program():
     program = """class Animal {
     init() {}
@@ -246,11 +242,9 @@ dog.speak();"""
 
     tokens = init_lexer(program)
 
-    # Verify key tokens are present
     token_types = [token.type for token in tokens]
     token_values = [token.value for token in tokens if token.value is not None]
 
-    # Check that all expected keywords appear
     assert TokenType.CLASS in token_types
     assert TokenType.EXTENDS in token_types
     assert TokenType.INIT in token_types
@@ -260,7 +254,6 @@ dog.speak();"""
     assert TokenType.SUPER in token_types
     assert TokenType.NEW in token_types
 
-    # Check that all expected identifiers appear
     assert "Animal" in token_values
     assert "Cat" in token_values
     assert "Dog" in token_values
@@ -269,12 +262,10 @@ dog.speak();"""
     assert "cat" in token_values
     assert "dog" in token_values
 
-    # Check that expected integers appear
     assert 0 in token_values
     assert 1 in token_values
     assert 2 in token_values
 
-    # Check punctuation is present
     assert TokenType.LEFT_BRACE in token_types
     assert TokenType.RIGHT_BRACE in token_types
     assert TokenType.LEFT_PAREN in token_types
@@ -283,7 +274,6 @@ dog.speak();"""
     assert TokenType.DOT in token_types
     assert TokenType.ASSIGN in token_types
 
-    # Verify EOF is last token
     assert tokens[-1].type == TokenType.EOF
 
 
