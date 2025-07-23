@@ -137,3 +137,82 @@ def test_mixed_keywords_and_identifiers():
     assert tokens[3].type == TokenType.IDENTIFIER
     assert tokens[3].value == "myMethod"
     assert tokens[4].type == TokenType.EOF
+
+
+# Single character operators
+def test_arithmetic_operators():
+    tokens = init_lexer("+ - * /")
+    assert len(tokens) == 5
+    assert tokens[0].type == TokenType.PLUS
+    assert tokens[1].type == TokenType.MINUS
+    assert tokens[2].type == TokenType.MULTIPLY
+    assert tokens[3].type == TokenType.DIVIDE
+    assert tokens[4].type == TokenType.EOF
+
+
+def test_punctuation():
+    tokens = init_lexer("( ) { } ; , .")
+    assert len(tokens) == 8
+    assert tokens[0].type == TokenType.LEFT_PAREN
+    assert tokens[1].type == TokenType.RIGHT_PAREN
+    assert tokens[2].type == TokenType.LEFT_BRACE
+    assert tokens[3].type == TokenType.RIGHT_BRACE
+    assert tokens[4].type == TokenType.SEMICOLON
+    assert tokens[5].type == TokenType.COMMA
+    assert tokens[6].type == TokenType.DOT
+    assert tokens[7].type == TokenType.EOF
+
+
+# Single vs. multi-character operators
+def test_assign_vs_equal():
+    tokens = init_lexer("= ==")
+    assert len(tokens) == 3
+    assert tokens[0].type == TokenType.ASSIGN
+    assert tokens[1].type == TokenType.EQUAL
+    assert tokens[2].type == TokenType.EOF
+
+
+def test_comparison_operators():
+    tokens = init_lexer("< <= > >= != ==")
+    assert len(tokens) == 7
+    assert tokens[0].type == TokenType.LESS_THAN
+    assert tokens[1].type == TokenType.LESS_EQUAL
+    assert tokens[2].type == TokenType.GREATER_THAN
+    assert tokens[3].type == TokenType.GREATER_EQUAL
+    assert tokens[4].type == TokenType.NOT_EQUAL
+    assert tokens[5].type == TokenType.EQUAL
+    assert tokens[6].type == TokenType.EOF
+
+
+# Mixed expression test
+def test_arithmetic_expression():
+    tokens = init_lexer("x + 5 * y")
+    assert len(tokens) == 6
+    assert tokens[0].type == TokenType.IDENTIFIER
+    assert tokens[0].value == "x"
+    assert tokens[1].type == TokenType.PLUS
+    assert tokens[2].type == TokenType.INTEGER
+    assert tokens[2].value == 5
+    assert tokens[3].type == TokenType.MULTIPLY
+    assert tokens[4].type == TokenType.IDENTIFIER
+    assert tokens[4].value == "y"
+    assert tokens[5].type == TokenType.EOF
+
+
+# Method call syntax
+def test_method_call_syntax():
+    tokens = init_lexer("obj.method(42, true)")
+    assert len(tokens) == 9
+    assert tokens[0].type == TokenType.IDENTIFIER
+    assert tokens[0].value == "obj"
+    assert tokens[1].type == TokenType.DOT
+    assert tokens[2].type == TokenType.IDENTIFIER
+    assert tokens[2].value == "method"
+    assert tokens[3].type == TokenType.LEFT_PAREN
+    assert tokens[4].type == TokenType.INTEGER
+    assert tokens[4].value == 42
+    assert tokens[5].type == TokenType.COMMA
+    assert tokens[6].type == TokenType.BOOLEAN
+    assert tokens[6].value == True
+    assert tokens[7].type == TokenType.RIGHT_PAREN
+    assert tokens[8].type == TokenType.EOF
