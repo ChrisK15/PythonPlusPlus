@@ -8,7 +8,18 @@ class Lexer:
         self.text = text
         self.position = 0
 
-    KEYWORDS = {"true": (TokenType.BOOLEAN, True), "false": (TokenType.BOOLEAN, False)}
+    KEYWORDS = {"true": (TokenType.BOOLEAN, True),
+                "false": (TokenType.BOOLEAN, False),
+                "class": (TokenType.CLASS, None),
+                "def": (TokenType.DEF, None),
+                "init": (TokenType.INIT, None),
+                "if": (TokenType.IF, None),
+                "while": (TokenType.WHILE, None),
+                "return": (TokenType.RETURN, None),
+                "break": (TokenType.BREAK, None),
+                "new": (TokenType.NEW, None),
+                "this": (TokenType.THIS, None)
+                }
 
     def tokenize(self) -> List[Token]:
         tokens = []
