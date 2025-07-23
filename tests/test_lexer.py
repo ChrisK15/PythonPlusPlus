@@ -1,6 +1,6 @@
 import pytest
 
-from src.lexer.lexer import Lexer
+from src.lexer.lexer import Lexer, TokenizerExceptions
 from src.lexer.token import TokenType
 
 
@@ -278,5 +278,5 @@ dog.speak();"""
 
 
 def test_invalid_input():
-    with pytest.raises(Exception):
+    with pytest.raises(TokenizerExceptions):
         tokens = init_lexer("$")

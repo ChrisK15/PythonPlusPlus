@@ -5,6 +5,8 @@ from src.lexer.lexer_constants import (AMBIGUOUS_OPERATORS, RESERVED_WORDS,
                                        SINGLE_CHAR_OPERATORS)
 from src.lexer.token import Token, TokenType
 
+class TokenizerExceptions(Exception):
+    pass
 
 class Lexer:
     def __init__(self, text: str):
@@ -15,6 +17,7 @@ class Lexer:
         tokens = []
 
         while self.position < len(self.text):  # While we still have input remaining
+            # Ignores whitespace
             if self.text[self.position].isspace():
                 self.position += 1
                 continue
@@ -70,7 +73,7 @@ class Lexer:
 
             # If character is NOT valid (i.e: '$', '@')
             else:
-                raise Exception(
+                raise TokenizerExceptions(
                     "Invalid character: '"
                     + self.text[self.position]
                     + "' cannot be tokenized!"
