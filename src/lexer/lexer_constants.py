@@ -1,6 +1,6 @@
 from src.lexer.token import TokenType
 
-KEYWORDS = {
+RESERVED_WORDS = {
     "true": (TokenType.BOOLEAN, True),
     "false": (TokenType.BOOLEAN, False),
     "class": (TokenType.CLASS, None),

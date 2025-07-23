@@ -9,7 +9,7 @@ class TokenType(Enum):
     BOOLEAN = auto()
     IDENTIFIER = auto()  # var names, class names, etc.
 
-    # Keywords
+    # Reserved Words
     CLASS = auto()
     DEF = auto()
     INIT = auto()

@@ -1,6 +1,6 @@
 from typing import List
 
-from src.lexer.lexer_constants import (AMBIGUOUS_OPERATORS, KEYWORDS,
+from src.lexer.lexer_constants import (AMBIGUOUS_OPERATORS, RESERVED_WORDS,
                                        MULTI_CHAR_OPERATORS,
                                        SINGLE_CHAR_OPERATORS)
 from src.lexer.token import Token, TokenType
@@ -40,8 +40,8 @@ class Lexer:
                 ):
                     current_output += self.text[self.position]
                     self.position += 1
-                if current_output in KEYWORDS:
-                    token_type, token_value = KEYWORDS[current_output]
+                if current_output in RESERVED_WORDS:
+                    token_type, token_value = RESERVED_WORDS[current_output]
                     tokens.append(Token(token_type, token_value))
                 else:
                     tokens.append(Token(TokenType.IDENTIFIER, current_output))
