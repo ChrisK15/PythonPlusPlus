@@ -1,5 +1,5 @@
 from src.lexer.lexer import Lexer
-from src.lexer.token import Token, TokenType
+from src.lexer.token import TokenType
 
 
 def init_lexer(text_input: str):
@@ -216,3 +216,70 @@ def test_method_call_syntax():
     assert tokens[6].value == True
     assert tokens[7].type == TokenType.RIGHT_PAREN
     assert tokens[8].type == TokenType.EOF
+
+
+# Complex class inheritance example
+def test_complex_class_inheritance_program():
+    program = """class Animal {
+    init() {}
+    def void speak() { return println(0); }
+}
+
+class Cat extends Animal {
+    init() { super(); }
+    def void speak() { return println(1); }
+}
+
+class Dog extends Animal {
+    init() { super(); }
+    def void speak() { return println(2); }
+}
+
+Animal cat;
+Animal dog;
+cat = New Cat();
+dog = new Dog();
+cat.speak();
+dog.speak();"""
+    
+    tokens = init_lexer(program)
+    
+    # Verify key tokens are present
+    token_types = [token.type for token in tokens]
+    token_values = [token.value for token in tokens if token.value is not None]
+    
+    # Check that all expected keywords appear
+    assert TokenType.CLASS in token_types
+    assert TokenType.EXTENDS in token_types
+    assert TokenType.INIT in token_types
+    assert TokenType.DEF in token_types
+    assert TokenType.VOID in token_types
+    assert TokenType.RETURN in token_types
+    assert TokenType.SUPER in token_types
+    assert TokenType.NEW in token_types
+    
+    # Check that all expected identifiers appear
+    assert "Animal" in token_values
+    assert "Cat" in token_values
+    assert "Dog" in token_values
+    assert "speak" in token_values
+    assert "println" in token_values
+    assert "cat" in token_values
+    assert "dog" in token_values
+    
+    # Check that expected integers appear
+    assert 0 in token_values
+    assert 1 in token_values
+    assert 2 in token_values
+    
+    # Check punctuation is present
+    assert TokenType.LEFT_BRACE in token_types
+    assert TokenType.RIGHT_BRACE in token_types
+    assert TokenType.LEFT_PAREN in token_types
+    assert TokenType.RIGHT_PAREN in token_types
+    assert TokenType.SEMICOLON in token_types
+    assert TokenType.DOT in token_types
+    assert TokenType.ASSIGN in token_types
+    
+    # Verify EOF is last token
+    assert tokens[-1].type == TokenType.EOF
