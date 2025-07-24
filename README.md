@@ -65,7 +65,7 @@ class Dog extends Animal {
 
 Animal cat;
 Animal dog;
-cat = New Cat();
+cat = new Cat();
 dog = new Dog();
 cat.speak();
 dog.speak();
