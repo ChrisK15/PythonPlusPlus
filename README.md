@@ -19,7 +19,7 @@ No optimizations :(
 ```
 - type ::= `int` | `boolean` | `void` | Built-in types classname class type; includes Object and String 
 - comma_exp ::= [exp (`,` exp)*]
-- primary_exp ::= `var` | `str` | `i` | Variables, strings, and integers are expressions
+- primary_exp ::= `var` | `int` | Variables, strings, and integers are expressions
 - `(` exp `)` | Parenthesized expressions
 - `this` | Refers to my instance
 - `true` | `false` | Booleans
