@@ -18,28 +18,28 @@ RESERVED_WORDS = {
 }
 
 SINGLE_CHAR_OPERATORS = {
-    "+": TokenType.PLUS,
-    "-": TokenType.MINUS,
-    "*": TokenType.MULTIPLY,
-    "/": TokenType.DIVIDE,
-    "(": TokenType.LEFT_PAREN,
-    ")": TokenType.RIGHT_PAREN,
-    "{": TokenType.LEFT_BRACE,
-    "}": TokenType.RIGHT_BRACE,
-    ";": TokenType.SEMICOLON,
-    ",": TokenType.COMMA,
-    ".": TokenType.DOT,
-    "=": TokenType.ASSIGN,
-    "<": TokenType.LESS_THAN,
-    ">": TokenType.GREATER_THAN,
-    "!": TokenType.EXCLAMATION,
+    "+": (TokenType.PLUS, '+'),
+    "-": (TokenType.MINUS, '-'),
+    "*": (TokenType.MULTIPLY, '*'),
+    "/": (TokenType.DIVIDE, '/'),
+    "(": (TokenType.LEFT_PAREN, '('),
+    ")": (TokenType.RIGHT_PAREN, ')'),
+    "{": (TokenType.LEFT_BRACE, '{'),
+    "}": (TokenType.RIGHT_BRACE, '}'),
+    ";": (TokenType.SEMICOLON, ';'),
+    ",": (TokenType.COMMA, ','),
+    ".": (TokenType.DOT, '.'),
+    "=": (TokenType.ASSIGN, '='),
+    "<": (TokenType.LESS_THAN, '<'),
+    ">": (TokenType.GREATER_THAN, '>'),
+    "!": (TokenType.EXCLAMATION, '!'),
 }
 
 MULTI_CHAR_OPERATORS = {
-    "==": TokenType.EQUAL,
-    "!=": TokenType.NOT_EQUAL,
-    "<=": TokenType.LESS_EQUAL,
-    ">=": TokenType.GREATER_EQUAL,
+    "==": (TokenType.EQUAL, '=='),
+    "!=": (TokenType.NOT_EQUAL, '!='),
+    "<=": (TokenType.LESS_EQUAL, '<='),
+    ">=": (TokenType.GREATER_EQUAL, '>=')
 }
 
 AMBIGUOUS_OPERATORS = {"=", "<", ">", "!"}
