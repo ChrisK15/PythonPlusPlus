@@ -65,11 +65,13 @@ class Lexer:
                     current_operator = (
                         self.text[self.position] + self.text[self.position + 1]
                     )
-                    tokens.append(Token(MULTI_CHAR_OPERATORS[current_operator], None))
+                    token_type, token_value = MULTI_CHAR_OPERATORS[current_operator]
+                    tokens.append(Token(token_type, token_value))
                     self.position += 2
                 else:
+                    token_type, token_value = SINGLE_CHAR_OPERATORS[self.text[self.position]]
                     tokens.append(
-                        Token(SINGLE_CHAR_OPERATORS[self.text[self.position]], None)
+                        Token(token_type, token_value)
                     )
                     self.position += 1
 
