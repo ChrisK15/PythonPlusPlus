@@ -69,10 +69,10 @@ class Lexer:
                     tokens.append(Token(token_type, token_value))
                     self.position += 2
                 else:
-                    token_type, token_value = SINGLE_CHAR_OPERATORS[self.text[self.position]]
-                    tokens.append(
-                        Token(token_type, token_value)
-                    )
+                    token_type, token_value = SINGLE_CHAR_OPERATORS[
+                        self.text[self.position]
+                    ]
+                    tokens.append(Token(token_type, token_value))
                     self.position += 1
 
             # If character is NOT valid (i.e: '$', '@')
