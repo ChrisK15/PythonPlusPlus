@@ -146,9 +146,13 @@ def test_arithmetic_operators():
     tokens = init_lexer("+ - * /")
     assert len(tokens) == 5
     assert tokens[0].type == TokenType.PLUS
+    assert tokens[0].value == '+'
     assert tokens[1].type == TokenType.MINUS
+    assert tokens[1].value == '-'
     assert tokens[2].type == TokenType.MULTIPLY
+    assert tokens[2].value == '*'
     assert tokens[3].type == TokenType.DIVIDE
+    assert tokens[3].value == '/'
     assert tokens[4].type == TokenType.EOF
 
 
@@ -156,12 +160,19 @@ def test_punctuation():
     tokens = init_lexer("( ) { } ; , .")
     assert len(tokens) == 8
     assert tokens[0].type == TokenType.LEFT_PAREN
+    assert tokens[0].value == '('
     assert tokens[1].type == TokenType.RIGHT_PAREN
+    assert tokens[1].value == ')'
     assert tokens[2].type == TokenType.LEFT_BRACE
+    assert tokens[2].value == '{'
     assert tokens[3].type == TokenType.RIGHT_BRACE
+    assert tokens[3].value == '}'
     assert tokens[4].type == TokenType.SEMICOLON
+    assert tokens[4].value == ';'
     assert tokens[5].type == TokenType.COMMA
+    assert tokens[5].value == ','
     assert tokens[6].type == TokenType.DOT
+    assert tokens[6].value == '.'
     assert tokens[7].type == TokenType.EOF
 
 
@@ -169,7 +180,9 @@ def test_assign_vs_equal():
     tokens = init_lexer("= ==")
     assert len(tokens) == 3
     assert tokens[0].type == TokenType.ASSIGN
+    assert tokens[0].value == '='
     assert tokens[1].type == TokenType.EQUAL
+    assert tokens[1].value == '=='
     assert tokens[2].type == TokenType.EOF
 
 
@@ -177,11 +190,17 @@ def test_comparison_operators():
     tokens = init_lexer("< <= > >= != ==")
     assert len(tokens) == 7
     assert tokens[0].type == TokenType.LESS_THAN
+    assert tokens[0].value == '<'
     assert tokens[1].type == TokenType.LESS_EQUAL
+    assert tokens[1].value == '<='
     assert tokens[2].type == TokenType.GREATER_THAN
+    assert tokens[2].value == '>'
     assert tokens[3].type == TokenType.GREATER_EQUAL
+    assert tokens[3].value == '>='
     assert tokens[4].type == TokenType.NOT_EQUAL
+    assert tokens[4].value == '!='
     assert tokens[5].type == TokenType.EQUAL
+    assert tokens[5].value == '=='
     assert tokens[6].type == TokenType.EOF
 
 
