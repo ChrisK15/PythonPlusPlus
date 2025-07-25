@@ -9,6 +9,16 @@ def init_lexer(text_input: str):
     lexer = Lexer(text_input)
     return lexer.tokenize()
 
+def nodes_equal(test_input: Node, test_output: Node):
+    # Early exit for invalid input
+    if type(test_input) != type(test_output):
+        return False
+    if isinstance(test_input, IntegerNode):
+        if test_input.value != test_output.value:
+            return False
+    elif isinstance(test_input, BinaryOpNode):
+        pass
+
 def test_simple_addition():
     tokens = init_lexer("2 + 3")
     parser = Parser(tokens)
