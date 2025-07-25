@@ -1,9 +1,10 @@
 from src.lexer.token import TokenType
-
 from src.parser.ast_nodes import *
+
 
 class ParserException(Exception):
     pass
+
 
 class Parser:
     def __init__(self, tokens: list):
@@ -16,7 +17,7 @@ class Parser:
             self.position += 1
             self.current_token = self.tokens[self.position]
         else:
-            return # Would return our results here
+            return  # Would return our results here
 
     def parse_addition(self):
         pass
