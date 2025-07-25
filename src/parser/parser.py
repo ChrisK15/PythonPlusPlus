@@ -20,7 +20,19 @@ class Parser:
             return  # Would return our results here
 
     def parse_addition(self):
+        left_expression = self.parse_multiplication()
+        while self.current_token.type == TokenType.PLUS or self.current_token.type == TokenType.MINUS:
+            current_operator_token = self.current_token.type
+            self.next_token()
+            right_expression = self.parse_multiplication()
+            left_expression = BinaryOpNode(current_operator_token, left_expression, right_expression)
+        return left_expression
+
+
+
+    def parse_multiplication(self):
         pass
+
 
     def parse_primary(self):
         if self.current_token.type == TokenType.INTEGER:
