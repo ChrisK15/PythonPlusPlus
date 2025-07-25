@@ -1,12 +1,14 @@
 from typing import List
 
-from src.lexer.lexer_constants import (AMBIGUOUS_OPERATORS, RESERVED_WORDS,
-                                       MULTI_CHAR_OPERATORS,
+from src.lexer.lexer_constants import (AMBIGUOUS_OPERATORS,
+                                       MULTI_CHAR_OPERATORS, RESERVED_WORDS,
                                        SINGLE_CHAR_OPERATORS)
 from src.lexer.token import Token, TokenType
 
+
 class TokenizerExceptions(Exception):
     pass
+
 
 class Lexer:
     def __init__(self, text: str):
