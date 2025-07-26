@@ -15,10 +15,18 @@ def nodes_equal(test_input: Node, test_output: Node):
     if type(test_input) != type(test_output):
         return False
     if isinstance(test_input, IntegerNode):
+        assert isinstance(test_output, IntegerNode)
+        if test_input.value != test_output.value:
+            return False
+    elif isinstance(test_input, IdentifierNode):
+        assert isinstance(test_output, IdentifierNode)
         if test_input.value != test_output.value:
             return False
     elif isinstance(test_input, BinaryOpNode):
-        pass
+        assert isinstance(test_output, BinaryOpNode)
+        if test_input.op != test_output.op or not nodes_equal(test_input.left_child, test_output.left_child) or not nodes_equal(test_input.right_child, test_output.right_child):
+            return False
+    return True
 
 
 def test_simple_addition():
