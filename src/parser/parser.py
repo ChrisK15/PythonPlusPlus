@@ -70,6 +70,10 @@ class Parser:
             value = self.current_token.value
             self.next_token()
             return IntegerNode(value)
+        elif self.current_token.type == TokenType.BOOLEAN:
+            value = self.current_token.value
+            self.next_token()
+            return BooleanNode(value)
         elif self.current_token.type == TokenType.IDENTIFIER:
             value = self.current_token.value
             self.next_token()
