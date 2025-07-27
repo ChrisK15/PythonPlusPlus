@@ -6,9 +6,12 @@ from src.parser.parser import (Parser, ParserException,
                                ParserParenthesisException)
 
 
-def init_lexer(text_input: str):
+def init_parser(text_input: str):
     lexer = Lexer(text_input)
-    return lexer.tokenize()
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+
+    return parser.parse_addition()
 
 
 def nodes_equal(test_input: Node, test_output: Node):
@@ -35,17 +38,13 @@ def nodes_equal(test_input: Node, test_output: Node):
 
 
 def test_simple_addition():
-    tokens = init_lexer("2 + 3")
-    parser = Parser(tokens)
-    node = parser.parse_addition()
+    node = init_parser("2 + 3")
 
     assert nodes_equal(node, BinaryOpNode("+", IntegerNode(2), IntegerNode(3)))
 
 
 def test_parenthesis():
-    tokens = init_lexer("1 + (2 + 3)")
-    parser = Parser(tokens)
-    node = parser.parse_addition()
+    node = init_parser("1 + (2 + 3)")
 
     assert nodes_equal(
         node,
@@ -57,6 +56,4 @@ def test_parenthesis():
 
 def test_invalid_parenthesis():
     with pytest.raises(ParserParenthesisException):
-        tokens = init_lexer("1 + (2 + 3")
-        parser = Parser(tokens)
-        node = parser.parse_addition()
+        node = init_parser("1 + (2 + 3")
