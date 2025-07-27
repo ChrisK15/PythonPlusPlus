@@ -2,7 +2,8 @@ import pytest
 
 from src.lexer.lexer import Lexer
 from src.parser.ast_nodes import *
-from src.parser.parser import Parser, ParserException, ParserParenthesisException
+from src.parser.parser import (Parser, ParserException,
+                               ParserParenthesisException)
 
 
 def init_parser(text_input: str):
