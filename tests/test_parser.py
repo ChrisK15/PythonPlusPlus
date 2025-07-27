@@ -2,8 +2,7 @@ import pytest
 
 from src.lexer.lexer import Lexer
 from src.parser.ast_nodes import *
-from src.parser.parser import (Parser, ParserException,
-                               ParserParenthesisException)
+from src.parser.parser import Parser, ParserException, ParserParenthesisException
 
 
 def init_parser(text_input: str):
@@ -57,3 +56,36 @@ def test_parenthesis():
 def test_invalid_parenthesis():
     with pytest.raises(ParserParenthesisException):
         node = init_parser("1 + (2 + 3")
+
+
+def test_multiplication():
+    node = init_parser("1 / 2 * 3")
+
+    assert nodes_equal(
+        node,
+        BinaryOpNode(
+            "*", BinaryOpNode("/", IntegerNode(1), IntegerNode(2)), IntegerNode(3)
+        ),
+    )
+
+
+def test_addition_and_multiplication():
+    node = init_parser("1 + 2 * 3")
+
+    assert nodes_equal(
+        node,
+        BinaryOpNode(
+            "+", IntegerNode(1), BinaryOpNode("*", IntegerNode(2), IntegerNode(3))
+        ),
+    )
+
+
+def test_addition_and_multiplication_with_parens():
+    node = init_parser("(1 + 2) * 3")
+
+    assert nodes_equal(
+        node,
+        BinaryOpNode(
+            "*", BinaryOpNode("+", IntegerNode(1), IntegerNode(2)), IntegerNode(3)
+        ),
+    )
