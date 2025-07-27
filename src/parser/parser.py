@@ -1,8 +1,10 @@
 from src.lexer.token import TokenType
 from src.parser.ast_nodes import *
 
+
 class ParserParenthesisException(Exception):
     pass
+
 
 class ParserException(Exception):
     pass
