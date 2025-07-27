@@ -2,7 +2,7 @@ import pytest
 
 from src.lexer.lexer import Lexer
 from src.parser.ast_nodes import *
-from src.parser.parser import Parser
+from src.parser.parser import Parser, ParserException, ParserParenthesisException
 
 
 def init_lexer(text_input: str):
@@ -39,3 +39,16 @@ def test_simple_addition():
     node = parser.parse_addition()
 
     assert nodes_equal(node, BinaryOpNode("+", IntegerNode(2), IntegerNode(3)))
+
+def test_parenthesis():
+    tokens = init_lexer("1 + (2 + 3)")
+    parser = Parser(tokens)
+    node = parser.parse_addition()
+
+    assert nodes_equal(node, BinaryOpNode('+', IntegerNode(1), BinaryOpNode('+', IntegerNode(2), IntegerNode(3))))
+
+def test_invalid_parenthesis():
+    with pytest.raises(ParserParenthesisException):
+        tokens = init_lexer("1 + (2 + 3")
+        parser = Parser(tokens)
+        node = parser.parse_addition()
