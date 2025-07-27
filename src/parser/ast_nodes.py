@@ -19,5 +19,5 @@ class BinaryOpNode(Node):
         self.right_child = right_child
 
 class BooleanNode(Node):
-    def __init__(self, value: str):
+    def __init__(self, value: bool):
         self.value = value
