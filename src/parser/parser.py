@@ -1,6 +1,8 @@
 from src.lexer.token import TokenType
 from src.parser.ast_nodes import *
 
+class ParserParenthesisException(Exception):
+    pass
 
 class ParserException(Exception):
     pass
@@ -63,6 +65,6 @@ class Parser:
                 self.next_token()
                 return inner_expression
             else:
-                raise ParserException(f"Error! Missing closing parenthesis.")
+                raise ParserParenthesisException(f"Error! Missing closing parenthesis.")
         else:
             raise ParserException(f"Error! Unknown input: {self.current_token}")
