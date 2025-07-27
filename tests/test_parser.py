@@ -10,7 +10,7 @@ def init_parser(text_input: str):
     tokens = lexer.tokenize()
     parser = Parser(tokens)
 
-    return parser.parse_addition()
+    return parser.parse_assignment()
 
 
 def nodes_equal(test_input: Node, test_output: Node):
@@ -89,3 +89,9 @@ def test_addition_and_multiplication_with_parens():
             "*", BinaryOpNode("+", IntegerNode(1), IntegerNode(2)), IntegerNode(3)
         ),
     )
+
+
+def test_assignment():
+    node = init_parser("x = 10")
+
+    assert nodes_equal(node, BinaryOpNode("=", IdentifierNode("x"), IntegerNode(10)))
