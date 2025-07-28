@@ -46,8 +46,8 @@ class Lexer:
                     current_output += self.text[self.position]
                     self.position += 1
                 if current_output in RESERVED_WORDS:
-                    token_type, token_value = RESERVED_WORDS[current_output]
-                    tokens.append(Token(token_type, token_value))
+                    reserved_token_type, reserved_token_value = RESERVED_WORDS[current_output]
+                    tokens.append(Token(reserved_token_type, reserved_token_value))
                 else:
                     tokens.append(Token(TokenType.IDENTIFIER, current_output))
 
@@ -65,14 +65,14 @@ class Lexer:
                     current_operator = (
                         self.text[self.position] + self.text[self.position + 1]
                     )
-                    token_type, token_value = MULTI_CHAR_OPERATORS[current_operator]
-                    tokens.append(Token(token_type, token_value))
+                    multi_token_type, multi_token_value = MULTI_CHAR_OPERATORS[current_operator]
+                    tokens.append(Token(multi_token_type, multi_token_value))
                     self.position += 2
                 else:
-                    token_type, token_value = SINGLE_CHAR_OPERATORS[
-                        self.text[self.position]
-                    ]
-                    tokens.append(Token(token_type, token_value))
+                    single_token_type, single_token_value = SINGLE_CHAR_OPERATORS[self.text[self.position]]
+                    tokens.append(
+                        Token(single_token_type, single_token_value)
+                    )
                     self.position += 1
 
             # If character is NOT valid (i.e: '$', '@')
