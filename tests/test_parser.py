@@ -122,3 +122,7 @@ def test_comparison():
 def test_invalid_input():
     with pytest.raises(ParserException):
         init_parser("1 * *")
+
+
+def test_function_declaration():
+    node = init_parser("def function_name {}")
