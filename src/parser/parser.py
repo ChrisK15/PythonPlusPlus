@@ -95,4 +95,4 @@ class Parser:
             else:
                 raise ParserParenthesisException(f"Error! Missing closing parenthesis.")
         else:
-            raise ParserException(f"Error! Unknown input: {self.current_token}")
+            raise ParserException(f"Error! Unexpected invalid input: {self.current_token.value}")

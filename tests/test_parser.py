@@ -117,3 +117,8 @@ def test_comparison():
     node = init_parser("x == 10")
 
     assert nodes_equal(node, BinaryOpNode("==", IdentifierNode("x"), IntegerNode(10)))
+
+
+def test_invalid_input():
+    with pytest.raises(ParserException):
+        init_parser("1 * *")
