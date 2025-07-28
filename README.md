@@ -19,12 +19,13 @@ No optimizations :(
 ```
 - type ::= `int` | `boolean` | `void` | Built-in types classname class type; includes Object and String 
 - comma_exp ::= [exp (`,` exp)*]
-- primary_exp ::= `var` | `int` | Variables, strings, and integers are expressions
-- `(` exp `)` | Parenthesized expressions
-- `this` | Refers to my instance
-- `true` | `false` | Booleans
-- `println` `(` exp `)` | Prints something to the terminal
-- `new` classname `(` comma_exp `)` | Creates a new object
+- primary_exp ::= 
+    - `var` | `int` | Variables, strings, and integers are expressions
+    - `(` exp `)` | Parenthesized expressions
+    - `this` | Refers to my instance
+    - `true` | `false` | Booleans
+    - `println` `(` exp `)` | Prints something to the terminal
+    - `new` classname `(` comma_exp `)` | Creates a new object
 - call_exp ::= primary_exp (`.` methodname `(` comma_exp `)`)*
 - mult_exp ::= call_exp ((`*` | `/`) call_exp)*
 - add_exp ::= mult_exp ((`+` | `-`) mult_exp)*
@@ -95,7 +96,7 @@ poetry run pytest -v
 # Testing with coverage report (Report is generated in terminal window)
 poetry run pytest --cov=src --cov-report=term-missing
 
-# Type checking (Haven't really found this super useful yet)
+# Type checking
 poetry run mypy src/ --explicit-package-bases
 
 # Code formatting (Runs black and isort)
