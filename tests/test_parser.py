@@ -1,6 +1,7 @@
 import pytest
 
 from src.lexer.lexer import Lexer
+from src.lexer.token import TokenType
 from src.parser.ast_nodes import *
 from src.parser.parser import (Parser, ParserException,
                                ParserParenthesisException)
@@ -11,7 +12,13 @@ def init_parser(text_input: str):
     tokens = lexer.tokenize()
     parser = Parser(tokens)
 
-    return parser.parse_assignment()
+    result = parser.parse_assignment()
+
+    # Makes sure we are at the EOF token
+    if parser.current_token.type != TokenType.EOF:
+        raise ParserException(f"Error! Did not find an EOF Token after the input. Current Token: {parser.current_token}")
+
+    return result
 
 
 def nodes_equal(test_input: Node, test_output: Node):
