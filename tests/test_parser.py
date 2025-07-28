@@ -102,3 +102,8 @@ def test_boolean():
     node = init_parser("true")
 
     assert nodes_equal(node, BooleanNode(True))
+
+def test_comparison():
+    node = init_parser("x == 10")
+
+    assert nodes_equal(node, BinaryOpNode("==", IdentifierNode("x"), IntegerNode(10)))
