@@ -6,5 +6,5 @@ COMPARISON_OPERATORS = {
     TokenType.GREATER_THAN,
     TokenType.LESS_EQUAL,
     TokenType.GREATER_EQUAL,
-    TokenType.NOT_EQUAL
+    TokenType.NOT_EQUAL,
 }

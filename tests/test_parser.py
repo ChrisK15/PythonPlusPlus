@@ -16,7 +16,9 @@ def init_parser(text_input: str):
 
     # Makes sure we are at the EOF token
     if parser.current_token.type != TokenType.EOF:
-        raise ParserException(f"Error! Did not find an EOF Token after the input. Current Token: {parser.current_token}")
+        raise ParserException(
+            f"Error! Did not find an EOF Token after the input. Current Token: {parser.current_token}"
+        )
 
     return result
 
@@ -109,6 +111,7 @@ def test_boolean():
     node = init_parser("true")
 
     assert nodes_equal(node, BooleanNode(True))
+
 
 def test_comparison():
     node = init_parser("x == 10")

@@ -1,4 +1,3 @@
-from src.lexer.token import TokenType
 from src.parser.ast_nodes import *
 from src.parser.parser_constants import *
 
@@ -45,7 +44,6 @@ class Parser:
                 current_operator_token.value, left_expression, right_expression
             )
         return left_expression
-
 
     def parse_addition(self):
         left_expression = self.parse_multiplication()
