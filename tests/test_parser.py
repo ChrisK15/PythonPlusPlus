@@ -56,7 +56,7 @@ def test_parenthesis():
 
 def test_invalid_parenthesis():
     with pytest.raises(ParserParenthesisException):
-        node = init_parser("1 + (2 + 3")
+        init_parser("1 + (2 + 3")
 
 
 def test_multiplication():
