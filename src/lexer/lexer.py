@@ -41,7 +41,7 @@ class Lexer:
                 current_output = ""
                 while (
                     self.position < len(self.text)
-                    and self.text[self.position].isalnum()
+                    and (self.text[self.position].isalnum() or self.text[self.position] == "_")
                 ):
                     current_output += self.text[self.position]
                     self.position += 1
