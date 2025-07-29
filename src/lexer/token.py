@@ -48,6 +48,9 @@ class TokenType(Enum):
     DOT = auto()  # .
     EXCLAMATION = auto()  # !
 
+    # Print
+    PRINT = auto()
+
     EOF = auto()
 
 
