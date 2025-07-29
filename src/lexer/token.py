@@ -23,6 +23,10 @@ class TokenType(Enum):
     SUPER = auto()
     VOID = auto()
 
+    # Types
+    INT_TYPE = auto()
+    BOOL_TYPE = auto()
+
     # Operators
     PLUS = auto()  # +
     MINUS = auto()  # -
