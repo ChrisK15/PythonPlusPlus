@@ -17,6 +17,7 @@ RESERVED_WORDS = {
     "void": (TokenType.VOID, None),
     "int": (TokenType.INT_TYPE, None),
     "bool": (TokenType.BOOL_TYPE, None),
+    "println": (TokenType.PRINT, None),
 }
 
 SINGLE_CHAR_OPERATORS = {
