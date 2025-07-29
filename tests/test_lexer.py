@@ -299,3 +299,24 @@ dog.speak();"""
 def test_invalid_input():
     with pytest.raises(TokenizerExceptions):
         tokens = init_lexer("$")
+
+def test_int_and_bool_types():
+    tokens = init_lexer("int x = 3; bool y = true;")
+
+    assert len(tokens) == 11
+    assert tokens[0].type == TokenType.INT_TYPE
+    assert tokens[1].type == TokenType.IDENTIFIER
+    assert tokens[1].value == "x"
+    assert tokens[2].type == TokenType.ASSIGN
+    assert tokens[3].type == TokenType.INTEGER
+    assert tokens[3].value == 3
+    assert tokens[4].type == TokenType.SEMICOLON
+    assert tokens[5].type == TokenType.BOOL_TYPE
+    assert tokens[6].type == TokenType.IDENTIFIER
+    assert tokens[6].value == "y"
+    assert tokens[7].type == TokenType.ASSIGN
+    assert tokens[8].type == TokenType.BOOLEAN
+    assert tokens[8].value == True
+    assert tokens[9].type == TokenType.SEMICOLON
+    assert tokens[10].type == TokenType.EOF
+
