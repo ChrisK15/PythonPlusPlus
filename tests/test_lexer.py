@@ -113,12 +113,12 @@ def test_keyword_init():
     assert tokens[1].type == TokenType.EOF
 
 
-def test_keyword_if():
-    tokens = init_lexer("if")
-    assert len(tokens) == 2
+def test_keyword_if_else():
+    tokens = init_lexer("if else")
+    assert len(tokens) == 3
     assert tokens[0].type == TokenType.IF
-    assert tokens[0].value is None
-    assert tokens[1].type == TokenType.EOF
+    assert tokens[1].type == TokenType.ELSE
+    assert tokens[2].type == TokenType.EOF
 
 
 def test_keyword_while():
@@ -330,3 +330,10 @@ def test_print():
     assert tokens[2].value == "x"
     assert tokens[3].type == TokenType.RIGHT_PAREN
     assert tokens[4].type == TokenType.EOF
+
+def test_break():
+    tokens = init_lexer("break")
+
+    assert len(tokens) == 2
+    assert tokens[0].type == TokenType.BREAK
+    assert tokens[1].type == TokenType.EOF
