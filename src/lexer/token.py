@@ -14,6 +14,7 @@ class TokenType(Enum):
     DEF = auto()
     INIT = auto()
     IF = auto()
+    ELSE = auto()
     WHILE = auto()
     RETURN = auto()
     BREAK = auto()
