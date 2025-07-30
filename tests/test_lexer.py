@@ -113,12 +113,12 @@ def test_keyword_init():
     assert tokens[1].type == TokenType.EOF
 
 
-def test_keyword_if():
-    tokens = init_lexer("if")
-    assert len(tokens) == 2
+def test_keyword_if_else():
+    tokens = init_lexer("if else")
+    assert len(tokens) == 3
     assert tokens[0].type == TokenType.IF
-    assert tokens[0].value is None
-    assert tokens[1].type == TokenType.EOF
+    assert tokens[1].type == TokenType.ELSE
+    assert tokens[2].type == TokenType.EOF
 
 
 def test_keyword_while():
@@ -272,12 +272,12 @@ dog.speak();"""
     assert TokenType.RETURN in token_types
     assert TokenType.SUPER in token_types
     assert TokenType.NEW in token_types
+    assert TokenType.PRINT in token_types
 
     assert "Animal" in token_values
     assert "Cat" in token_values
     assert "Dog" in token_values
     assert "speak" in token_values
-    assert "println" in token_values
     assert "cat" in token_values
     assert "dog" in token_values
 
@@ -299,3 +299,41 @@ dog.speak();"""
 def test_invalid_input():
     with pytest.raises(TokenizerExceptions):
         tokens = init_lexer("$")
+
+def test_int_and_bool_types():
+    tokens = init_lexer("int x = 3; bool y = true;")
+
+    assert len(tokens) == 11
+    assert tokens[0].type == TokenType.INT_TYPE
+    assert tokens[1].type == TokenType.IDENTIFIER
+    assert tokens[1].value == "x"
+    assert tokens[2].type == TokenType.ASSIGN
+    assert tokens[3].type == TokenType.INTEGER
+    assert tokens[3].value == 3
+    assert tokens[4].type == TokenType.SEMICOLON
+    assert tokens[5].type == TokenType.BOOL_TYPE
+    assert tokens[6].type == TokenType.IDENTIFIER
+    assert tokens[6].value == "y"
+    assert tokens[7].type == TokenType.ASSIGN
+    assert tokens[8].type == TokenType.BOOLEAN
+    assert tokens[8].value == True
+    assert tokens[9].type == TokenType.SEMICOLON
+    assert tokens[10].type == TokenType.EOF
+
+def test_print():
+    tokens = init_lexer("println(x)")
+
+    assert len(tokens) == 5
+    assert tokens[0].type == TokenType.PRINT
+    assert tokens[1].type == TokenType.LEFT_PAREN
+    assert tokens[2].type == TokenType.IDENTIFIER
+    assert tokens[2].value == "x"
+    assert tokens[3].type == TokenType.RIGHT_PAREN
+    assert tokens[4].type == TokenType.EOF
+
+def test_break():
+    tokens = init_lexer("break")
+
+    assert len(tokens) == 2
+    assert tokens[0].type == TokenType.BREAK
+    assert tokens[1].type == TokenType.EOF

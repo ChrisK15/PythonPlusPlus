@@ -14,6 +14,7 @@ class TokenType(Enum):
     DEF = auto()
     INIT = auto()
     IF = auto()
+    ELSE = auto()
     WHILE = auto()
     RETURN = auto()
     BREAK = auto()
@@ -22,6 +23,10 @@ class TokenType(Enum):
     EXTENDS = auto()
     SUPER = auto()
     VOID = auto()
+
+    # Types
+    INT_TYPE = auto()
+    BOOL_TYPE = auto()
 
     # Operators
     PLUS = auto()  # +
@@ -43,6 +48,9 @@ class TokenType(Enum):
     COMMA = auto()  # ,
     DOT = auto()  # .
     EXCLAMATION = auto()  # !
+
+    # Print
+    PRINT = auto()
 
     EOF = auto()
 

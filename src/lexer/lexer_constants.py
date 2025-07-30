@@ -15,6 +15,10 @@ RESERVED_WORDS = {
     "extends": (TokenType.EXTENDS, None),
     "super": (TokenType.SUPER, None),
     "void": (TokenType.VOID, None),
+    "int": (TokenType.INT_TYPE, None),
+    "bool": (TokenType.BOOL_TYPE, None),
+    "println": (TokenType.PRINT, None),
+    "else": (TokenType.ELSE, None),
 }
 
 SINGLE_CHAR_OPERATORS = {
