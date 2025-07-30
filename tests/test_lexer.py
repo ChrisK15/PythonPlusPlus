@@ -337,3 +337,10 @@ def test_break():
     assert len(tokens) == 2
     assert tokens[0].type == TokenType.BREAK
     assert tokens[1].type == TokenType.EOF
+
+def test_this():
+    tokens = init_lexer("this")
+
+    assert len(tokens) == 2
+    assert tokens[0].type == TokenType.THIS
+    assert tokens[1].type == TokenType.EOF
