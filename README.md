@@ -31,7 +31,7 @@ No optimizations :(
 - add_exp ::= mult_exp ((`+` | `-`) mult_exp)*
 - compare_exp ::= add_exp (('<' | '<=' | '>' | '>=') add_exp)*
 - equality_exp ::= compare_exp (('==' | '!=') compare_exp)*
-- exp ::= compare_exp
+- exp ::= equality_exp
 - vardec ::= type var
 - stmt ::= exp `;` | Expression statements
   - vardec `;` | Variable declaration
