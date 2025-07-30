@@ -29,7 +29,9 @@ No optimizations :(
 - call_exp ::= primary_exp (`.` methodname `(` comma_exp `)`)*
 - mult_exp ::= call_exp ((`*` | `/`) call_exp)*
 - add_exp ::= mult_exp ((`+` | `-`) mult_exp)*
-- exp ::= add_exp
+- compare_exp ::= add_exp (('<' | '<=' | '>' | '>=') add_exp)*
+- equality_exp ::= compare_exp (('==' | '!=') compare_exp)*
+- exp ::= compare_exp
 - vardec ::= type var
 - stmt ::= exp `;` | Expression statements
   - vardec `;` | Variable declaration
