@@ -272,12 +272,12 @@ dog.speak();"""
     assert TokenType.RETURN in token_types
     assert TokenType.SUPER in token_types
     assert TokenType.NEW in token_types
+    assert TokenType.PRINT in token_types
 
     assert "Animal" in token_values
     assert "Cat" in token_values
     assert "Dog" in token_values
     assert "speak" in token_values
-    assert "println" in token_values
     assert "cat" in token_values
     assert "dog" in token_values
 
@@ -320,3 +320,13 @@ def test_int_and_bool_types():
     assert tokens[9].type == TokenType.SEMICOLON
     assert tokens[10].type == TokenType.EOF
 
+def test_print():
+    tokens = init_lexer("println(x)")
+
+    assert len(tokens) == 5
+    assert tokens[0].type == TokenType.PRINT
+    assert tokens[1].type == TokenType.LEFT_PAREN
+    assert tokens[2].type == TokenType.IDENTIFIER
+    assert tokens[2].value == "x"
+    assert tokens[3].type == TokenType.RIGHT_PAREN
+    assert tokens[4].type == TokenType.EOF
