@@ -25,5 +25,5 @@ class BooleanNode(Node):
 
 
 class PrintNode(Node):
-    def __init__(self, value: Node):
-        self.value = value
+    def __init__(self, inner_expression: Node):
+        self.inner_expression = inner_expression
