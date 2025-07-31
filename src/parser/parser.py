@@ -97,6 +97,9 @@ class Parser:
             value = self.current_token.value
             self.next_token()
             return IdentifierNode(value)
+        elif self.current_token.type == TokenType.THIS:
+            self.next_token()
+            return ThisNode()
         elif self.current_token.type == TokenType.PRINT:
             self.next_token()
             if self.current_token.type == TokenType.LEFT_PAREN:

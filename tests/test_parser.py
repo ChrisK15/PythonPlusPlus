@@ -158,3 +158,8 @@ def test_print_with_binary_op_and_parens():
             )
         ),
     )
+
+def test_this_node():
+    node = init_parser("this")
+
+    assert nodes_equal(node, ThisNode())
