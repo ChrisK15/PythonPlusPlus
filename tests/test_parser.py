@@ -124,5 +124,29 @@ def test_invalid_input():
         init_parser("1 * *")
 
 
-# def test_function_declaration():
-#     node = init_parser("def function_name {}")
+def test_print():
+    node = init_parser("println(x)")
+
+    assert nodes_equal(node, PrintNode(IdentifierNode("x")))
+
+
+def test_print_exception_no_parens():
+    with pytest.raises(ParserParenthesisException):
+        init_parser("println")
+
+
+def test_print_exception_no_close_parens():
+    with pytest.raises(ParserParenthesisException):
+        init_parser("println(x")
+
+
+def test_print_with_binary_op_expression():
+    node = init_parser("println(2 + 3)")
+
+    assert nodes_equal(node, PrintNode(BinaryOpNode("+", IntegerNode(2), IntegerNode(3))))
+
+
+def test_print_with_binary_op_and_parens():
+    node = init_parser("println((1 + 2) * 3)")
+
+    assert nodes_equal(node, PrintNode(BinaryOpNode("*", BinaryOpNode("+", IntegerNode(1), IntegerNode(2)), IntegerNode(3))))
