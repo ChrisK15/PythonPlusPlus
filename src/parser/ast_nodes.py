@@ -22,3 +22,8 @@ class BinaryOpNode(Node):
 class BooleanNode(Node):
     def __init__(self, value: bool):
         self.value = value
+
+
+class PrintNode(Node):
+    def __init__(self, value: Node):
+        self.value = value
