@@ -99,7 +99,7 @@ class Parser:
             return IdentifierNode(value)
         elif self.current_token.type == TokenType.LEFT_PAREN:
             self.next_token()
-            inner_expression = self.parse_addition()
+            inner_expression = self.parse_assignment()
             if self.current_token.type == TokenType.RIGHT_PAREN:
                 self.next_token()
                 return inner_expression
