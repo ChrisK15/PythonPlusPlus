@@ -11,6 +11,9 @@ def init_parser(text_input: str):
     tokens = lexer.tokenize()
     parser = Parser(tokens)
 
+    for token in tokens:
+        print(token)
+
     result = parser.parse_assignment()
 
     # Makes sure we are at the EOF token
@@ -178,4 +181,4 @@ def test_new_class_node_with_arguments():
 
 def test_new_class_node_exception_with_no_parens():
     with pytest.raises(ParserParenthesisException):
-        init_parser("new")
+        init_parser("new Dog")

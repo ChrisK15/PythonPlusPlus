@@ -100,6 +100,33 @@ class Parser:
         elif self.current_token.type == TokenType.THIS:
             self.next_token()
             return ThisNode()
+
+        elif self.current_token.type == TokenType.NEW:
+            self.next_token()
+            if self.current_token.type == TokenType.IDENTIFIER:
+                class_name = self.current_token.value
+                self.next_token()
+                if self.current_token.type == TokenType.LEFT_PAREN:
+                    self.next_token()
+                    arguments = []
+                    while self.current_token.type != TokenType.RIGHT_PAREN:
+                        expression = self.parse_assignment()
+                        arguments.append(expression)
+                        if self.current_token.type != TokenType.COMMA:
+                            break
+                        self.next_token()
+                    if self.current_token.type == TokenType.RIGHT_PAREN:
+                        self.next_token()
+                        return NewNode(class_name, arguments)
+                    else:
+                        raise ParserParenthesisException("Error! No closing parenthesis on new class.")
+                else:
+                    raise ParserParenthesisException("Error! No opening parenthesis on new class.")
+            else:
+                raise ParserException("Error! No class name after 'new'.")
+
+
+
         elif self.current_token.type == TokenType.PRINT:
             self.next_token()
             if self.current_token.type == TokenType.LEFT_PAREN:
@@ -121,4 +148,4 @@ class Parser:
             else:
                 raise ParserParenthesisException("Error! Missing closing parenthesis.")
         else:
-            raise ParserException(f"Error! Unexpected invalid input: {self.current_token.value}")
+            raise ParserException(f"Error! Unexpected invalid input: {self.current_token.value} of type {self.current_token.type}")
