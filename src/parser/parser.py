@@ -97,6 +97,18 @@ class Parser:
             value = self.current_token.value
             self.next_token()
             return IdentifierNode(value)
+        elif self.current_token.type == TokenType.PRINT:
+            self.next_token()
+            if self.current_token.type == TokenType.LEFT_PAREN:
+                self.next_token()
+                inner_expression = self.parse_assignment()
+                if self.current_token.type == TokenType.RIGHT_PAREN:
+                    self.next_token()
+                    return PrintNode(inner_expression)
+                else:
+                    raise ParserParenthesisException("Error! Missing closing parenthesis.")
+            else:
+                raise ParserParenthesisException("Error! Missing open parenthesis after print")
         elif self.current_token.type == TokenType.LEFT_PAREN:
             self.next_token()
             inner_expression = self.parse_assignment()
@@ -104,6 +116,6 @@ class Parser:
                 self.next_token()
                 return inner_expression
             else:
-                raise ParserParenthesisException(f"Error! Missing closing parenthesis.")
+                raise ParserParenthesisException("Error! Missing closing parenthesis.")
         else:
             raise ParserException(f"Error! Unexpected invalid input: {self.current_token.value}")
