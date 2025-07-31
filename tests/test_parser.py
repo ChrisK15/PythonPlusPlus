@@ -3,8 +3,7 @@ import pytest
 from src.lexer.lexer import Lexer
 from src.lexer.token import TokenType
 from src.parser.ast_nodes import *
-from src.parser.parser import (Parser, ParserException,
-                               ParserParenthesisException)
+from src.parser.parser import Parser, ParserException, ParserParenthesisException
 
 
 def init_parser(text_input: str):
@@ -143,10 +142,19 @@ def test_print_exception_no_close_parens():
 def test_print_with_binary_op_expression():
     node = init_parser("println(2 + 3)")
 
-    assert nodes_equal(node, PrintNode(BinaryOpNode("+", IntegerNode(2), IntegerNode(3))))
+    assert nodes_equal(
+        node, PrintNode(BinaryOpNode("+", IntegerNode(2), IntegerNode(3)))
+    )
 
 
 def test_print_with_binary_op_and_parens():
     node = init_parser("println((1 + 2) * 3)")
 
-    assert nodes_equal(node, PrintNode(BinaryOpNode("*", BinaryOpNode("+", IntegerNode(1), IntegerNode(2)), IntegerNode(3))))
+    assert nodes_equal(
+        node,
+        PrintNode(
+            BinaryOpNode(
+                "*", BinaryOpNode("+", IntegerNode(1), IntegerNode(2)), IntegerNode(3)
+            )
+        ),
+    )
