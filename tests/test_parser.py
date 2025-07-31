@@ -163,3 +163,19 @@ def test_this_node():
     node = init_parser("this")
 
     assert nodes_equal(node, ThisNode())
+
+
+def test_new_class_node():
+    node = init_parser("new Cat()")
+
+    assert nodes_equal(node, NewNode("Cat", []))
+
+
+def test_new_class_node_with_arguments():
+    node = init_parser("new Dog(5, true)")
+
+    assert nodes_equal(node, NewNode("Dog", [IntegerNode(5), BooleanNode(True)]))
+
+def test_new_class_node_exception_with_no_parens():
+    with pytest.raises(ParserParenthesisException):
+        init_parser("new")
