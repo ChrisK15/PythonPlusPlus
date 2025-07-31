@@ -100,7 +100,6 @@ class Parser:
         elif self.current_token.type == TokenType.THIS:
             self.next_token()
             return ThisNode()
-
         elif self.current_token.type == TokenType.NEW:
             self.next_token()
             if self.current_token.type == TokenType.IDENTIFIER:
@@ -128,7 +127,6 @@ class Parser:
                     )
             else:
                 raise ParserException("Error! No class name after 'new'.")
-
         elif self.current_token.type == TokenType.PRINT:
             self.next_token()
             if self.current_token.type == TokenType.LEFT_PAREN:
