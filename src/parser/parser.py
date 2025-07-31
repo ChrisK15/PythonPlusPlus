@@ -119,13 +119,15 @@ class Parser:
                         self.next_token()
                         return NewNode(class_name, arguments)
                     else:
-                        raise ParserParenthesisException("Error! No closing parenthesis on new class.")
+                        raise ParserParenthesisException(
+                            "Error! No closing parenthesis on new class."
+                        )
                 else:
-                    raise ParserParenthesisException("Error! No opening parenthesis on new class.")
+                    raise ParserParenthesisException(
+                        "Error! No opening parenthesis on new class."
+                    )
             else:
                 raise ParserException("Error! No class name after 'new'.")
-
-
 
         elif self.current_token.type == TokenType.PRINT:
             self.next_token()
@@ -136,9 +138,13 @@ class Parser:
                     self.next_token()
                     return PrintNode(inner_expression)
                 else:
-                    raise ParserParenthesisException("Error! Missing closing parenthesis.")
+                    raise ParserParenthesisException(
+                        "Error! Missing closing parenthesis."
+                    )
             else:
-                raise ParserParenthesisException("Error! Missing open parenthesis after print")
+                raise ParserParenthesisException(
+                    "Error! Missing open parenthesis after print"
+                )
         elif self.current_token.type == TokenType.LEFT_PAREN:
             self.next_token()
             inner_expression = self.parse_assignment()
@@ -148,4 +154,6 @@ class Parser:
             else:
                 raise ParserParenthesisException("Error! Missing closing parenthesis.")
         else:
-            raise ParserException(f"Error! Unexpected invalid input: {self.current_token.value} of type {self.current_token.type}")
+            raise ParserException(
+                f"Error! Unexpected invalid input: {self.current_token.value} of type {self.current_token.type}"
+            )
