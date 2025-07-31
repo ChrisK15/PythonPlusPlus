@@ -24,8 +24,19 @@ class Parser:
             return  # Would return our results here
 
     def parse_assignment(self):
-        left_expression = self.parse_comparison()
+        left_expression = self.parse_equality()
         while self.current_token.type == TokenType.ASSIGN:
+            current_operator_token = self.current_token
+            self.next_token()
+            right_expression = self.parse_equality()
+            left_expression = BinaryOpNode(
+                current_operator_token.value, left_expression, right_expression
+            )
+        return left_expression
+
+    def parse_equality(self):
+        left_expression = self.parse_comparison()
+        while self.current_token.type in EQUAL_OPERATORS:
             current_operator_token = self.current_token
             self.next_token()
             right_expression = self.parse_comparison()

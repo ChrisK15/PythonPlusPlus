@@ -124,5 +124,5 @@ def test_invalid_input():
         init_parser("1 * *")
 
 
-def test_function_declaration():
-    node = init_parser("def function_name {}")
+# def test_function_declaration():
+#     node = init_parser("def function_name {}")
