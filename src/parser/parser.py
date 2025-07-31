@@ -23,6 +23,24 @@ class Parser:
         else:
             return  # Would return our results here
 
+
+    def parse_comma_exp(self, class_name: str):
+        arguments = []
+        while self.current_token.type != TokenType.RIGHT_PAREN:
+            expression = self.parse_assignment()
+            arguments.append(expression)
+            if self.current_token.type != TokenType.COMMA:
+                break
+            self.next_token()
+        if self.current_token.type == TokenType.RIGHT_PAREN:
+            self.next_token()
+            return NewNode(class_name, arguments)
+        else:
+            raise ParserParenthesisException(
+                "Error! No closing parenthesis on new class."
+            )
+
+    # START OF CHAIN
     def parse_assignment(self):
         left_expression = self.parse_equality()
         while self.current_token.type == TokenType.ASSIGN:
@@ -107,20 +125,7 @@ class Parser:
                 self.next_token()
                 if self.current_token.type == TokenType.LEFT_PAREN:
                     self.next_token()
-                    arguments = []
-                    while self.current_token.type != TokenType.RIGHT_PAREN:
-                        expression = self.parse_assignment()
-                        arguments.append(expression)
-                        if self.current_token.type != TokenType.COMMA:
-                            break
-                        self.next_token()
-                    if self.current_token.type == TokenType.RIGHT_PAREN:
-                        self.next_token()
-                        return NewNode(class_name, arguments)
-                    else:
-                        raise ParserParenthesisException(
-                            "Error! No closing parenthesis on new class."
-                        )
+                    return self.parse_comma_exp(class_name)
                 else:
                     raise ParserParenthesisException(
                         "Error! No opening parenthesis on new class."
