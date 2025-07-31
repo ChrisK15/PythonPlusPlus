@@ -31,3 +31,9 @@ class PrintNode(Node):
 
 class ThisNode(Node):
     pass
+
+
+class NewNode(Node):
+    def __init__(self, class_name: str, arguments: list):
+        self.class_name = class_name
+        self.arguments = arguments
