@@ -24,7 +24,7 @@ class Parser:
             return  # Would return our results here
 
 
-    def parse_comma_exp(self, class_name: str):
+    def parse_comma_exp(self):
         arguments = []
         while self.current_token.type != TokenType.RIGHT_PAREN:
             expression = self.parse_assignment()
@@ -34,10 +34,10 @@ class Parser:
             self.next_token()
         if self.current_token.type == TokenType.RIGHT_PAREN:
             self.next_token()
-            return NewNode(class_name, arguments)
+            return arguments
         else:
             raise ParserParenthesisException(
-                "Error! No closing parenthesis on new class."
+                "Error! No closing parenthesis."
             )
 
     # START OF CHAIN
@@ -89,19 +89,36 @@ class Parser:
         return left_expression
 
     def parse_multiplication(self):
-        left_expression = self.parse_primary()
+        left_expression = self.parse_call()
         while (
             self.current_token.type == TokenType.MULTIPLY
             or self.current_token.type == TokenType.DIVIDE
         ):
             current_operator_token = self.current_token
             self.next_token()
-            right_expression = self.parse_primary()
+            right_expression = self.parse_call()
             left_expression = BinaryOpNode(
                 current_operator_token.value, left_expression, right_expression
             )
         return left_expression
 
+    def parse_call(self):
+        obj_node = self.parse_primary()
+        while self.current_token.type == TokenType.DOT:
+            self.next_token()
+            if self.current_token.type == TokenType.IDENTIFIER:
+                method_name = self.current_token.value
+                self.next_token()
+            else:
+                raise ParserException("Error! Invalid method type.")
+            if self.current_token.type == TokenType.LEFT_PAREN:
+                self.next_token()
+                arguments = self.parse_comma_exp()
+                obj_node = CallNode(obj_node, method_name, arguments)
+            else:
+                raise ParserParenthesisException("Error! Missing parenthesis.")
+        return obj_node
+    
     def parse_primary(self):
         if self.current_token.type == TokenType.INTEGER:
             value = self.current_token.value
@@ -123,15 +140,16 @@ class Parser:
             if self.current_token.type == TokenType.IDENTIFIER:
                 class_name = self.current_token.value
                 self.next_token()
-                if self.current_token.type == TokenType.LEFT_PAREN:
-                    self.next_token()
-                    return self.parse_comma_exp(class_name)
-                else:
-                    raise ParserParenthesisException(
-                        "Error! No opening parenthesis on new class."
-                    )
             else:
                 raise ParserException("Error! No class name after 'new'.")
+            if self.current_token.type == TokenType.LEFT_PAREN:
+                self.next_token()
+                arguments = self.parse_comma_exp()
+                return NewNode(class_name, arguments)
+            else:
+                raise ParserParenthesisException(
+                    "Error! No opening parenthesis on new class."
+                )
         elif self.current_token.type == TokenType.PRINT:
             self.next_token()
             if self.current_token.type == TokenType.LEFT_PAREN:

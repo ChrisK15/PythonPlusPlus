@@ -187,9 +187,9 @@ def test_new_class_node_exception_with_no_parens():
 def test_call_exp():
     node = init_parser("dog.bark()")
 
-    assert nodes_equal(node, CallNode("dog", "bark", []))
+    assert nodes_equal(node, CallNode(IdentifierNode("dog"), "bark", []))
 
 def test_call_with_args():
     node = init_parser("dog.bark(3)")
 
-    assert nodes_equal(node, CallNode("dog", "bark", [IntegerNode(3)]))
+    assert nodes_equal(node, CallNode(IdentifierNode("dog"), "bark", [IntegerNode(3)]))

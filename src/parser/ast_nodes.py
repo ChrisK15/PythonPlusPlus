@@ -40,7 +40,7 @@ class NewNode(Node):
 
 
 class CallNode(Node):
-    def __init__(self, class_name: str, method_name: str, arguments: list):
-        self.class_name = class_name
+    def __init__(self, obj_node: Node, method_name: str, arguments: list):
+        self.obj_node = obj_node
         self.method_name = method_name
         self.arguments = arguments
