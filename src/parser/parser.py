@@ -23,7 +23,6 @@ class Parser:
         else:
             return  # Would return our results here
 
-
     def parse_comma_exp(self):
         arguments = []
         while self.current_token.type != TokenType.RIGHT_PAREN:
@@ -36,9 +35,7 @@ class Parser:
             self.next_token()
             return arguments
         else:
-            raise ParserParenthesisException(
-                "Error! No closing parenthesis."
-            )
+            raise ParserParenthesisException("Error! No closing parenthesis.")
 
     # START OF CHAIN
     def parse_assignment(self):
@@ -118,7 +115,7 @@ class Parser:
             else:
                 raise ParserParenthesisException("Error! Missing parenthesis.")
         return obj_node
-    
+
     def parse_primary(self):
         if self.current_token.type == TokenType.INTEGER:
             value = self.current_token.value
