@@ -37,3 +37,9 @@ class NewNode(Node):
     def __init__(self, class_name: str, arguments: list):
         self.class_name = class_name
         self.arguments = arguments
+
+
+class CallNode(Node):
+    def __init__(self, method_name: str, arguments: list):
+        self.method_name = method_name
+        self.arguments = arguments
