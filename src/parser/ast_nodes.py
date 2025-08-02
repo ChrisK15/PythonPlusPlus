@@ -44,3 +44,50 @@ class CallNode(Node):
         self.obj_node = obj_node
         self.method_name = method_name
         self.arguments = arguments
+
+
+class StatementNode(Node):
+    pass
+
+
+class ExpressionStatement(StatementNode):
+    def __init__(self, exp: Node):
+        self.exp = exp
+
+
+class VarDecStatement(StatementNode):
+    def __init__(self, type: str, var: str):
+        self.type = type
+        self.var = var
+
+
+class AssignmentStatement(StatementNode):
+    def __init__(self, var: str, exp: Node):
+        self.var = var
+        self.exp = exp
+
+
+class WhileStatement(StatementNode):
+    def __init__(self, exp: Node, stmt: StatementNode):
+        self.exp = exp
+        self.stmt = stmt
+
+
+class BreakStatement(StatementNode):
+    pass
+
+
+class ReturnStatement(StatementNode):
+    def __init__(self, exp: Node):
+        self.exp = exp
+
+
+class IfStatement(StatementNode):
+    def __init__(self, then_stmt: StatementNode, else_stmt: StatementNode):
+        self.then_stmt = then_stmt
+        self.else_stmt = else_stmt
+
+
+class BlockStatement(StatementNode):
+    def __init__(self, stmt: StatementNode):
+        self.stmt = stmt
