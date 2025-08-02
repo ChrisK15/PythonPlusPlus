@@ -29,23 +29,46 @@ def nodes_equal(test_input: Node, test_output: Node):
     # Early exit for invalid input
     if type(test_input) != type(test_output):
         return False
+    
     if isinstance(test_input, IntegerNode):
-        assert isinstance(test_output, IntegerNode)
-        if test_input.value != test_output.value:
-            return False
+        return test_input.value == test_output.value
     elif isinstance(test_input, IdentifierNode):
-        assert isinstance(test_output, IdentifierNode)
-        if test_input.value != test_output.value:
-            return False
+        return test_input.value == test_output.value
+    elif isinstance(test_input, BooleanNode):
+        return test_input.value == test_output.value
     elif isinstance(test_input, BinaryOpNode):
-        assert isinstance(test_output, BinaryOpNode)
-        if (
-            test_input.op != test_output.op
-            or not nodes_equal(test_input.left_child, test_output.left_child)
-            or not nodes_equal(test_input.right_child, test_output.right_child)
-        ):
+        return (
+            test_input.op == test_output.op
+            and nodes_equal(test_input.left_child, test_output.left_child)
+            and nodes_equal(test_input.right_child, test_output.right_child)
+        )
+    elif isinstance(test_input, PrintNode):
+        return nodes_equal(test_input.inner_expression, test_output.inner_expression)
+    elif isinstance(test_input, ThisNode):
+        return True  # ThisNode has no attributes to compare
+    elif isinstance(test_input, NewNode):
+        if test_input.class_name != test_output.class_name:
             return False
-    return True
+        if len(test_input.arguments) != len(test_output.arguments):
+            return False
+        for arg1, arg2 in zip(test_input.arguments, test_output.arguments):
+            if not nodes_equal(arg1, arg2):
+                return False
+        return True
+    elif isinstance(test_input, CallNode):
+        if test_input.method_name != test_output.method_name:
+            return False
+        if not nodes_equal(test_input.obj_node, test_output.obj_node):
+            return False
+        if len(test_input.arguments) != len(test_output.arguments):
+            return False
+        for arg1, arg2 in zip(test_input.arguments, test_output.arguments):
+            if not nodes_equal(arg1, arg2):
+                return False
+        return True
+    else:
+        # Unknown node type - this should not happen
+        raise ValueError(f"Unknown node type: {type(test_input)}")
 
 
 def test_simple_addition():
