@@ -26,7 +26,7 @@ class Parser:
     def parse_comma_exp(self):
         arguments = []
         while self.current_token.type != TokenType.RIGHT_PAREN:
-            expression = self.parse_assignment()
+            expression = self.parse_equality()
             arguments.append(expression)
             if self.current_token.type != TokenType.COMMA:
                 break
@@ -44,6 +44,7 @@ class Parser:
             vardec_id = self.current_token.value
             self.next_token()
             if self.current_token.type == TokenType.SEMICOLON:
+                self.next_token()
                 return VarDecStatement(vardec_type, vardec_id)
             else:
                 raise ParserException("Missing semi colon in variable declaration.")
@@ -56,6 +57,7 @@ class Parser:
         self.next_token() # Skip '='
         assignment_exp = self.parse_equality()
         if self.current_token.type == TokenType.SEMICOLON:
+            self.next_token()
             return AssignmentStatement(assignment_var, assignment_exp)
         else:
             raise ParserException("Error! Missing semi colon in assignment.")
@@ -72,6 +74,7 @@ class Parser:
         # Default case
         exp = self.parse_equality()
         if self.current_token.type == TokenType.SEMICOLON:
+            self.next_token()
             return ExpressionStatement(exp)
         else:
             raise ParserException("Error! Missing semicolon on expression.")
@@ -178,7 +181,7 @@ class Parser:
             self.next_token()
             if self.current_token.type == TokenType.LEFT_PAREN:
                 self.next_token()
-                inner_expression = self.parse_assignment()
+                inner_expression = self.parse_equality()
                 if self.current_token.type == TokenType.RIGHT_PAREN:
                     self.next_token()
                     return PrintNode(inner_expression)
@@ -192,7 +195,7 @@ class Parser:
                 )
         elif self.current_token.type == TokenType.LEFT_PAREN:
             self.next_token()
-            inner_expression = self.parse_assignment()
+            inner_expression = self.parse_equality()
             if self.current_token.type == TokenType.RIGHT_PAREN:
                 self.next_token()
                 return inner_expression
