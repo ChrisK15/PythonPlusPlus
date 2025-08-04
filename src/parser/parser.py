@@ -37,9 +37,44 @@ class Parser:
         else:
             raise ParserParenthesisException("Error! No closing parenthesis.")
 
+    def parse_vardec(self):
+        vardec_type = self.current_token.value
+        self.next_token()
+        if self.current_token.type == TokenType.IDENTIFIER:
+            vardec_id = self.current_token.value
+            self.next_token()
+            if self.current_token.type == TokenType.SEMICOLON:
+                return VarDecStatement(vardec_type, vardec_id)
+            else:
+                raise ParserException("Missing semi colon in variable declaration.")
+        else:
+            raise ParserException("Error in variable declaration.")
+
+    def parse_assignment(self):
+        assignment_var = self.current_token.value
+        self.next_token()
+        self.next_token() # Skip '='
+        assignment_exp = self.parse_equality()
+        if self.current_token.type == TokenType.SEMICOLON:
+            return AssignmentStatement(assignment_var, assignment_exp)
+        else:
+            raise ParserException("Error! Missing semi colon in assignment.")
+
+
     # START OF CHAIN
     def parse_statement(self):
-        pass
+        if self.current_token.type in TYPES:
+            return self.parse_vardec()
+        elif self.current_token.type == TokenType.IDENTIFIER:
+            if self.position + 1 < len(self.tokens) and self.tokens[self.position + 1].type == TokenType.ASSIGN:
+                return self.parse_assignment()
+
+        # Default case
+        exp = self.parse_equality()
+        if self.current_token.type == TokenType.SEMICOLON:
+            return ExpressionStatement(exp)
+        else:
+            raise ParserException("Error! Missing semicolon on expression.")
 
     def parse_equality(self):
         left_expression = self.parse_comparison()
