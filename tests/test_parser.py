@@ -81,7 +81,9 @@ def nodes_equal(test_input: Node, test_output: Node):
     elif isinstance(test_input, VarDecStatement):
         return test_input.type == test_output.type and test_input.var == test_output.var
     elif isinstance(test_input, AssignmentStatement):
-        return test_input.var == test_output.var and nodes_equal(test_input.exp, test_output.exp)
+        return test_input.var == test_output.var and nodes_equal(
+            test_input.exp, test_output.exp
+        )
 
     else:
         # Unknown node type - this should not happen
@@ -91,7 +93,9 @@ def nodes_equal(test_input: Node, test_output: Node):
 def test_simple_addition():
     node = init_parser("2 + 3;")
 
-    assert nodes_equal(node, ExpressionStatement(BinaryOpNode("+", IntegerNode(2), IntegerNode(3))))
+    assert nodes_equal(
+        node, ExpressionStatement(BinaryOpNode("+", IntegerNode(2), IntegerNode(3)))
+    )
 
 
 def test_parenthesis():
@@ -99,9 +103,11 @@ def test_parenthesis():
 
     assert nodes_equal(
         node,
-        ExpressionStatement(BinaryOpNode(
-            "+", IntegerNode(1), BinaryOpNode("+", IntegerNode(2), IntegerNode(3))
-        )),
+        ExpressionStatement(
+            BinaryOpNode(
+                "+", IntegerNode(1), BinaryOpNode("+", IntegerNode(2), IntegerNode(3))
+            )
+        ),
     )
 
 
@@ -115,9 +121,11 @@ def test_multiplication():
 
     assert nodes_equal(
         node,
-        ExpressionStatement(BinaryOpNode(
-            "*", BinaryOpNode("/", IntegerNode(1), IntegerNode(2)), IntegerNode(3)
-        )),
+        ExpressionStatement(
+            BinaryOpNode(
+                "*", BinaryOpNode("/", IntegerNode(1), IntegerNode(2)), IntegerNode(3)
+            )
+        ),
     )
 
 
@@ -126,9 +134,11 @@ def test_addition_and_multiplication():
 
     assert nodes_equal(
         node,
-        ExpressionStatement(BinaryOpNode(
-            "+", IntegerNode(1), BinaryOpNode("*", IntegerNode(2), IntegerNode(3))
-        )),
+        ExpressionStatement(
+            BinaryOpNode(
+                "+", IntegerNode(1), BinaryOpNode("*", IntegerNode(2), IntegerNode(3))
+            )
+        ),
     )
 
 
@@ -137,9 +147,11 @@ def test_addition_and_multiplication_with_parens():
 
     assert nodes_equal(
         node,
-        ExpressionStatement(BinaryOpNode(
-            "*", BinaryOpNode("+", IntegerNode(1), IntegerNode(2)), IntegerNode(3)
-        )),
+        ExpressionStatement(
+            BinaryOpNode(
+                "*", BinaryOpNode("+", IntegerNode(1), IntegerNode(2)), IntegerNode(3)
+            )
+        ),
     )
 
 
@@ -158,7 +170,10 @@ def test_boolean():
 def test_comparison():
     node = init_parser("x == 10;")
 
-    assert nodes_equal(node, ExpressionStatement(BinaryOpNode("==", IdentifierNode("x"), IntegerNode(10))))
+    assert nodes_equal(
+        node,
+        ExpressionStatement(BinaryOpNode("==", IdentifierNode("x"), IntegerNode(10))),
+    )
 
 
 def test_invalid_input():
@@ -186,7 +201,10 @@ def test_print_with_binary_op_expression():
     node = init_parser("println(2 + 3);")
 
     assert nodes_equal(
-        node, ExpressionStatement(PrintNode(BinaryOpNode("+", IntegerNode(2), IntegerNode(3))))
+        node,
+        ExpressionStatement(
+            PrintNode(BinaryOpNode("+", IntegerNode(2), IntegerNode(3)))
+        ),
     )
 
 
@@ -195,12 +213,17 @@ def test_print_with_binary_op_and_parens():
 
     assert nodes_equal(
         node,
-        ExpressionStatement(PrintNode(
-            BinaryOpNode(
-                "*", BinaryOpNode("+", IntegerNode(1), IntegerNode(2)), IntegerNode(3)
+        ExpressionStatement(
+            PrintNode(
+                BinaryOpNode(
+                    "*",
+                    BinaryOpNode("+", IntegerNode(1), IntegerNode(2)),
+                    IntegerNode(3),
+                )
             )
-        )),
+        ),
     )
+
 
 def test_this_node():
     node = init_parser("this;")
@@ -217,7 +240,10 @@ def test_new_class_node():
 def test_new_class_node_with_arguments():
     node = init_parser("new Dog(5, true);")
 
-    assert nodes_equal(node, ExpressionStatement(NewNode("Dog", [IntegerNode(5), BooleanNode(True)])))
+    assert nodes_equal(
+        node, ExpressionStatement(NewNode("Dog", [IntegerNode(5), BooleanNode(True)]))
+    )
+
 
 def test_new_class_node_exception_with_no_parens():
     with pytest.raises(ParserParenthesisException):
@@ -227,17 +253,25 @@ def test_new_class_node_exception_with_no_parens():
 def test_call_exp():
     node = init_parser("dog.bark();")
 
-    assert nodes_equal(node, ExpressionStatement(CallNode(IdentifierNode("dog"), "bark", [])))
+    assert nodes_equal(
+        node, ExpressionStatement(CallNode(IdentifierNode("dog"), "bark", []))
+    )
+
 
 def test_call_with_args():
     node = init_parser("dog.bark(3);")
 
-    assert nodes_equal(node, ExpressionStatement(CallNode(IdentifierNode("dog"), "bark", [IntegerNode(3)])))
+    assert nodes_equal(
+        node,
+        ExpressionStatement(CallNode(IdentifierNode("dog"), "bark", [IntegerNode(3)])),
+    )
+
 
 def test_var_dec_int():
     node = init_parser("int x;")
 
     assert nodes_equal(node, VarDecStatement("int", "x"))
+
 
 def test_var_dec_bool():
     node = init_parser("bool x;")

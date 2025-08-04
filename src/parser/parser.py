@@ -54,7 +54,7 @@ class Parser:
     def parse_assignment(self):
         assignment_var = self.current_token.value
         self.next_token()
-        self.next_token() # Skip '='
+        self.next_token()  # Skip '='
         assignment_exp = self.parse_equality()
         if self.current_token.type == TokenType.SEMICOLON:
             self.next_token()
@@ -62,13 +62,15 @@ class Parser:
         else:
             raise ParserException("Error! Missing semi colon in assignment.")
 
-
     # START OF CHAIN
     def parse_statement(self):
         if self.current_token.type in TYPES:
             return self.parse_vardec()
         elif self.current_token.type == TokenType.IDENTIFIER:
-            if self.position + 1 < len(self.tokens) and self.tokens[self.position + 1].type == TokenType.ASSIGN:
+            if (
+                self.position + 1 < len(self.tokens)
+                and self.tokens[self.position + 1].type == TokenType.ASSIGN
+            ):
                 return self.parse_assignment()
 
         # Default case
