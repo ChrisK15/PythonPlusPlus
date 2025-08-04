@@ -11,10 +11,17 @@ def init_parser(text_input: str):
     tokens = lexer.tokenize()
     parser = Parser(tokens)
 
-    for token in tokens:
-        print(token)
+    result = parser.parse_statement()
 
-    result = parser.parse_assignment()
+    # Break Glass in case of Emergency
+    # print ("TOKENS PRODUCED BY LEXER:")
+    # print("-------------------------")
+    # for token in tokens:
+    #     print(f"{token.type}, Value: {token.value}")
+    # print("\nPARSER OUTPUT:")
+    # print("--------------")
+    # if isinstance(result, VarDecStatement):
+    #     print(f"Type: {result.type}, Var: {result.var}")
 
     # Makes sure we are at the EOF token
     if parser.current_token.type != TokenType.EOF:
@@ -29,7 +36,8 @@ def nodes_equal(test_input: Node, test_output: Node):
     # Early exit for invalid input
     if type(test_input) != type(test_output):
         return False
-    
+
+    # Expressions
     if isinstance(test_input, IntegerNode):
         return test_input.value == test_output.value
     elif isinstance(test_input, IdentifierNode):
@@ -66,153 +74,172 @@ def nodes_equal(test_input: Node, test_output: Node):
             if not nodes_equal(arg1, arg2):
                 return False
         return True
+
+    # Statements
+    elif isinstance(test_input, ExpressionStatement):
+        return nodes_equal(test_input.exp, test_output.exp)
+    elif isinstance(test_input, VarDecStatement):
+        return test_input.type == test_output.type and test_input.var == test_output.var
+    elif isinstance(test_input, AssignmentStatement):
+        return test_input.var == test_output.var and nodes_equal(test_input.exp, test_output.exp)
+
     else:
         # Unknown node type - this should not happen
         raise ValueError(f"Unknown node type: {type(test_input)}")
 
 
 def test_simple_addition():
-    node = init_parser("2 + 3")
+    node = init_parser("2 + 3;")
 
-    assert nodes_equal(node, BinaryOpNode("+", IntegerNode(2), IntegerNode(3)))
+    assert nodes_equal(node, ExpressionStatement(BinaryOpNode("+", IntegerNode(2), IntegerNode(3))))
 
 
 def test_parenthesis():
-    node = init_parser("1 + (2 + 3)")
+    node = init_parser("1 + (2 + 3);")
 
     assert nodes_equal(
         node,
-        BinaryOpNode(
+        ExpressionStatement(BinaryOpNode(
             "+", IntegerNode(1), BinaryOpNode("+", IntegerNode(2), IntegerNode(3))
-        ),
+        )),
     )
 
 
 def test_invalid_parenthesis():
     with pytest.raises(ParserParenthesisException):
-        init_parser("1 + (2 + 3")
+        init_parser("1 + (2 + 3;")
 
 
 def test_multiplication():
-    node = init_parser("1 / 2 * 3")
+    node = init_parser("1 / 2 * 3;")
 
     assert nodes_equal(
         node,
-        BinaryOpNode(
+        ExpressionStatement(BinaryOpNode(
             "*", BinaryOpNode("/", IntegerNode(1), IntegerNode(2)), IntegerNode(3)
-        ),
+        )),
     )
 
 
 def test_addition_and_multiplication():
-    node = init_parser("1 + 2 * 3")
+    node = init_parser("1 + 2 * 3;")
 
     assert nodes_equal(
         node,
-        BinaryOpNode(
+        ExpressionStatement(BinaryOpNode(
             "+", IntegerNode(1), BinaryOpNode("*", IntegerNode(2), IntegerNode(3))
-        ),
+        )),
     )
 
 
 def test_addition_and_multiplication_with_parens():
-    node = init_parser("(1 + 2) * 3")
+    node = init_parser("(1 + 2) * 3;")
 
     assert nodes_equal(
         node,
-        BinaryOpNode(
+        ExpressionStatement(BinaryOpNode(
             "*", BinaryOpNode("+", IntegerNode(1), IntegerNode(2)), IntegerNode(3)
-        ),
+        )),
     )
 
 
 def test_assignment():
-    node = init_parser("x = 10")
+    node = init_parser("x = 10;")
 
-    assert nodes_equal(node, BinaryOpNode("=", IdentifierNode("x"), IntegerNode(10)))
+    assert nodes_equal(node, AssignmentStatement("x", IntegerNode(10)))
 
 
 def test_boolean():
-    node = init_parser("true")
+    node = init_parser("true;")
 
-    assert nodes_equal(node, BooleanNode(True))
+    assert nodes_equal(node, ExpressionStatement(BooleanNode(True)))
 
 
 def test_comparison():
-    node = init_parser("x == 10")
+    node = init_parser("x == 10;")
 
-    assert nodes_equal(node, BinaryOpNode("==", IdentifierNode("x"), IntegerNode(10)))
+    assert nodes_equal(node, ExpressionStatement(BinaryOpNode("==", IdentifierNode("x"), IntegerNode(10))))
 
 
 def test_invalid_input():
     with pytest.raises(ParserException):
-        init_parser("1 * *")
+        init_parser("1 * *;")
 
 
 def test_print():
-    node = init_parser("println(x)")
+    node = init_parser("println(x);")
 
-    assert nodes_equal(node, PrintNode(IdentifierNode("x")))
+    assert nodes_equal(node, ExpressionStatement(PrintNode(IdentifierNode("x"))))
 
 
 def test_print_exception_no_parens():
     with pytest.raises(ParserParenthesisException):
-        init_parser("println")
+        init_parser("println;")
 
 
 def test_print_exception_no_close_parens():
     with pytest.raises(ParserParenthesisException):
-        init_parser("println(x")
+        init_parser("println(x;")
 
 
 def test_print_with_binary_op_expression():
-    node = init_parser("println(2 + 3)")
+    node = init_parser("println(2 + 3);")
 
     assert nodes_equal(
-        node, PrintNode(BinaryOpNode("+", IntegerNode(2), IntegerNode(3)))
+        node, ExpressionStatement(PrintNode(BinaryOpNode("+", IntegerNode(2), IntegerNode(3))))
     )
 
 
 def test_print_with_binary_op_and_parens():
-    node = init_parser("println((1 + 2) * 3)")
+    node = init_parser("println((1 + 2) * 3);")
 
     assert nodes_equal(
         node,
-        PrintNode(
+        ExpressionStatement(PrintNode(
             BinaryOpNode(
                 "*", BinaryOpNode("+", IntegerNode(1), IntegerNode(2)), IntegerNode(3)
             )
-        ),
+        )),
     )
 
 def test_this_node():
-    node = init_parser("this")
+    node = init_parser("this;")
 
-    assert nodes_equal(node, ThisNode())
+    assert nodes_equal(node, ExpressionStatement(ThisNode()))
 
 
 def test_new_class_node():
-    node = init_parser("new Cat()")
+    node = init_parser("new Cat();")
 
-    assert nodes_equal(node, NewNode("Cat", []))
+    assert nodes_equal(node, ExpressionStatement(NewNode("Cat", [])))
 
 
 def test_new_class_node_with_arguments():
-    node = init_parser("new Dog(5, true)")
+    node = init_parser("new Dog(5, true);")
 
-    assert nodes_equal(node, NewNode("Dog", [IntegerNode(5), BooleanNode(True)]))
+    assert nodes_equal(node, ExpressionStatement(NewNode("Dog", [IntegerNode(5), BooleanNode(True)])))
 
 def test_new_class_node_exception_with_no_parens():
     with pytest.raises(ParserParenthesisException):
-        init_parser("new Dog")
+        init_parser("new Dog;")
 
 
 def test_call_exp():
-    node = init_parser("dog.bark()")
+    node = init_parser("dog.bark();")
 
-    assert nodes_equal(node, CallNode(IdentifierNode("dog"), "bark", []))
+    assert nodes_equal(node, ExpressionStatement(CallNode(IdentifierNode("dog"), "bark", [])))
 
 def test_call_with_args():
-    node = init_parser("dog.bark(3)")
+    node = init_parser("dog.bark(3);")
 
-    assert nodes_equal(node, CallNode(IdentifierNode("dog"), "bark", [IntegerNode(3)]))
+    assert nodes_equal(node, ExpressionStatement(CallNode(IdentifierNode("dog"), "bark", [IntegerNode(3)])))
+
+def test_var_dec_int():
+    node = init_parser("int x;")
+
+    assert nodes_equal(node, VarDecStatement("int", "x"))
+
+def test_var_dec_bool():
+    node = init_parser("bool x;")
+
+    assert nodes_equal(node, VarDecStatement("bool", "x"))
