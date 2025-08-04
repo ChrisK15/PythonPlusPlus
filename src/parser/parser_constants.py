@@ -11,3 +11,8 @@ EQUAL_OPERATORS = {
     TokenType.EQUAL,
     TokenType.NOT_EQUAL,
 }
+
+TYPES = {
+    TokenType.INT_TYPE,
+    TokenType.BOOL_TYPE,
+}
