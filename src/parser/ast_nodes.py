@@ -1,3 +1,5 @@
+from typing import Optional
+
 class Node:
     pass
 
@@ -78,13 +80,13 @@ class BreakStatement(StatementNode):
 
 
 class ReturnStatement(StatementNode):
-    def __init__(self, exp: Node = None):
+    def __init__(self, exp: Optional[Node] = None):
         self.exp = exp
 
 
 class IfStatement(StatementNode):
     def __init__(
-        self, exp: Node, then_stmt: StatementNode, else_stmt: StatementNode = None
+        self, exp: Node, then_stmt: StatementNode, else_stmt: Optional[StatementNode] = None
     ):
         self.exp = exp
         self.then_stmt = then_stmt
