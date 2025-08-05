@@ -297,3 +297,80 @@ def test_var_dec_bool():
     node = init_parser("bool x;")
 
     assert nodes_equal(node, VarDecStatement("bool", "x"))
+
+
+def test_if_without_else():
+    node = init_parser("if (x == 5) x = 10;")
+    
+    expected = IfStatement(
+        BinaryOpNode("==", IdentifierNode("x"), IntegerNode(5)),
+        AssignmentStatement("x", IntegerNode(10))
+    )
+    assert nodes_equal(node, expected)
+
+
+def test_if_with_else():
+    node = init_parser("if (x == 5) x = 10; else x = 20;")
+    
+    expected = IfStatement(
+        BinaryOpNode("==", IdentifierNode("x"), IntegerNode(5)),
+        AssignmentStatement("x", IntegerNode(10)),
+        AssignmentStatement("x", IntegerNode(20))
+    )
+    assert nodes_equal(node, expected)
+
+
+def test_if_with_boolean_condition():
+    node = init_parser("if (true) println(x);")
+    
+    expected = IfStatement(
+        BooleanNode(True),
+        ExpressionStatement(PrintNode(IdentifierNode("x")))
+    )
+    assert nodes_equal(node, expected)
+
+
+def test_while_statement():
+    node = init_parser("while (x < 10) x = x + 1;")
+    
+    expected = WhileStatement(
+        BinaryOpNode("<", IdentifierNode("x"), IntegerNode(10)),
+        AssignmentStatement("x", BinaryOpNode("+", IdentifierNode("x"), IntegerNode(1)))
+    )
+    assert nodes_equal(node, expected)
+
+
+def test_while_with_expression_statement():
+    node = init_parser("while (true) println(x);")
+    
+    expected = WhileStatement(
+        BooleanNode(True),
+        ExpressionStatement(PrintNode(IdentifierNode("x")))
+    )
+    assert nodes_equal(node, expected)
+
+
+def test_return_with_expression():
+    node = init_parser("return x + 5;")
+    
+    expected = ReturnStatement(
+        BinaryOpNode("+", IdentifierNode("x"), IntegerNode(5))
+    )
+    assert nodes_equal(node, expected)
+
+
+def test_return_with_simple_value():
+    node = init_parser("return 42;")
+    
+    expected = ReturnStatement(IntegerNode(42))
+    assert nodes_equal(node, expected)
+
+
+def test_break_statement():
+    node = init_parser("break;")
+    
+    expected = BreakStatement()
+    assert nodes_equal(node, expected)
+
+
+
