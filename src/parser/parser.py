@@ -84,6 +84,19 @@ class Parser:
         else:
             raise ParserException("Error! Missing semicolon from break.")
 
+    def parse_return(self):
+        self.next_token()
+        if self.current_token.type == TokenType.SEMICOLON:
+            self.next_token()
+            return ReturnStatement()
+        else:
+            return_exp = self.parse_equality()
+            if self.current_token.type == TokenType.SEMICOLON:
+                self.next_token()
+                return ReturnStatement(return_exp)
+            else:
+                raise ParserException("Error! Missing semicolon from return.")
+
 
     # START OF CHAIN
     def parse_statement(self):
@@ -99,6 +112,8 @@ class Parser:
             return self.parse_while()
         elif self.current_token.type == TokenType.BREAK:
             return self.parse_break()
+        elif self.current_token.type == TokenType.RETURN:
+            return self.parse_return()
 
 
         # Default case

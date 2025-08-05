@@ -78,7 +78,7 @@ class BreakStatement(StatementNode):
 
 
 class ReturnStatement(StatementNode):
-    def __init__(self, exp: Node):
+    def __init__(self, exp: Node = None):
         self.exp = exp
 
 
