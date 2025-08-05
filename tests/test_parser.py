@@ -84,6 +84,26 @@ def nodes_equal(test_input: Node, test_output: Node):
         return test_input.var == test_output.var and nodes_equal(
             test_input.exp, test_output.exp
         )
+    elif isinstance(test_input, WhileStatement):
+        return nodes_equal(test_input.exp, test_output.exp) and nodes_equal(test_input.stmt, test_output.stmt)
+    elif isinstance(test_input, BreakStatement):
+        return True
+    elif isinstance(test_input, ReturnStatement):
+        return nodes_equal(test_input.exp, test_output.exp)
+    elif isinstance(test_input, IfStatement):
+        if test_input.else_stmt is None and test_output.else_stmt is None:
+            return nodes_equal(test_input.exp, test_output.exp) and nodes_equal(test_input.then_stmt,test_output.then_stmt)
+        elif test_input.else_stmt is None or test_output.else_stmt is None:
+            return False
+        else:
+            return nodes_equal(test_input.exp, test_output.exp) and nodes_equal(test_input.then_stmt, test_output.then_stmt) and nodes_equal(test_input.else_stmt, test_output.else_stmt)
+    elif isinstance(test_input, BlockStatement):
+        if len(test_input.stmts) == len(test_output.stmts):
+            for input_stmt, output_stmt in zip(test_input.stmts, test_output.stmts):
+                if not nodes_equal(input_stmt, output_stmt):
+                    return False
+            return True
+        return False
 
     else:
         # Unknown node type - this should not happen
