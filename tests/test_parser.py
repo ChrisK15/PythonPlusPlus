@@ -89,7 +89,12 @@ def nodes_equal(test_input: Node, test_output: Node):
     elif isinstance(test_input, BreakStatement):
         return True
     elif isinstance(test_input, ReturnStatement):
-        return nodes_equal(test_input.exp, test_output.exp)
+        if test_input.exp is None and test_output.exp is None:
+            return True
+        elif test_input.exp is None or test_output.exp is None:
+            return False
+        else:
+            return nodes_equal(test_input.exp, test_output.exp)
     elif isinstance(test_input, IfStatement):
         if test_input.else_stmt is None and test_output.else_stmt is None:
             return nodes_equal(test_input.exp, test_output.exp) and nodes_equal(test_input.then_stmt,test_output.then_stmt)
