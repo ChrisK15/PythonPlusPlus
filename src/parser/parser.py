@@ -116,7 +116,6 @@ class Parser:
         else:
             raise ParserParenthesisException("Error! Missing left paren on if.")
 
-
     # START OF CHAIN
     def parse_statement(self):
         if self.current_token.type in TYPES:
@@ -135,8 +134,6 @@ class Parser:
             return self.parse_return()
         elif self.current_token.type == TokenType.IF:
             return self.parse_if()
-
-
         # Default case
         exp = self.parse_equality()
         if self.current_token.type == TokenType.SEMICOLON:

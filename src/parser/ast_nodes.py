@@ -83,7 +83,9 @@ class ReturnStatement(StatementNode):
 
 
 class IfStatement(StatementNode):
-    def __init__(self, exp: Node, then_stmt: StatementNode, else_stmt: StatementNode = None):
+    def __init__(
+        self, exp: Node, then_stmt: StatementNode, else_stmt: StatementNode = None
+    ):
         self.exp = exp
         self.then_stmt = then_stmt
         self.else_stmt = else_stmt
