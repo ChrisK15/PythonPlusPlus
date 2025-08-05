@@ -97,6 +97,25 @@ class Parser:
             else:
                 raise ParserException("Error! Missing semicolon from return.")
 
+    def parse_if(self):
+        self.next_token()
+        if self.current_token.type == TokenType.LEFT_PAREN:
+            self.next_token()
+            if_expression = self.parse_equality()
+            if self.current_token.type == TokenType.RIGHT_PAREN:
+                self.next_token()
+                then_stmt = self.parse_statement()
+                if self.current_token.type == TokenType.ELSE:
+                    self.next_token()
+                    else_stmt = self.parse_statement()
+                    return IfStatement(if_expression, then_stmt, else_stmt)
+                else:
+                    return IfStatement(if_expression, then_stmt)
+            else:
+                raise ParserParenthesisException("Error! Missing right paren on if.")
+        else:
+            raise ParserParenthesisException("Error! Missing left paren on if.")
+
 
     # START OF CHAIN
     def parse_statement(self):
@@ -114,6 +133,8 @@ class Parser:
             return self.parse_break()
         elif self.current_token.type == TokenType.RETURN:
             return self.parse_return()
+        elif self.current_token.type == TokenType.IF:
+            return self.parse_if()
 
 
         # Default case

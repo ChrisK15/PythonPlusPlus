@@ -20,8 +20,8 @@ def init_parser(text_input: str):
     #     print(f"{token.type}, Value: {token.value}")
     # print("\nPARSER OUTPUT:")
     # print("--------------")
-    # if isinstance(result, VarDecStatement):
-    #     print(f"Type: {result.type}, Var: {result.var}")
+    # if isinstance(result, IfStatement):
+    #     print(f"EXP: {result.exp}, THEN: {result.then_stmt}, ELSE: {result.else_stmt}")
 
     # Makes sure we are at the EOF token
     if parser.current_token.type != TokenType.EOF:
