@@ -62,6 +62,21 @@ class Parser:
         else:
             raise ParserException("Error! Missing semi colon in assignment.")
 
+    def parse_while(self):
+        self.next_token()
+        if self.current_token.type == TokenType.LEFT_PAREN:
+            self.next_token()
+            while_expression = self.parse_equality()
+            if self.current_token.type == TokenType.RIGHT_PAREN:
+                self.next_token()
+                while_stmt = self.parse_statement()
+                return WhileStatement(while_expression, while_stmt)
+            else:
+                raise ParserException("Error! Missing right paren on while.")
+        else:
+            raise ParserException("Error! Missing left paren on while.")
+
+
     # START OF CHAIN
     def parse_statement(self):
         if self.current_token.type in TYPES:
@@ -72,6 +87,8 @@ class Parser:
                 and self.tokens[self.position + 1].type == TokenType.ASSIGN
             ):
                 return self.parse_assignment()
+        elif self.current_token.type == TokenType.WHILE:
+            return self.parse_while()
 
         # Default case
         exp = self.parse_equality()
