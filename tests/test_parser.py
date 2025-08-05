@@ -372,5 +372,23 @@ def test_break_statement():
     expected = BreakStatement()
     assert nodes_equal(node, expected)
 
+def test_empty_block_statement():
+    node = init_parser("{ }")
+
+    expected = BlockStatement([])
+    assert nodes_equal(node, expected)
+
+def test_block_statement():
+    node = init_parser("{ return 7; }")
+
+    expected = BlockStatement([ReturnStatement(IntegerNode(7))])
+    assert nodes_equal(node, expected)
+
+def test_block_statement_with_multiple_statements():
+    node = init_parser("{ x + 5; y + 3; }")
+
+    expected = BlockStatement([BinaryOpNode("+", IdentifierNode("x"), IntegerNode(5)), BinaryOpNode("+", IdentifierNode("y"), IntegerNode(3))])
+    assert nodes_equal(node, expected)
+
 
 
