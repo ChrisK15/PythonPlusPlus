@@ -387,7 +387,7 @@ def test_block_statement():
 def test_block_statement_with_multiple_statements():
     node = init_parser("{ x + 5; y + 3; }")
 
-    expected = BlockStatement([BinaryOpNode("+", IdentifierNode("x"), IntegerNode(5)), BinaryOpNode("+", IdentifierNode("y"), IntegerNode(3))])
+    expected = BlockStatement([ExpressionStatement(BinaryOpNode("+", IdentifierNode("x"), IntegerNode(5))), ExpressionStatement(BinaryOpNode("+", IdentifierNode("y"), IntegerNode(3)))])
     assert nodes_equal(node, expected)
 
 
