@@ -116,6 +116,18 @@ class Parser:
         else:
             raise ParserParenthesisException("Error! Missing left paren on if.")
 
+    def parse_block(self):
+        self.next_token()
+        block_stmts = []
+        while self.current_token.type != TokenType.RIGHT_BRACE:
+            stmt = self.parse_statement()
+            block_stmts.append(stmt)
+        if self.current_token.type == TokenType.RIGHT_BRACE:
+            self.next_token()
+            return BlockStatement(block_stmts)
+        else:
+            raise ParserException("Error!")
+
     # START OF CHAIN
     def parse_statement(self):
         if self.current_token.type in TYPES:
@@ -134,6 +146,8 @@ class Parser:
             return self.parse_return()
         elif self.current_token.type == TokenType.IF:
             return self.parse_if()
+        elif self.current_token.type == TokenType.LEFT_BRACE:
+            return self.parse_block()
         # Default case
         exp = self.parse_equality()
         if self.current_token.type == TokenType.SEMICOLON:
