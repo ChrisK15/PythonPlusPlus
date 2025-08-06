@@ -43,11 +43,16 @@ class Parser:
         if self.current_token.type == TokenType.IDENTIFIER:
             vardec_id = self.current_token.value
             self.next_token()
-            if self.current_token.type == TokenType.SEMICOLON:
+            if self.current_token.type == TokenType.ASSIGN:
                 self.next_token()
-                return VarDecStatement(vardec_type, vardec_id)
+                vardec_val = self.parse_equality()
+                if self.current_token.type == TokenType.SEMICOLON:
+                    self.next_token()
+                    return VarDecStatement(vardec_type, vardec_id, vardec_val)
+                else:
+                    raise ParserException("Missing semi colon in variable declaration.")
             else:
-                raise ParserException("Missing semi colon in variable declaration.")
+                raise ParserException("Error in variable declaration.")
         else:
             raise ParserException("Error in variable declaration.")
 

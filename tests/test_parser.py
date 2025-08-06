@@ -20,8 +20,8 @@ def init_parser(text_input: str):
     #     print(f"{token.type}, Value: {token.value}")
     # print("\nPARSER OUTPUT:")
     # print("--------------")
-    # if isinstance(result, IfStatement):
-    #     print(f"EXP: {result.exp}, THEN: {result.then_stmt}, ELSE: {result.else_stmt}")
+    # if isinstance(result, VarDecStatement):
+    #     print(f"TYPE: {result.var_type}, VAR: {result.var}, VAL: {result.val.value}")
 
     # Makes sure we are at the EOF token
     if parser.current_token.type != TokenType.EOF:
@@ -79,7 +79,7 @@ def nodes_equal(test_input: Node, test_output: Node):
     elif isinstance(test_input, ExpressionStatement):
         return nodes_equal(test_input.exp, test_output.exp)
     elif isinstance(test_input, VarDecStatement):
-        return test_input.type == test_output.type and test_input.var == test_output.var
+        return test_input.var_type == test_output.var_type and test_input.var == test_output.var and nodes_equal(test_input.val, test_output.val)
     elif isinstance(test_input, AssignmentStatement):
         return test_input.var == test_output.var and nodes_equal(
             test_input.exp, test_output.exp
@@ -293,15 +293,21 @@ def test_call_with_args():
 
 
 def test_var_dec_int():
-    node = init_parser("int x;")
+    node = init_parser("int x = 0;")
 
-    assert nodes_equal(node, VarDecStatement("int", "x"))
+    assert nodes_equal(node, VarDecStatement("int", "x", IntegerNode(0)))
 
 
 def test_var_dec_bool():
-    node = init_parser("bool x;")
+    node = init_parser("bool x = true;")
 
-    assert nodes_equal(node, VarDecStatement("bool", "x"))
+    assert nodes_equal(node, VarDecStatement("bool", "x", BooleanNode(True)))
+
+def test_var_dec_with_complex_expression():
+    node = init_parser("int x = 16 + 3;")
+
+    expected = VarDecStatement("int", "x", BinaryOpNode("+", IntegerNode(16), IntegerNode(3)))
+    assert nodes_equal(node, expected)
 
 
 def test_if_without_else():

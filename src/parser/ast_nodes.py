@@ -58,9 +58,10 @@ class ExpressionStatement(StatementNode):
 
 
 class VarDecStatement(StatementNode):
-    def __init__(self, type: str, var: str):
-        self.type = type
+    def __init__(self, var_type: str, var: str, val: Node):
+        self.var_type = var_type
         self.var = var
+        self.val = val
 
 
 class AssignmentStatement(StatementNode):
