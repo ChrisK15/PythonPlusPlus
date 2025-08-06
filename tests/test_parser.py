@@ -547,3 +547,13 @@ def test_constructor_no_super():
     expected = Constructor([], None, [])
 
     assert nodes_equal(result, expected)
+
+def test_constructor_with_super_args():
+    lexer = Lexer("init() { super( x + 5 ); }")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+
+    result = parser.parse_constructor()
+    expected = Constructor([], [BinaryOpNode("+", IdentifierNode("x"), IntegerNode(5))], [])
+
+    assert nodes_equal(result, expected)
