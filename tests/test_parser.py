@@ -370,6 +370,11 @@ def test_return_with_simple_value():
     expected = ReturnStatement(IntegerNode(42))
     assert nodes_equal(node, expected)
 
+def test_empty_return():
+    node = init_parser("return;")
+
+    expected = ReturnStatement()
+    assert nodes_equal(node, expected)
 
 def test_break_statement():
     node = init_parser("break;")
