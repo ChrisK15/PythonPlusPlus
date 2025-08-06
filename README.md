@@ -41,11 +41,11 @@ No optimizations :(
   - `return` [exp] `;` | return, possibly void
   - `if` `(` exp `)` stmt [`else` stmt ] | if with optional else
   - `{` stmt* `}` | Block
-- comma_params ::= [method_param (`,` method_param)*]
-- method_param ::= type var
+- comma_params ::= [param (`,` param)*]
+- param ::= type var
 - methoddef ::= `def` type methodname `(` comma_params `)` `{` stmt* `}`
 - constructor ::= `init` `(` comma_params `)` `{` [`super` `(` comma_exp `)` `;` ] stmt* `}`
-- classdef ::= `class` classname [`extends` classname] `{` (vardec `;`)* constructor methoddef* `}`
+- classdef ::= `class` classname [`extends` classname] `{` (param `;`)* constructor methoddef* `}`
 - program ::= classdef* stmt+ | stmt+ is the entry point
 ```
 
