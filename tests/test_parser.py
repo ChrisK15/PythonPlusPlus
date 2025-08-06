@@ -110,6 +110,24 @@ def nodes_equal(test_input: Node, test_output: Node):
             return True
         return False
 
+    # Declarations
+    elif isinstance(test_input, MethodDef):
+        if test_input.method_type != test_output.method_type or test_input.method_name == test_output.method_name:
+            return False
+        if len(test_input.parameters) == len(test_output.parameters):
+            for input_param, output_param in zip(test_input.parameters, test_output.parameters):
+                if input_param != output_param:
+                    return False
+        else:
+            return False
+        if len(test_input.statements) == len(test_output.statements):
+            for input_statement, output_statement in zip(test_input.statements, test_output.statements):
+                if not nodes_equal(input_statement, output_statement):
+                    return False
+            return True
+        else:
+            return False
+
     else:
         # Unknown node type - this should not happen
         raise ValueError(f"Unknown node type: {type(test_input)}")
@@ -406,5 +424,10 @@ def test_block_statement_with_multiple_statements():
     expected = BlockStatement([ExpressionStatement(BinaryOpNode("+", IdentifierNode("x"), IntegerNode(5))), ExpressionStatement(BinaryOpNode("+", IdentifierNode("y"), IntegerNode(3)))])
     assert nodes_equal(node, expected)
 
+def test_method_declaration():
+    node = init_parser("def int add(int x, int y) { return x + y; }")
+
+    expected = MethodDef("int", "add", [("int", "x"), ("int", "y")], [ReturnStatement(BinaryOpNode("+", IdentifierNode("x"), IdentifierNode("y")))])
+    assert nodes_equal(node, expected)
 
 
