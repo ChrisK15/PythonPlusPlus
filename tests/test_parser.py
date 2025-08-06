@@ -112,7 +112,7 @@ def nodes_equal(test_input: Node, test_output: Node):
 
     # Declarations
     elif isinstance(test_input, MethodDef):
-        if test_input.method_type != test_output.method_type or test_input.method_name == test_output.method_name:
+        if test_input.method_type != test_output.method_type or test_input.method_name != test_output.method_name:
             return False
         if len(test_input.parameters) == len(test_output.parameters):
             for input_param, output_param in zip(test_input.parameters, test_output.parameters):
@@ -425,9 +425,24 @@ def test_block_statement_with_multiple_statements():
     assert nodes_equal(node, expected)
 
 def test_method_declaration():
-    node = init_parser("def int add(int x, int y) { return x + y; }")
+    lexer = Lexer("def int add(int x, int y) { return x + y; }")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+
+    result = parser.parse_methoddef()
+    # node = init_parser("def int add(int x, int y) { return x + y; }")
 
     expected = MethodDef("int", "add", [("int", "x"), ("int", "y")], [ReturnStatement(BinaryOpNode("+", IdentifierNode("x"), IdentifierNode("y")))])
-    assert nodes_equal(node, expected)
+    assert nodes_equal(result, expected)
+
+def test_method_declaration_with_no_params():
+    lexer = Lexer("def int add() { return; }")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+
+    result = parser.parse_methoddef()
+
+    expected = MethodDef("int", "add", [], [ReturnStatement()])
+    assert nodes_equal(result, expected)
 
 

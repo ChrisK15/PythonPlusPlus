@@ -37,6 +37,29 @@ class Parser:
         else:
             raise ParserParenthesisException("Error! No closing parenthesis.")
 
+    def parse_comma_params(self):
+        parameters = []
+        while self.current_token.type != TokenType.RIGHT_PAREN:
+            if self.current_token.type in TYPES:
+                param_type = self.current_token.value
+                self.next_token()
+                if self.current_token.type == TokenType.IDENTIFIER:
+                    param_name = self.current_token.value
+                    self.next_token()
+                    parameters.append((param_type, param_name))
+                    if self.current_token.type != TokenType.COMMA:
+                        break
+                    self.next_token()
+                else:
+                    raise ParserException("Unexpected error when parsing parameters. No identifier.")
+            else:
+                raise ParserException("Unexpected error when parsing parameters. No type provided.")
+        if self.current_token.type == TokenType.RIGHT_PAREN:
+            self.next_token()
+            return parameters
+        else:
+            raise ParserParenthesisException("Missing right paren on parameters.")
+
     def parse_vardec(self):
         vardec_type = self.current_token.value
         self.next_token()
@@ -132,6 +155,29 @@ class Parser:
             return BlockStatement(block_stmts)
         else:
             raise ParserException("Error!")
+
+    def parse_methoddef(self):
+        if self.current_token.type == TokenType.DEF:
+            self.next_token()
+            if self.current_token.type in TYPES:
+                method_type = self.current_token.value
+                self.next_token()
+                if self.current_token.type == TokenType.IDENTIFIER:
+                    method_name = self.current_token.value
+                    self.next_token()
+                    if self.current_token.type == TokenType.LEFT_PAREN:
+                        self.next_token()
+                        parameters = self.parse_comma_params()
+                        if self.current_token.type == TokenType.LEFT_BRACE:
+                            statements = self.parse_block().stmts
+                            return MethodDef(method_type, method_name, parameters, statements)
+                        else:
+                            raise ParserException("Couldn't find a block after method def attempt.")
+                else:
+                    raise ParserException("Invalid syntax")
+            else:
+                raise ParserException("No 'type' after def")
+
 
     # START OF CHAIN
     def parse_statement(self):
