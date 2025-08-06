@@ -1,5 +1,6 @@
 from typing import Optional
 
+
 class Node:
     pass
 
@@ -87,7 +88,10 @@ class ReturnStatement(StatementNode):
 
 class IfStatement(StatementNode):
     def __init__(
-        self, exp: Node, then_stmt: StatementNode, else_stmt: Optional[StatementNode] = None
+        self,
+        exp: Node,
+        then_stmt: StatementNode,
+        else_stmt: Optional[StatementNode] = None,
     ):
         self.exp = exp
         self.then_stmt = then_stmt
@@ -104,7 +108,9 @@ class DeclarationNode(Node):
 
 
 class MethodDef(DeclarationNode):
-    def __init__(self, method_type: str, method_name: str, parameters: list, statements: list):
+    def __init__(
+        self, method_type: str, method_name: str, parameters: list, statements: list
+    ):
         self.method_type = method_type
         self.method_name = method_name
         self.parameters = parameters

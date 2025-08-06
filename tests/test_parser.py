@@ -79,13 +79,19 @@ def nodes_equal(test_input: Node, test_output: Node):
     elif isinstance(test_input, ExpressionStatement):
         return nodes_equal(test_input.exp, test_output.exp)
     elif isinstance(test_input, VarDecStatement):
-        return test_input.var_type == test_output.var_type and test_input.var == test_output.var and nodes_equal(test_input.val, test_output.val)
+        return (
+            test_input.var_type == test_output.var_type
+            and test_input.var == test_output.var
+            and nodes_equal(test_input.val, test_output.val)
+        )
     elif isinstance(test_input, AssignmentStatement):
         return test_input.var == test_output.var and nodes_equal(
             test_input.exp, test_output.exp
         )
     elif isinstance(test_input, WhileStatement):
-        return nodes_equal(test_input.exp, test_output.exp) and nodes_equal(test_input.stmt, test_output.stmt)
+        return nodes_equal(test_input.exp, test_output.exp) and nodes_equal(
+            test_input.stmt, test_output.stmt
+        )
     elif isinstance(test_input, BreakStatement):
         return True
     elif isinstance(test_input, ReturnStatement):
@@ -97,11 +103,17 @@ def nodes_equal(test_input: Node, test_output: Node):
             return nodes_equal(test_input.exp, test_output.exp)
     elif isinstance(test_input, IfStatement):
         if test_input.else_stmt is None and test_output.else_stmt is None:
-            return nodes_equal(test_input.exp, test_output.exp) and nodes_equal(test_input.then_stmt,test_output.then_stmt)
+            return nodes_equal(test_input.exp, test_output.exp) and nodes_equal(
+                test_input.then_stmt, test_output.then_stmt
+            )
         elif test_input.else_stmt is None or test_output.else_stmt is None:
             return False
         else:
-            return nodes_equal(test_input.exp, test_output.exp) and nodes_equal(test_input.then_stmt, test_output.then_stmt) and nodes_equal(test_input.else_stmt, test_output.else_stmt)
+            return (
+                nodes_equal(test_input.exp, test_output.exp)
+                and nodes_equal(test_input.then_stmt, test_output.then_stmt)
+                and nodes_equal(test_input.else_stmt, test_output.else_stmt)
+            )
     elif isinstance(test_input, BlockStatement):
         if len(test_input.stmts) == len(test_output.stmts):
             for input_stmt, output_stmt in zip(test_input.stmts, test_output.stmts):
@@ -112,16 +124,23 @@ def nodes_equal(test_input: Node, test_output: Node):
 
     # Declarations
     elif isinstance(test_input, MethodDef):
-        if test_input.method_type != test_output.method_type or test_input.method_name != test_output.method_name:
+        if (
+            test_input.method_type != test_output.method_type
+            or test_input.method_name != test_output.method_name
+        ):
             return False
         if len(test_input.parameters) == len(test_output.parameters):
-            for input_param, output_param in zip(test_input.parameters, test_output.parameters):
+            for input_param, output_param in zip(
+                test_input.parameters, test_output.parameters
+            ):
                 if input_param != output_param:
                     return False
         else:
             return False
         if len(test_input.statements) == len(test_output.statements):
-            for input_statement, output_statement in zip(test_input.statements, test_output.statements):
+            for input_statement, output_statement in zip(
+                test_input.statements, test_output.statements
+            ):
                 if not nodes_equal(input_statement, output_statement):
                     return False
             return True
@@ -129,13 +148,17 @@ def nodes_equal(test_input: Node, test_output: Node):
             return False
     elif isinstance(test_input, Constructor):
         if len(test_input.parameters) == len(test_output.parameters):
-            for input_param, output_param in zip(test_input.parameters, test_output.parameters):
+            for input_param, output_param in zip(
+                test_input.parameters, test_output.parameters
+            ):
                 if input_param != output_param:
                     return False
         else:
             return False
         if len(test_input.statements) == len(test_output.statements):
-            for input_statement, output_statement in zip(test_input.statements, test_output.statements):
+            for input_statement, output_statement in zip(
+                test_input.statements, test_output.statements
+            ):
                 if not nodes_equal(input_statement, output_statement):
                     return False
         if test_input.super_args is None and test_output.super_args is None:
@@ -144,7 +167,9 @@ def nodes_equal(test_input: Node, test_output: Node):
             return False
         else:
             if len(test_input.super_args) == len(test_output.super_args):
-                for input_super_arg, output_super_arg in zip(test_input.super_args, test_output.super_args):
+                for input_super_arg, output_super_arg in zip(
+                    test_input.super_args, test_output.super_args
+                ):
                     if not nodes_equal(input_super_arg, output_super_arg):
                         return False
             else:
@@ -343,78 +368,80 @@ def test_var_dec_bool():
 
     assert nodes_equal(node, VarDecStatement("bool", "x", BooleanNode(True)))
 
+
 def test_var_dec_with_complex_expression():
     node = init_parser("int x = 16 + 3;")
 
-    expected = VarDecStatement("int", "x", BinaryOpNode("+", IntegerNode(16), IntegerNode(3)))
+    expected = VarDecStatement(
+        "int", "x", BinaryOpNode("+", IntegerNode(16), IntegerNode(3))
+    )
     assert nodes_equal(node, expected)
 
 
 def test_if_without_else():
     node = init_parser("if (x == 5) x = 10;")
-    
+
     expected = IfStatement(
         BinaryOpNode("==", IdentifierNode("x"), IntegerNode(5)),
-        AssignmentStatement("x", IntegerNode(10))
+        AssignmentStatement("x", IntegerNode(10)),
     )
     assert nodes_equal(node, expected)
 
 
 def test_if_with_else():
     node = init_parser("if (x == 5) x = 10; else x = 20;")
-    
+
     expected = IfStatement(
         BinaryOpNode("==", IdentifierNode("x"), IntegerNode(5)),
         AssignmentStatement("x", IntegerNode(10)),
-        AssignmentStatement("x", IntegerNode(20))
+        AssignmentStatement("x", IntegerNode(20)),
     )
     assert nodes_equal(node, expected)
 
 
 def test_if_with_boolean_condition():
     node = init_parser("if (true) println(x);")
-    
+
     expected = IfStatement(
-        BooleanNode(True),
-        ExpressionStatement(PrintNode(IdentifierNode("x")))
+        BooleanNode(True), ExpressionStatement(PrintNode(IdentifierNode("x")))
     )
     assert nodes_equal(node, expected)
 
 
 def test_while_statement():
     node = init_parser("while (x < 10) x = x + 1;")
-    
+
     expected = WhileStatement(
         BinaryOpNode("<", IdentifierNode("x"), IntegerNode(10)),
-        AssignmentStatement("x", BinaryOpNode("+", IdentifierNode("x"), IntegerNode(1)))
+        AssignmentStatement(
+            "x", BinaryOpNode("+", IdentifierNode("x"), IntegerNode(1))
+        ),
     )
     assert nodes_equal(node, expected)
 
 
 def test_while_with_expression_statement():
     node = init_parser("while (true) println(x);")
-    
+
     expected = WhileStatement(
-        BooleanNode(True),
-        ExpressionStatement(PrintNode(IdentifierNode("x")))
+        BooleanNode(True), ExpressionStatement(PrintNode(IdentifierNode("x")))
     )
     assert nodes_equal(node, expected)
 
 
 def test_return_with_expression():
     node = init_parser("return x + 5;")
-    
-    expected = ReturnStatement(
-        BinaryOpNode("+", IdentifierNode("x"), IntegerNode(5))
-    )
+
+    expected = ReturnStatement(BinaryOpNode("+", IdentifierNode("x"), IntegerNode(5)))
     assert nodes_equal(node, expected)
 
 
 def test_return_with_simple_value():
     node = init_parser("return 42;")
-    
+
     expected = ReturnStatement(IntegerNode(42))
     assert nodes_equal(node, expected)
+
 
 def test_empty_return():
     node = init_parser("return;")
@@ -422,11 +449,13 @@ def test_empty_return():
     expected = ReturnStatement()
     assert nodes_equal(node, expected)
 
+
 def test_break_statement():
     node = init_parser("break;")
-    
+
     expected = BreakStatement()
     assert nodes_equal(node, expected)
+
 
 def test_empty_block_statement():
     node = init_parser("{ }")
@@ -434,17 +463,25 @@ def test_empty_block_statement():
     expected = BlockStatement([])
     assert nodes_equal(node, expected)
 
+
 def test_block_statement():
     node = init_parser("{ return 7; }")
 
     expected = BlockStatement([ReturnStatement(IntegerNode(7))])
     assert nodes_equal(node, expected)
 
+
 def test_block_statement_with_multiple_statements():
     node = init_parser("{ x + 5; y + 3; }")
 
-    expected = BlockStatement([ExpressionStatement(BinaryOpNode("+", IdentifierNode("x"), IntegerNode(5))), ExpressionStatement(BinaryOpNode("+", IdentifierNode("y"), IntegerNode(3)))])
+    expected = BlockStatement(
+        [
+            ExpressionStatement(BinaryOpNode("+", IdentifierNode("x"), IntegerNode(5))),
+            ExpressionStatement(BinaryOpNode("+", IdentifierNode("y"), IntegerNode(3))),
+        ]
+    )
     assert nodes_equal(node, expected)
+
 
 def test_method_declaration():
     lexer = Lexer("def int add(int x, int y) { return x + y; }")
@@ -454,8 +491,14 @@ def test_method_declaration():
     result = parser.parse_methoddef()
     # node = init_parser("def int add(int x, int y) { return x + y; }")
 
-    expected = MethodDef("int", "add", [("int", "x"), ("int", "y")], [ReturnStatement(BinaryOpNode("+", IdentifierNode("x"), IdentifierNode("y")))])
+    expected = MethodDef(
+        "int",
+        "add",
+        [("int", "x"), ("int", "y")],
+        [ReturnStatement(BinaryOpNode("+", IdentifierNode("x"), IdentifierNode("y")))],
+    )
     assert nodes_equal(result, expected)
+
 
 def test_method_declaration_with_no_params():
     lexer = Lexer("def int add() { return; }")
@@ -467,6 +510,7 @@ def test_method_declaration_with_no_params():
     expected = MethodDef("int", "add", [], [ReturnStatement()])
     assert nodes_equal(result, expected)
 
+
 def test_constructor():
     lexer = Lexer("init() { super(); }")
     tokens = lexer.tokenize()
@@ -477,6 +521,7 @@ def test_constructor():
 
     assert nodes_equal(result, expected)
 
+
 def test_constructor_no_super():
     lexer = Lexer("init() { }")
     tokens = lexer.tokenize()
@@ -486,5 +531,3 @@ def test_constructor_no_super():
     expected = Constructor([], None, [])
 
     assert nodes_equal(result, expected)
-
-

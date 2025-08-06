@@ -51,9 +51,13 @@ class Parser:
                         break
                     self.next_token()
                 else:
-                    raise ParserException("Unexpected error when parsing parameters. No identifier.")
+                    raise ParserException(
+                        "Unexpected error when parsing parameters. No identifier."
+                    )
             else:
-                raise ParserException("Unexpected error when parsing parameters. No type provided.")
+                raise ParserException(
+                    "Unexpected error when parsing parameters. No type provided."
+                )
         if self.current_token.type == TokenType.RIGHT_PAREN:
             self.next_token()
             return parameters
@@ -196,9 +200,13 @@ class Parser:
                         if self.current_token.type == TokenType.LEFT_BRACE:
                             self.next_token()
                             statements = self.parse_block().stmts
-                            return MethodDef(method_type, method_name, parameters, statements)
+                            return MethodDef(
+                                method_type, method_name, parameters, statements
+                            )
                         else:
-                            raise ParserException("Couldn't find a block after method def attempt.")
+                            raise ParserException(
+                                "Couldn't find a block after method def attempt."
+                            )
                 else:
                     raise ParserException("Invalid syntax")
             else:
