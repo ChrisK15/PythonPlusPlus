@@ -112,7 +112,7 @@ class MethodDef(DeclarationNode):
 
 
 class Constructor(DeclarationNode):
-    def __init__(self, parameters: list, super_args: list, statements: list):
+    def __init__(self, parameters: list, super_args: Optional[list], statements: list):
         self.parameters = parameters
         self.super_args = super_args
         self.statements = statements

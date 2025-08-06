@@ -145,7 +145,6 @@ class Parser:
             raise ParserParenthesisException("Error! Missing left paren on if.")
 
     def parse_block(self):
-        self.next_token()
         block_stmts = []
         while self.current_token.type != TokenType.RIGHT_BRACE:
             stmt = self.parse_statement()
@@ -155,6 +154,32 @@ class Parser:
             return BlockStatement(block_stmts)
         else:
             raise ParserException("Error!")
+
+    def parse_constructor(self):
+        if self.current_token.type == TokenType.INIT:
+            self.next_token()
+            if self.current_token.type == TokenType.LEFT_PAREN:
+                self.next_token()
+                parameters = self.parse_comma_params()
+                if self.current_token.type == TokenType.LEFT_BRACE:
+                    self.next_token()
+                    if self.current_token.type == TokenType.SUPER:
+                        self.next_token()
+                        if self.current_token.type == TokenType.LEFT_PAREN:
+                            self.next_token()
+                            super_args = self.parse_comma_exp()
+                            if self.current_token.type == TokenType.SEMICOLON:
+                                self.next_token()
+                                statements = self.parse_block().stmts
+                                return Constructor(parameters, super_args, statements)
+                    else:
+                        super_args = None
+                        statements = self.parse_block().stmts
+                        return Constructor(parameters, super_args, statements)
+                else:
+                    raise ParserException("Missing block for constructor")
+            else:
+                raise ParserException("No parens for init constructor")
 
     def parse_methoddef(self):
         if self.current_token.type == TokenType.DEF:
@@ -169,6 +194,7 @@ class Parser:
                         self.next_token()
                         parameters = self.parse_comma_params()
                         if self.current_token.type == TokenType.LEFT_BRACE:
+                            self.next_token()
                             statements = self.parse_block().stmts
                             return MethodDef(method_type, method_name, parameters, statements)
                         else:
@@ -177,7 +203,6 @@ class Parser:
                     raise ParserException("Invalid syntax")
             else:
                 raise ParserException("No 'type' after def")
-
 
     # START OF CHAIN
     def parse_statement(self):
@@ -198,6 +223,7 @@ class Parser:
         elif self.current_token.type == TokenType.IF:
             return self.parse_if()
         elif self.current_token.type == TokenType.LEFT_BRACE:
+            self.next_token()
             return self.parse_block()
         # Default case
         exp = self.parse_equality()

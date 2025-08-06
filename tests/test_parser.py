@@ -127,7 +127,29 @@ def nodes_equal(test_input: Node, test_output: Node):
             return True
         else:
             return False
-
+    elif isinstance(test_input, Constructor):
+        if len(test_input.parameters) == len(test_output.parameters):
+            for input_param, output_param in zip(test_input.parameters, test_output.parameters):
+                if input_param != output_param:
+                    return False
+        else:
+            return False
+        if len(test_input.statements) == len(test_output.statements):
+            for input_statement, output_statement in zip(test_input.statements, test_output.statements):
+                if not nodes_equal(input_statement, output_statement):
+                    return False
+        if test_input.super_args is None and test_output.super_args is None:
+            return True
+        elif test_input.super_args is None or test_output.super_args is None:
+            return False
+        else:
+            if len(test_input.super_args) == len(test_output.super_args):
+                for input_super_arg, output_super_arg in zip(test_input.super_args, test_output.super_args):
+                    if not nodes_equal(input_super_arg, output_super_arg):
+                        return False
+            else:
+                return False
+            return True
     else:
         # Unknown node type - this should not happen
         raise ValueError(f"Unknown node type: {type(test_input)}")
@@ -443,6 +465,26 @@ def test_method_declaration_with_no_params():
     result = parser.parse_methoddef()
 
     expected = MethodDef("int", "add", [], [ReturnStatement()])
+    assert nodes_equal(result, expected)
+
+def test_constructor():
+    lexer = Lexer("init() { super(); }")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+
+    result = parser.parse_constructor()
+    expected = Constructor([], [], [])
+
+    assert nodes_equal(result, expected)
+
+def test_constructor_no_super():
+    lexer = Lexer("init() { }")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+
+    result = parser.parse_constructor()
+    expected = Constructor([], None, [])
+
     assert nodes_equal(result, expected)
 
 
