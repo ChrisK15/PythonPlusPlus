@@ -109,3 +109,10 @@ class MethodDef(DeclarationNode):
         self.method_name = method_name
         self.parameters = parameters
         self.statements = statements
+
+
+class Constructor(DeclarationNode):
+    def __init__(self, parameters: list, super_args: list, statements: list):
+        self.parameters = parameters
+        self.super_args = super_args
+        self.statements = statements
