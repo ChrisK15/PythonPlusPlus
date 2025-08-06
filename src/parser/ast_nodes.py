@@ -97,3 +97,15 @@ class IfStatement(StatementNode):
 class BlockStatement(StatementNode):
     def __init__(self, stmts: list):
         self.stmts = stmts
+
+
+class DeclarationNode(Node):
+    pass
+
+
+class MethodDef(DeclarationNode):
+    def __init__(self, method_type: str, method_name: str, parameters: list, statements: list):
+        self.method_type = method_type
+        self.method_name = method_name
+        self.parameters = parameters
+        self.statements = statements
