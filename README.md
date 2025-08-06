@@ -44,7 +44,7 @@ No optimizations :(
 - comma_params ::= [method_param (`,` method_param)*]
 - method_param ::= type var
 - methoddef ::= `def` type methodname `(` comma_params `)` `{` stmt* `}`
-- constructor ::= `init` `(` comma_vardec `)` `{` [`super` `(` comma_exp `)` `;` ] stmt* `}`
+- constructor ::= `init` `(` comma_params `)` `{` [`super` `(` comma_exp `)` `;` ] stmt* `}`
 - classdef ::= `class` classname [`extends` classname] `{` (vardec `;`)* constructor methoddef* `}`
 - program ::= classdef* stmt+ | stmt+ is the entry point
 ```
