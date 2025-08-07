@@ -191,6 +191,35 @@ def nodes_equal(test_input: Node, test_output: Node):
             else:
                 return False
             return True
+    elif isinstance(test_input, ClassDef):
+        assert isinstance(test_output, ClassDef)
+        if test_input.class_name != test_output.class_name:
+            return False
+
+        if test_input.extend_class_name is None and test_output.extend_class_name is None:
+            pass
+        elif test_input.extend_class_name is None or test_output.extend_class_name is None:
+            return False
+        elif test_input.extend_class_name != test_output.extend_class_name:
+            return False
+
+        if len(test_input.class_instance_vars) == len(test_output.class_instance_vars):
+            for test_input_tuple, test_output_tuple in zip(test_input.class_instance_vars, test_output.class_instance_vars):
+                if test_input_tuple != test_output_tuple:
+                    return False
+        else:
+            return False
+
+        if not nodes_equal(test_input.constructor, test_output.constructor):
+            return False
+
+        if len(test_input.methods) == len(test_output.methods):
+            for test_input_method, test_output_method in zip(test_input.methods, test_output.methods):
+                if test_input_method != test_output_method:
+                    return False
+        else:
+            return False
+        return True
     else:
         # Unknown node type - this should not happen
         raise ValueError(f"Unknown node type: {type(test_input)}")
@@ -555,5 +584,22 @@ def test_constructor_with_super_args():
 
     result = parser.parse_constructor()
     expected = Constructor([], [BinaryOpNode("+", IdentifierNode("x"), IntegerNode(5))], [])
+
+    assert nodes_equal(result, expected)
+
+def test_class():
+    class_input = """class Animal {
+    init() {}
+    def int speak() { return 0; }
+    }
+    """
+
+    lexer = Lexer(class_input)
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+
+    result = parser.parse_classdef()
+    expected = ClassDef("Animal", None, [], Constructor([], None, []),
+                        [MethodDef("int", "speak", [], [ReturnStatement(IntegerNode(0))])])
 
     assert nodes_equal(result, expected)
