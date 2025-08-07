@@ -244,7 +244,7 @@ def test_simple_addition():
     node = init_parser("2 + 3;")
 
     assert nodes_equal(
-        node, ExpressionStatement(BinaryOpNode("+", IntegerNode(2), IntegerNode(3)))
+        node, ProgramNode([], [ExpressionStatement(BinaryOpNode("+", IntegerNode(2), IntegerNode(3)))])
     )
 
 
@@ -253,11 +253,11 @@ def test_parenthesis():
 
     assert nodes_equal(
         node,
-        ExpressionStatement(
+        ProgramNode([], [ExpressionStatement(
             BinaryOpNode(
                 "+", IntegerNode(1), BinaryOpNode("+", IntegerNode(2), IntegerNode(3))
             )
-        ),
+        )]),
     )
 
 
@@ -271,11 +271,11 @@ def test_multiplication():
 
     assert nodes_equal(
         node,
-        ExpressionStatement(
+        ProgramNode([], [ExpressionStatement(
             BinaryOpNode(
                 "*", BinaryOpNode("/", IntegerNode(1), IntegerNode(2)), IntegerNode(3)
             )
-        ),
+        )]),
     )
 
 
@@ -284,11 +284,11 @@ def test_addition_and_multiplication():
 
     assert nodes_equal(
         node,
-        ExpressionStatement(
+        ProgramNode([], [ExpressionStatement(
             BinaryOpNode(
                 "+", IntegerNode(1), BinaryOpNode("*", IntegerNode(2), IntegerNode(3))
             )
-        ),
+        )]),
     )
 
 
@@ -297,24 +297,24 @@ def test_addition_and_multiplication_with_parens():
 
     assert nodes_equal(
         node,
-        ExpressionStatement(
+        ProgramNode([], [ExpressionStatement(
             BinaryOpNode(
                 "*", BinaryOpNode("+", IntegerNode(1), IntegerNode(2)), IntegerNode(3)
             )
-        ),
+        )]),
     )
 
 
 def test_assignment():
     node = init_parser("x = 10;")
 
-    assert nodes_equal(node, AssignmentStatement("x", IntegerNode(10)))
+    assert nodes_equal(node, ProgramNode([], [AssignmentStatement("x", IntegerNode(10))]))
 
 
 def test_boolean():
     node = init_parser("true;")
 
-    assert nodes_equal(node, ExpressionStatement(BooleanNode(True)))
+    assert nodes_equal(node, ProgramNode([], [ExpressionStatement(BooleanNode(True))]))
 
 
 def test_comparison():
@@ -322,7 +322,7 @@ def test_comparison():
 
     assert nodes_equal(
         node,
-        ExpressionStatement(BinaryOpNode("==", IdentifierNode("x"), IntegerNode(10))),
+        ProgramNode([], [ExpressionStatement(BinaryOpNode("==", IdentifierNode("x"), IntegerNode(10)))]),
     )
 
 
@@ -334,7 +334,7 @@ def test_invalid_input():
 def test_print():
     node = init_parser("println(x);")
 
-    assert nodes_equal(node, ExpressionStatement(PrintNode(IdentifierNode("x"))))
+    assert nodes_equal(node, ProgramNode([], [ExpressionStatement(PrintNode(IdentifierNode("x")))]))
 
 
 def test_print_exception_no_parens():
@@ -352,9 +352,9 @@ def test_print_with_binary_op_expression():
 
     assert nodes_equal(
         node,
-        ExpressionStatement(
+        ProgramNode([], [ExpressionStatement(
             PrintNode(BinaryOpNode("+", IntegerNode(2), IntegerNode(3)))
-        ),
+        )]),
     )
 
 
@@ -363,7 +363,7 @@ def test_print_with_binary_op_and_parens():
 
     assert nodes_equal(
         node,
-        ExpressionStatement(
+        ProgramNode([], [ExpressionStatement(
             PrintNode(
                 BinaryOpNode(
                     "*",
@@ -371,27 +371,27 @@ def test_print_with_binary_op_and_parens():
                     IntegerNode(3),
                 )
             )
-        ),
+        )]),
     )
 
 
 def test_this_node():
     node = init_parser("this;")
 
-    assert nodes_equal(node, ExpressionStatement(ThisNode()))
+    assert nodes_equal(node, ProgramNode([], [ExpressionStatement(ThisNode())]))
 
 
 def test_new_class_node():
     node = init_parser("new Cat();")
 
-    assert nodes_equal(node, ExpressionStatement(NewNode("Cat", [])))
+    assert nodes_equal(node, ProgramNode([], [ExpressionStatement(NewNode("Cat", []))]))
 
 
 def test_new_class_node_with_arguments():
     node = init_parser("new Dog(5, true);")
 
     assert nodes_equal(
-        node, ExpressionStatement(NewNode("Dog", [IntegerNode(5), BooleanNode(True)]))
+        node, ProgramNode([], [ExpressionStatement(NewNode("Dog", [IntegerNode(5), BooleanNode(True)]))])
     )
 
 
@@ -404,7 +404,7 @@ def test_call_exp():
     node = init_parser("dog.bark();")
 
     assert nodes_equal(
-        node, ExpressionStatement(CallNode(IdentifierNode("dog"), "bark", []))
+        node, ProgramNode([], [ExpressionStatement(CallNode(IdentifierNode("dog"), "bark", []))])
     )
 
 
@@ -413,203 +413,214 @@ def test_call_with_args():
 
     assert nodes_equal(
         node,
-        ExpressionStatement(CallNode(IdentifierNode("dog"), "bark", [IntegerNode(3)])),
+        ProgramNode([], [ExpressionStatement(CallNode(IdentifierNode("dog"), "bark", [IntegerNode(3)]))]),
     )
 
 
 def test_var_dec_int():
     node = init_parser("int x = 0;")
 
-    assert nodes_equal(node, VarDecStatement("int", "x", IntegerNode(0)))
+    assert nodes_equal(node, ProgramNode([], [VarDecStatement("int", "x", IntegerNode(0))]))
 
 
 def test_var_dec_bool():
     node = init_parser("bool x = true;")
 
-    assert nodes_equal(node, VarDecStatement("bool", "x", BooleanNode(True)))
+    assert nodes_equal(node, ProgramNode([], [VarDecStatement("bool", "x", BooleanNode(True))]))
 
 
 def test_var_dec_with_complex_expression():
     node = init_parser("int x = 16 + 3;")
 
-    expected = VarDecStatement(
+    expected = ProgramNode([], [VarDecStatement(
         "int", "x", BinaryOpNode("+", IntegerNode(16), IntegerNode(3))
-    )
+    )])
     assert nodes_equal(node, expected)
 
 
 def test_if_without_else():
     node = init_parser("if (x == 5) x = 10;")
 
-    expected = IfStatement(
+    expected = ProgramNode([], [IfStatement(
         BinaryOpNode("==", IdentifierNode("x"), IntegerNode(5)),
         AssignmentStatement("x", IntegerNode(10)),
-    )
+    )])
     assert nodes_equal(node, expected)
 
 
 def test_if_with_else():
     node = init_parser("if (x == 5) x = 10; else x = 20;")
 
-    expected = IfStatement(
+    expected = ProgramNode([], [IfStatement(
         BinaryOpNode("==", IdentifierNode("x"), IntegerNode(5)),
         AssignmentStatement("x", IntegerNode(10)),
         AssignmentStatement("x", IntegerNode(20)),
-    )
+    )])
     assert nodes_equal(node, expected)
 
 
 def test_if_with_boolean_condition():
     node = init_parser("if (true) println(x);")
 
-    expected = IfStatement(
+    expected = ProgramNode([], [IfStatement(
         BooleanNode(True), ExpressionStatement(PrintNode(IdentifierNode("x")))
-    )
+    )])
     assert nodes_equal(node, expected)
 
 
 def test_while_statement():
     node = init_parser("while (x < 10) x = x + 1;")
 
-    expected = WhileStatement(
+    expected = ProgramNode([], [WhileStatement(
         BinaryOpNode("<", IdentifierNode("x"), IntegerNode(10)),
         AssignmentStatement(
             "x", BinaryOpNode("+", IdentifierNode("x"), IntegerNode(1))
         ),
-    )
+    )])
     assert nodes_equal(node, expected)
 
 
 def test_while_with_expression_statement():
     node = init_parser("while (true) println(x);")
 
-    expected = WhileStatement(
+    expected = ProgramNode([], [WhileStatement(
         BooleanNode(True), ExpressionStatement(PrintNode(IdentifierNode("x")))
-    )
+    )])
     assert nodes_equal(node, expected)
 
 
 def test_return_with_expression():
     node = init_parser("return x + 5;")
 
-    expected = ReturnStatement(BinaryOpNode("+", IdentifierNode("x"), IntegerNode(5)))
+    expected = ProgramNode([], [ReturnStatement(BinaryOpNode("+", IdentifierNode("x"), IntegerNode(5)))])
     assert nodes_equal(node, expected)
 
 
 def test_return_with_simple_value():
     node = init_parser("return 42;")
 
-    expected = ReturnStatement(IntegerNode(42))
+    expected = ProgramNode([], [ReturnStatement(IntegerNode(42))])
     assert nodes_equal(node, expected)
 
 
 def test_empty_return():
     node = init_parser("return;")
 
-    expected = ReturnStatement()
+    expected = ProgramNode([], [ReturnStatement()])
     assert nodes_equal(node, expected)
 
 
 def test_break_statement():
     node = init_parser("break;")
 
-    expected = BreakStatement()
+    expected = ProgramNode([], [BreakStatement()])
     assert nodes_equal(node, expected)
 
 
 def test_empty_block_statement():
     node = init_parser("{ }")
 
-    expected = BlockStatement([])
+    expected = ProgramNode([], [BlockStatement([])])
     assert nodes_equal(node, expected)
 
 
 def test_block_statement():
     node = init_parser("{ return 7; }")
 
-    expected = BlockStatement([ReturnStatement(IntegerNode(7))])
+    expected = ProgramNode([], [BlockStatement([ReturnStatement(IntegerNode(7))])])
     assert nodes_equal(node, expected)
 
 
 def test_block_statement_with_multiple_statements():
     node = init_parser("{ x + 5; y + 3; }")
 
-    expected = BlockStatement(
+    expected = ProgramNode([], [BlockStatement(
         [
             ExpressionStatement(BinaryOpNode("+", IdentifierNode("x"), IntegerNode(5))),
             ExpressionStatement(BinaryOpNode("+", IdentifierNode("y"), IntegerNode(3))),
         ]
-    )
+    )])
     assert nodes_equal(node, expected)
 
 
 def test_method_declaration():
-    lexer = Lexer("def int add(int x, int y) { return x + y; }")
-    tokens = lexer.tokenize()
-    parser = Parser(tokens)
+    result = init_parser("class TestClass { init() {} def int add(int x, int y) { return x + y; } }")
 
-    result = parser.parse_methoddef()
-    # node = init_parser("def int add(int x, int y) { return x + y; }")
-
-    expected = MethodDef(
-        "int",
-        "add",
-        [("int", "x"), ("int", "y")],
-        [ReturnStatement(BinaryOpNode("+", IdentifierNode("x"), IdentifierNode("y")))],
-    )
+    expected = ProgramNode([ClassDef(
+        "TestClass",
+        None,
+        [],
+        Constructor([], None, []),
+        [MethodDef(
+            "int",
+            "add",
+            [("int", "x"), ("int", "y")],
+            [ReturnStatement(BinaryOpNode("+", IdentifierNode("x"), IdentifierNode("y")))],
+        )]
+    )], [])
     assert nodes_equal(result, expected)
 
 
 def test_method_declaration_with_no_params():
-    lexer = Lexer("def int add() { return; }")
-    tokens = lexer.tokenize()
-    parser = Parser(tokens)
+    result = init_parser("class TestClass { init() {} def int add() { return; } }")
 
-    result = parser.parse_methoddef()
-
-    expected = MethodDef("int", "add", [], [ReturnStatement()])
+    expected = ProgramNode([ClassDef(
+        "TestClass",
+        None,
+        [],
+        Constructor([], None, []),
+        [MethodDef("int", "add", [], [ReturnStatement()])]
+    )], [])
     assert nodes_equal(result, expected)
 
 
 def test_void_method():
-    lexer = Lexer("def void foo() { }")
-    tokens = lexer.tokenize()
-    parser = Parser(tokens)
+    result = init_parser("class TestClass { init() {} def void foo() { } }")
 
-    result = parser.parse_methoddef()
-
-    expected = MethodDef("void", "foo", [], [])
+    expected = ProgramNode([ClassDef(
+        "TestClass",
+        None,
+        [],
+        Constructor([], None, []),
+        [MethodDef("void", "foo", [], [])]
+    )], [])
     assert nodes_equal(result, expected)
 
 
 def test_constructor():
-    lexer = Lexer("init() { super(); }")
-    tokens = lexer.tokenize()
-    parser = Parser(tokens)
-
-    result = parser.parse_constructor()
-    expected = Constructor([], [], [])
+    result = init_parser("class TestClass { init() { super(); } }")
+    expected = ProgramNode([ClassDef(
+        "TestClass",
+        None,
+        [],
+        Constructor([], [], []),
+        []
+    )], [])
 
     assert nodes_equal(result, expected)
 
 
 def test_constructor_no_super():
-    lexer = Lexer("init() { }")
-    tokens = lexer.tokenize()
-    parser = Parser(tokens)
-
-    result = parser.parse_constructor()
-    expected = Constructor([], None, [])
+    result = init_parser("class TestClass { init() { } }")
+    expected = ProgramNode([ClassDef(
+        "TestClass",
+        None,
+        [],
+        Constructor([], None, []),
+        []
+    )], [])
 
     assert nodes_equal(result, expected)
 
 def test_constructor_with_super_args():
-    lexer = Lexer("init() { super( x + 5 ); }")
-    tokens = lexer.tokenize()
-    parser = Parser(tokens)
-
-    result = parser.parse_constructor()
-    expected = Constructor([], [BinaryOpNode("+", IdentifierNode("x"), IntegerNode(5))], [])
+    result = init_parser("class TestClass { init() { super( x + 5 ); } }")
+    expected = ProgramNode([ClassDef(
+        "TestClass",
+        None,
+        [],
+        Constructor([], [BinaryOpNode("+", IdentifierNode("x"), IntegerNode(5))], []),
+        []
+    )], [])
 
     assert nodes_equal(result, expected)
 
@@ -620,18 +631,10 @@ def test_class():
     }
     """
 
-    lexer = Lexer(class_input)
-    tokens = lexer.tokenize()
-    parser = Parser(tokens)
+    result = init_parser(class_input)
+    expected = ProgramNode([ClassDef("Animal", None, [], Constructor([], None, []),
+                        [MethodDef("int", "speak", [], [ReturnStatement(IntegerNode(0))])])], [])
 
-    result = parser.parse_classdef()
-    expected = ClassDef("Animal", None, [], Constructor([], None, []),
-                        [MethodDef("int", "speak", [], [ReturnStatement(IntegerNode(0))])])
-
-    print(f"{result.class_name}, {result.extend_class_name}, {result.class_instance_vars}, {result.constructor}, {result.methods[0].statements[0]}")
-    print(f"{result.constructor.parameters}, {result.constructor.super_args}, {result.constructor.statements}")
-    print(f"{result.methods[0].method_type}, {result.methods[0].method_name}, {result.methods[0].parameters}, {result.methods[0].statements[0]}")
-    print(f"{result.methods[0].statements[0].exp.value}")
     assert nodes_equal(result, expected)
 
 def test_class_2():
@@ -643,13 +646,9 @@ def test_class_2():
         }
         """
 
-    lexer = Lexer(class_input)
-    tokens = lexer.tokenize()
-    parser = Parser(tokens)
-
-    result = parser.parse_classdef()
-    expected = ClassDef("Animal", "Lifeform", [("int", "x"), ("int", "y")], Constructor([], None, []),
-                        [MethodDef("int", "speak", [], [ReturnStatement(IntegerNode(0))])])
+    result = init_parser(class_input)
+    expected = ProgramNode([ClassDef("Animal", "Lifeform", [("int", "x"), ("int", "y")], Constructor([], None, []),
+                        [MethodDef("int", "speak", [], [ReturnStatement(IntegerNode(0))])])], [])
 
     assert nodes_equal(result, expected)
 

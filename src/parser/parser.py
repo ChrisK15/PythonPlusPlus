@@ -162,48 +162,57 @@ class Parser:
             raise ParserException("Error!")
 
     def parse_program(self):
-        pass
+        class_defs = []
+        statements = []
+
+        while self.current_token.type == TokenType.CLASS:
+            self.next_token()
+            class_defs.append(self.parse_classdef())
+        while self.current_token.type != TokenType.EOF:
+            statements.append(self.parse_statement())
+
+        if not statements and not class_defs:
+            raise ParserException("No statements provided.")
+        return ProgramNode(class_defs, statements)
 
     def parse_classdef(self):
-        if self.current_token.type == TokenType.CLASS:
+        extend_class_name = None
+        if self.current_token.type == TokenType.IDENTIFIER:
+            class_name = self.current_token.value
             self.next_token()
-            if self.current_token.type == TokenType.IDENTIFIER:
-                class_name = self.current_token.value
+            if self.current_token.type == TokenType.EXTENDS:
                 self.next_token()
-                if self.current_token.type == TokenType.EXTENDS:
+                if self.current_token.type == TokenType.IDENTIFIER:
+                    extend_class_name = self.current_token.value
                     self.next_token()
-                    if self.current_token.type == TokenType.IDENTIFIER:
-                        extend_class_name = self.current_token.value
+            if self.current_token.type == TokenType.LEFT_BRACE:
+                # If not extending another class
+                self.next_token()
+                params = []
+                while self.current_token.type != TokenType.INIT:
+                    if self.current_token.type in TYPES:
+                        param_type = self.current_token.value
                         self.next_token()
-                else:
-                    extend_class_name = None
-                if self.current_token.type == TokenType.LEFT_BRACE:
-                    # If not extending another class
-                    self.next_token()
-                    params = []
-                    while self.current_token.type != TokenType.INIT:
-                        if self.current_token.type in TYPES:
-                            param_type = self.current_token.value
+                        if self.current_token.type == TokenType.IDENTIFIER:
+                            param_name = self.current_token.value
                             self.next_token()
-                            if self.current_token.type == TokenType.IDENTIFIER:
-                                param_name = self.current_token.value
+                            if self.current_token.type == TokenType.SEMICOLON:
                                 self.next_token()
-                                if self.current_token.type == TokenType.SEMICOLON:
-                                    self.next_token()
-                                    params.append((param_type, param_name))
-                                else:
-                                    raise ParserException("Missing semicolon from params in classdef")
+                                params.append((param_type, param_name))
                             else:
-                                raise ParserException()
+                                raise ParserException("Missing semicolon from params in classdef")
                         else:
                             raise ParserException()
-                    class_constructor = self.parse_constructor()
-                    methods = []
-                    while self.current_token.type != TokenType.RIGHT_BRACE:
-                        method = self.parse_methoddef()
-                        methods.append(method)
-                    self.next_token()
-                    return ClassDef(class_name, extend_class_name, params, class_constructor, methods)
+                    else:
+                        raise ParserException()
+                class_constructor = self.parse_constructor()
+                methods = []
+                while self.current_token.type != TokenType.RIGHT_BRACE:
+                    method = self.parse_methoddef()
+                    methods.append(method)
+                self.next_token()
+                return ClassDef(class_name, extend_class_name, params, class_constructor, methods)
+        raise ParserException("No identifier after class token.")
 
 
 
