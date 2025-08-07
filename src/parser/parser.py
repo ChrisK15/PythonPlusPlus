@@ -161,6 +161,9 @@ class Parser:
         else:
             raise ParserException("Error!")
 
+    def parse_program(self):
+        pass
+
     def parse_classdef(self):
         if self.current_token.type == TokenType.CLASS:
             self.next_token()

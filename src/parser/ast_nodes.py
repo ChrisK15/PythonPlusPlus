@@ -131,3 +131,9 @@ class ClassDef(DeclarationNode):
         self.class_instance_vars = class_instance_vars
         self.constructor = constructor
         self.methods = methods
+
+
+class ProgramNode(Node):
+    def __init__(self, class_defs: list, statements: list):
+        self.class_defs = class_defs
+        self.statements = statements
