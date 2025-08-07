@@ -268,7 +268,7 @@ dog.speak();"""
     assert TokenType.EXTENDS in token_types
     assert TokenType.INIT in token_types
     assert TokenType.DEF in token_types
-    assert TokenType.VOID in token_types
+    assert TokenType.VOID_TYPE in token_types
     assert TokenType.RETURN in token_types
     assert TokenType.SUPER in token_types
     assert TokenType.NEW in token_types

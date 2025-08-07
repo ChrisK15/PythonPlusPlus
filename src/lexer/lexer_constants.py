@@ -14,7 +14,7 @@ RESERVED_WORDS = {
     "this": (TokenType.THIS, None),
     "extends": (TokenType.EXTENDS, None),
     "super": (TokenType.SUPER, None),
-    "void": (TokenType.VOID, "void"),
+    "void": (TokenType.VOID_TYPE, "void"),
     "int": (TokenType.INT_TYPE, "int"),
     "bool": (TokenType.BOOL_TYPE, "bool"),
     "println": (TokenType.PRINT, None),

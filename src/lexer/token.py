@@ -22,11 +22,11 @@ class TokenType(Enum):
     THIS = auto()
     EXTENDS = auto()
     SUPER = auto()
-    VOID = auto()
 
     # Types
     INT_TYPE = auto()
     BOOL_TYPE = auto()
+    VOID_TYPE = auto()
 
     # Operators
     PLUS = auto()  # +
