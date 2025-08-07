@@ -16,6 +16,7 @@ class Parser:
         self.position = 0
         self.current_token = tokens[0] if tokens else None
 
+    # Helper Functions
     def next_token(self):
         if self.position < len(self.tokens) - 1:
             self.position += 1
@@ -62,6 +63,7 @@ class Parser:
         else:
             raise ParserParenthesisException("Missing right paren on parameters.")
 
+    # Statements
     def parse_vardec(self):
         vardec_type = self.current_token.value
         self.next_token()
