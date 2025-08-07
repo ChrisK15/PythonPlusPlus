@@ -215,7 +215,9 @@ class Parser:
                         method = self.parse_methoddef()
                         methods.append(method)
                     else:
-                        raise ParserException(f"Expected 'def' or '}}' but found {self.current_token.type}")
+                        raise ParserException(
+                            f"Expected 'def' or '}}' but found {self.current_token.type}"
+                        )
                 self.next_token()
                 return ClassDef(
                     class_name, extend_class_name, params, class_constructor, methods

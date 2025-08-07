@@ -6,6 +6,7 @@ THE FOLLOWING FUNCTION IS FOR TESTING PURPOSES ONLY.
 MAKES TESTING EASIER BY RECURSIVELY CHECKING NESTED NODES.
 """
 
+
 def nodes_equal(test_input: Node, test_output: Node):
     # Early exit for invalid input
     if type(test_input) != type(test_output):
@@ -170,15 +171,23 @@ def nodes_equal(test_input: Node, test_output: Node):
         if test_input.class_name != test_output.class_name:
             return False
 
-        if test_input.extend_class_name is None and test_output.extend_class_name is None:
+        if (
+            test_input.extend_class_name is None
+            and test_output.extend_class_name is None
+        ):
             pass
-        elif test_input.extend_class_name is None or test_output.extend_class_name is None:
+        elif (
+            test_input.extend_class_name is None
+            or test_output.extend_class_name is None
+        ):
             return False
         elif test_input.extend_class_name != test_output.extend_class_name:
             return False
 
         if len(test_input.class_instance_vars) == len(test_output.class_instance_vars):
-            for test_input_tuple, test_output_tuple in zip(test_input.class_instance_vars, test_output.class_instance_vars):
+            for test_input_tuple, test_output_tuple in zip(
+                test_input.class_instance_vars, test_output.class_instance_vars
+            ):
                 if test_input_tuple != test_output_tuple:
                     return False
 
@@ -189,7 +198,9 @@ def nodes_equal(test_input: Node, test_output: Node):
             return False
 
         if len(test_input.methods) == len(test_output.methods):
-            for test_input_method, test_output_method in zip(test_input.methods, test_output.methods):
+            for test_input_method, test_output_method in zip(
+                test_input.methods, test_output.methods
+            ):
                 if not nodes_equal(test_input_method, test_output_method):
                     return False
         else:
@@ -199,15 +210,18 @@ def nodes_equal(test_input: Node, test_output: Node):
     elif isinstance(test_input, ProgramNode):
         assert isinstance(test_output, ProgramNode)
         if len(test_input.class_defs) == len(test_output.class_defs):
-            for test_input_classdef, test_output_classdef in zip(test_input.class_defs, test_output.class_defs):
+            for test_input_classdef, test_output_classdef in zip(
+                test_input.class_defs, test_output.class_defs
+            ):
                 if not nodes_equal(test_input_classdef, test_output_classdef):
                     return False
         if len(test_input.statements) == len(test_output.statements):
-            for test_input_statement, test_output_statement in zip(test_input.statements, test_output.statements):
+            for test_input_statement, test_output_statement in zip(
+                test_input.statements, test_output.statements
+            ):
                 if not nodes_equal(test_input_statement, test_output_statement):
                     return False
         return True
-
 
     else:
         # Unknown node type - this should not happen

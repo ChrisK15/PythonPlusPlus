@@ -39,14 +39,16 @@ class Lexer:
             # If we find a word
             elif self.position < len(self.text) and self.text[self.position].isalpha():
                 current_output = ""
-                while (
-                    self.position < len(self.text)
-                    and (self.text[self.position].isalnum() or self.text[self.position] == "_")
+                while self.position < len(self.text) and (
+                    self.text[self.position].isalnum()
+                    or self.text[self.position] == "_"
                 ):
                     current_output += self.text[self.position]
                     self.position += 1
                 if current_output in RESERVED_WORDS:
-                    reserved_token_type, reserved_token_value = RESERVED_WORDS[current_output]
+                    reserved_token_type, reserved_token_value = RESERVED_WORDS[
+                        current_output
+                    ]
                     tokens.append(Token(reserved_token_type, reserved_token_value))
                 else:
                     tokens.append(Token(TokenType.IDENTIFIER, current_output))
@@ -65,14 +67,16 @@ class Lexer:
                     current_operator = (
                         self.text[self.position] + self.text[self.position + 1]
                     )
-                    multi_token_type, multi_token_value = MULTI_CHAR_OPERATORS[current_operator]
+                    multi_token_type, multi_token_value = MULTI_CHAR_OPERATORS[
+                        current_operator
+                    ]
                     tokens.append(Token(multi_token_type, multi_token_value))
                     self.position += 2
                 else:
-                    single_token_type, single_token_value = SINGLE_CHAR_OPERATORS[self.text[self.position]]
-                    tokens.append(
-                        Token(single_token_type, single_token_value)
-                    )
+                    single_token_type, single_token_value = SINGLE_CHAR_OPERATORS[
+                        self.text[self.position]
+                    ]
+                    tokens.append(Token(single_token_type, single_token_value))
                     self.position += 1
 
             # If character is NOT valid (i.e: '$', '@')

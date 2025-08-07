@@ -300,6 +300,7 @@ def test_invalid_input():
     with pytest.raises(TokenizerExceptions):
         tokens = init_lexer("$")
 
+
 def test_int_and_bool_types():
     tokens = init_lexer("int x = 3; bool y = true;")
 
@@ -322,6 +323,7 @@ def test_int_and_bool_types():
     assert tokens[9].type == TokenType.SEMICOLON
     assert tokens[10].type == TokenType.EOF
 
+
 def test_print():
     tokens = init_lexer("println(x)")
 
@@ -333,12 +335,14 @@ def test_print():
     assert tokens[3].type == TokenType.RIGHT_PAREN
     assert tokens[4].type == TokenType.EOF
 
+
 def test_break():
     tokens = init_lexer("break")
 
     assert len(tokens) == 2
     assert tokens[0].type == TokenType.BREAK
     assert tokens[1].type == TokenType.EOF
+
 
 def test_this():
     tokens = init_lexer("this")
