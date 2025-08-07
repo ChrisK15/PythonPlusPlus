@@ -15,4 +15,5 @@ EQUAL_OPERATORS = {
 TYPES = {
     TokenType.INT_TYPE,
     TokenType.BOOL_TYPE,
+    TokenType.VOID_TYPE,
 }

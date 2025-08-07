@@ -565,6 +565,17 @@ def test_method_declaration_with_no_params():
     assert nodes_equal(result, expected)
 
 
+def test_void_method():
+    lexer = Lexer("def void foo() { }")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+
+    result = parser.parse_methoddef()
+
+    expected = MethodDef("void", "foo", [], [])
+    assert nodes_equal(result, expected)
+
+
 def test_constructor():
     lexer = Lexer("init() { super(); }")
     tokens = lexer.tokenize()
