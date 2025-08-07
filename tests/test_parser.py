@@ -4,7 +4,7 @@ from src.lexer.lexer import Lexer
 from src.lexer.token import TokenType
 from src.parser.ast_nodes import *
 from src.parser.parser import Parser, ParserException, ParserParenthesisException
-from tests.nodes_equal import nodes_equal
+from tests.helpers.nodes_equal import nodes_equal
 
 
 def init_parser(text_input: str):
