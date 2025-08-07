@@ -22,8 +22,6 @@ class Parser:
         if self.position < len(self.tokens) - 1:
             self.position += 1
             self.current_token = self.tokens[self.position]
-        else:
-            return  # Would return our results here
 
     def parse_comma_exp(self):
         arguments = []
@@ -200,7 +198,9 @@ class Parser:
                                 self.next_token()
                                 params.append((param_type, param_name))
                             else:
-                                raise ParserException("Missing semicolon from params in classdef")
+                                raise ParserException(
+                                    "Missing semicolon from params in classdef"
+                                )
                         else:
                             raise ParserException()
                     else:
@@ -211,10 +211,10 @@ class Parser:
                     method = self.parse_methoddef()
                     methods.append(method)
                 self.next_token()
-                return ClassDef(class_name, extend_class_name, params, class_constructor, methods)
+                return ClassDef(
+                    class_name, extend_class_name, params, class_constructor, methods
+                )
         raise ParserException("No identifier after class token.")
-
-
 
     def parse_constructor(self):
         if self.current_token.type == TokenType.INIT:

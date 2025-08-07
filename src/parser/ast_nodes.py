@@ -125,7 +125,14 @@ class Constructor(DeclarationNode):
 
 
 class ClassDef(DeclarationNode):
-    def __init__(self, class_name: str, extend_class_name: Optional[str], class_instance_vars: list, constructor: Constructor, methods: list):
+    def __init__(
+        self,
+        class_name: str,
+        extend_class_name: Optional[str],
+        class_instance_vars: list,
+        constructor: Constructor,
+        methods: list,
+    ):
         self.class_name = class_name
         self.extend_class_name = extend_class_name
         self.class_instance_vars = class_instance_vars
