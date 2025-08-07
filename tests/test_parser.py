@@ -11,7 +11,7 @@ def init_parser(text_input: str):
     tokens = lexer.tokenize()
     parser = Parser(tokens)
 
-    result = parser.parse_statement()
+    result = parser.parse_program()
 
     # Break Glass in case of Emergency
     # print ("TOKENS PRODUCED BY LEXER:")
@@ -194,41 +194,47 @@ def nodes_equal(test_input: Node, test_output: Node):
     elif isinstance(test_input, ClassDef):
         assert isinstance(test_output, ClassDef)
         if test_input.class_name != test_output.class_name:
-            print("Returning 1")
             return False
 
         if test_input.extend_class_name is None and test_output.extend_class_name is None:
-            print("passing 1")
             pass
         elif test_input.extend_class_name is None or test_output.extend_class_name is None:
-            print("returning 2")
             return False
         elif test_input.extend_class_name != test_output.extend_class_name:
-            print("returning 3")
             return False
 
         if len(test_input.class_instance_vars) == len(test_output.class_instance_vars):
             for test_input_tuple, test_output_tuple in zip(test_input.class_instance_vars, test_output.class_instance_vars):
                 if test_input_tuple != test_output_tuple:
-                    print("returning 4")
                     return False
+
         else:
-            print("returning 5")
             return False
 
         if not nodes_equal(test_input.constructor, test_output.constructor):
-            print("returning 6")
             return False
 
         if len(test_input.methods) == len(test_output.methods):
             for test_input_method, test_output_method in zip(test_input.methods, test_output.methods):
                 if not nodes_equal(test_input_method, test_output_method):
-                    print("returning 7")
                     return False
         else:
-            print("returning 8")
             return False
         return True
+
+    elif isinstance(test_input, ProgramNode):
+        assert isinstance(test_output, ProgramNode)
+        if len(test_input.class_defs) == len(test_output.class_defs):
+            for test_input_classdef, test_output_classdef in zip(test_input.class_defs, test_output.class_defs):
+                if not nodes_equal(test_input_classdef, test_output_classdef):
+                    return False
+        if len(test_input.statements) == len(test_output.statements):
+            for test_input_statement, test_output_statement in zip(test_input.statements, test_output.statements):
+                if not nodes_equal(test_input_statement, test_output_statement):
+                    return False
+        return True
+
+
     else:
         # Unknown node type - this should not happen
         raise ValueError(f"Unknown node type: {type(test_input)}")
@@ -646,3 +652,10 @@ def test_class_2():
                         [MethodDef("int", "speak", [], [ReturnStatement(IntegerNode(0))])])
 
     assert nodes_equal(result, expected)
+
+def test_program():
+    program = init_parser("int x = 0;")
+
+    expected = ProgramNode([], [VarDecStatement("int", "x", IntegerNode(0))])
+
+    assert nodes_equal(program, expected)
