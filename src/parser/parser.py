@@ -1,5 +1,3 @@
-from copyreg import constructor
-
 from src.parser.ast_nodes import *
 from src.parser.parser_constants import *
 
@@ -205,11 +203,16 @@ class Parser:
                             raise ParserException()
                     else:
                         raise ParserException()
+                self.next_token()
                 class_constructor = self.parse_constructor()
                 methods = []
                 while self.current_token.type != TokenType.RIGHT_BRACE:
-                    method = self.parse_methoddef()
-                    methods.append(method)
+                    if self.current_token.type == TokenType.DEF:
+                        self.next_token()
+                        method = self.parse_methoddef()
+                        methods.append(method)
+                    else:
+                        raise ParserException(f"Expected 'def' or '}}' but found {self.current_token.type}")
                 self.next_token()
                 return ClassDef(
                     class_name, extend_class_name, params, class_constructor, methods
@@ -217,57 +220,60 @@ class Parser:
         raise ParserException("No identifier after class token.")
 
     def parse_constructor(self):
-        if self.current_token.type == TokenType.INIT:
+        if self.current_token.type == TokenType.LEFT_PAREN:
             self.next_token()
-            if self.current_token.type == TokenType.LEFT_PAREN:
+            parameters = self.parse_comma_params()
+            if self.current_token.type == TokenType.LEFT_BRACE:
                 self.next_token()
-                parameters = self.parse_comma_params()
-                if self.current_token.type == TokenType.LEFT_BRACE:
-                    self.next_token()
-                    if self.current_token.type == TokenType.SUPER:
-                        self.next_token()
-                        if self.current_token.type == TokenType.LEFT_PAREN:
-                            self.next_token()
-                            super_args = self.parse_comma_exp()
-                            if self.current_token.type == TokenType.SEMICOLON:
-                                self.next_token()
-                                statements = self.parse_block().stmts
-                                return Constructor(parameters, super_args, statements)
-                    else:
-                        super_args = None
-                        statements = self.parse_block().stmts
-                        return Constructor(parameters, super_args, statements)
-                else:
-                    raise ParserException("Missing block for constructor")
-            else:
-                raise ParserException("No parens for init constructor")
-
-    def parse_methoddef(self):
-        if self.current_token.type == TokenType.DEF:
-            self.next_token()
-            if self.current_token.type in TYPES:
-                method_type = self.current_token.value
-                self.next_token()
-                if self.current_token.type == TokenType.IDENTIFIER:
-                    method_name = self.current_token.value
+                if self.current_token.type == TokenType.SUPER:
                     self.next_token()
                     if self.current_token.type == TokenType.LEFT_PAREN:
                         self.next_token()
-                        parameters = self.parse_comma_params()
-                        if self.current_token.type == TokenType.LEFT_BRACE:
+                        super_args = self.parse_comma_exp()
+                        if self.current_token.type == TokenType.SEMICOLON:
                             self.next_token()
                             statements = self.parse_block().stmts
-                            return MethodDef(
-                                method_type, method_name, parameters, statements
-                            )
+                            return Constructor(parameters, super_args, statements)
                         else:
-                            raise ParserException(
-                                "Couldn't find a block after method def attempt."
-                            )
+                            raise ParserException("Missing semicolon on constructor")
+                    else:
+                        raise ParserException("No Parens on constructor")
                 else:
-                    raise ParserException("Invalid syntax")
+                    super_args = None
+                    statements = self.parse_block().stmts
+                    return Constructor(parameters, super_args, statements)
             else:
-                raise ParserException("No 'type' after def")
+                raise ParserException("Missing block for constructor")
+        else:
+            raise ParserException("No parens for init constructor")
+
+    def parse_methoddef(self):
+        if self.current_token.type in TYPES:
+            method_type = self.current_token.value
+            self.next_token()
+            if self.current_token.type == TokenType.IDENTIFIER:
+                method_name = self.current_token.value
+                self.next_token()
+                if self.current_token.type == TokenType.LEFT_PAREN:
+                    self.next_token()
+                    parameters = self.parse_comma_params()
+                    if self.current_token.type == TokenType.LEFT_BRACE:
+                        self.next_token()
+                        statements = self.parse_block().stmts
+                        return MethodDef(
+                            method_type, method_name, parameters, statements
+                        )
+                    else:
+                        raise ParserException(
+                            "Couldn't find a block after method def attempt."
+                        )
+
+                else:
+                    raise ParserException("Missing parens on methoddef")
+            else:
+                raise ParserException("Invalid syntax")
+        else:
+            raise ParserException("No 'type' after def")
 
     # START OF CHAIN
     def parse_statement(self):
