@@ -544,7 +544,7 @@ def test_block_statement_with_multiple_statements():
 
 
 def test_method_declaration():
-    result = init_parser("class TestClass { init() {} def int add(int x, int y) { return x + y; } }")
+    result = init_parser("class TestClass { init() {} def int add(int x, int y) { return x + y; } } return 0;")
 
     expected = ProgramNode([ClassDef(
         "TestClass",
@@ -557,12 +557,12 @@ def test_method_declaration():
             [("int", "x"), ("int", "y")],
             [ReturnStatement(BinaryOpNode("+", IdentifierNode("x"), IdentifierNode("y")))],
         )]
-    )], [])
+    )], [ReturnStatement(IntegerNode(0))])
     assert nodes_equal(result, expected)
 
 
 def test_method_declaration_with_no_params():
-    result = init_parser("class TestClass { init() {} def int add() { return; } }")
+    result = init_parser("class TestClass { init() {} def int add() { return; } } return 0;")
 
     expected = ProgramNode([ClassDef(
         "TestClass",
@@ -570,12 +570,12 @@ def test_method_declaration_with_no_params():
         [],
         Constructor([], None, []),
         [MethodDef("int", "add", [], [ReturnStatement()])]
-    )], [])
+    )], [ReturnStatement(IntegerNode(0))])
     assert nodes_equal(result, expected)
 
 
 def test_void_method():
-    result = init_parser("class TestClass { init() {} def void foo() { } }")
+    result = init_parser("class TestClass { init() {} def void foo() { } } return 0;")
 
     expected = ProgramNode([ClassDef(
         "TestClass",
@@ -583,44 +583,44 @@ def test_void_method():
         [],
         Constructor([], None, []),
         [MethodDef("void", "foo", [], [])]
-    )], [])
+    )], [ReturnStatement(IntegerNode(0))])
     assert nodes_equal(result, expected)
 
 
 def test_constructor():
-    result = init_parser("class TestClass { init() { super(); } }")
+    result = init_parser("class TestClass { init() { super(); } } return 0;")
     expected = ProgramNode([ClassDef(
         "TestClass",
         None,
         [],
         Constructor([], [], []),
         []
-    )], [])
+    )], [ReturnStatement(IntegerNode(0))])
 
     assert nodes_equal(result, expected)
 
 
 def test_constructor_no_super():
-    result = init_parser("class TestClass { init() { } }")
+    result = init_parser("class TestClass { init() { } } return 0;")
     expected = ProgramNode([ClassDef(
         "TestClass",
         None,
         [],
         Constructor([], None, []),
         []
-    )], [])
+    )], [ReturnStatement(IntegerNode(0))])
 
     assert nodes_equal(result, expected)
 
 def test_constructor_with_super_args():
-    result = init_parser("class TestClass { init() { super( x + 5 ); } }")
+    result = init_parser("class TestClass { init() { super( x + 5 ); } } return 0;")
     expected = ProgramNode([ClassDef(
         "TestClass",
         None,
         [],
         Constructor([], [BinaryOpNode("+", IdentifierNode("x"), IntegerNode(5))], []),
         []
-    )], [])
+    )], [ReturnStatement(IntegerNode(0))])
 
     assert nodes_equal(result, expected)
 
@@ -629,11 +629,12 @@ def test_class():
     init() {}
     def int speak() { return 0; }
     }
+    return 0;
     """
 
     result = init_parser(class_input)
     expected = ProgramNode([ClassDef("Animal", None, [], Constructor([], None, []),
-                        [MethodDef("int", "speak", [], [ReturnStatement(IntegerNode(0))])])], [])
+                        [MethodDef("int", "speak", [], [ReturnStatement(IntegerNode(0))])])], [ReturnStatement(IntegerNode(0))])
 
     assert nodes_equal(result, expected)
 
@@ -644,11 +645,12 @@ def test_class_2():
         init() {}
         def int speak() { return 0; }
         }
+        return 0;
         """
 
     result = init_parser(class_input)
     expected = ProgramNode([ClassDef("Animal", "Lifeform", [("int", "x"), ("int", "y")], Constructor([], None, []),
-                        [MethodDef("int", "speak", [], [ReturnStatement(IntegerNode(0))])])], [])
+                        [MethodDef("int", "speak", [], [ReturnStatement(IntegerNode(0))])])], [ReturnStatement(IntegerNode(0))])
 
     assert nodes_equal(result, expected)
 

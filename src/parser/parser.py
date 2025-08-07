@@ -157,6 +157,7 @@ class Parser:
         else:
             raise ParserException("Error!")
 
+    # Start Of Chain
     def parse_program(self):
         class_defs = []
         statements = []
@@ -167,7 +168,7 @@ class Parser:
         while self.current_token.type != TokenType.EOF:
             statements.append(self.parse_statement())
 
-        if not statements and not class_defs:
+        if not statements:
             raise ParserException("No statements provided.")
         return ProgramNode(class_defs, statements)
 
@@ -275,7 +276,6 @@ class Parser:
         else:
             raise ParserException("No 'type' after def")
 
-    # START OF CHAIN
     def parse_statement(self):
         if self.current_token.type in TYPES:
             return self.parse_vardec()
