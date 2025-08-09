@@ -153,11 +153,8 @@ class Parser:
         while self.current_token.type != TokenType.RIGHT_BRACE:
             stmt = self.parse_statement()
             block_stmts.append(stmt)
-        if self.current_token.type == TokenType.RIGHT_BRACE:
-            self.next_token()
-            return BlockStatement(block_stmts)
-        else:
-            raise ParserException("Error!")
+        self.next_token()
+        return BlockStatement(block_stmts)
 
     # Start Of Chain
     def parse_program(self):
