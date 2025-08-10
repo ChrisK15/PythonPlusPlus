@@ -223,3 +223,16 @@ def test_if_else_statement():
 
     expected = "if (x == 5) console.log(x); else console.log(6);"
     assert result == expected
+
+def test_block():
+    # TEMPORARY #
+    lexer = Lexer("{ x = 5; y = 7; }")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_statement()
+    code_generator = CodeGenerator()
+    result = code_generator.visit(ast)
+    ##############
+
+    expected = "{ x = 5; y = 7; }"
+    assert result == expected

@@ -61,5 +61,9 @@ class CodeGenerator:
                 else_stmt = self.visit(node.else_stmt)
                 return f"if ({exp}) {then_stmt} else {else_stmt}"
             return f"if ({exp}) {then_stmt}"
+        if isinstance(node, BlockStatement):
+            visited_stmts = [self.visit(stmt) for stmt in node.stmts]
+            stmts = ' '.join(visited_stmts)
+            return f"{{ {stmts} }}"
         else:
             raise CodeGeneratorException()
