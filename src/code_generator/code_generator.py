@@ -34,5 +34,8 @@ class CodeGenerator:
             visited_args = [self.visit(argument) for argument in node.arguments]
             arguments = ', '.join(visited_args)
             return f"{obj_name}.{node.method_name}({arguments})"
+        if isinstance(node, ExpressionStatement):
+            exp = self.visit(node.exp)
+            return f"{exp};"
         else:
             raise CodeGeneratorException()

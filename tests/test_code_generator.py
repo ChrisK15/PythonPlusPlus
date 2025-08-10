@@ -103,3 +103,16 @@ def test_call_exp():
 
     expected = "cat.meow(0)"
     assert result == expected
+
+def test_exp_statements():
+    # TEMPORARY #
+    lexer = Lexer("x + 5;")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_statement()
+    code_generator = CodeGenerator()
+    result = code_generator.visit(ast)
+    ##############
+
+    expected = "x + 5;"
+    assert result == expected
