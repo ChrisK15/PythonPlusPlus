@@ -129,3 +129,16 @@ def test_vardec_statement():
 
     expected = "int y = x + 5"
     assert result == expected
+
+def test_assignment_statement():
+    # TEMPORARY #
+    lexer = Lexer("y = 3;")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_statement()
+    code_generator = CodeGenerator()
+    result = code_generator.visit(ast)
+    ##############
+
+    expected = "y = 3;"
+    assert result == expected
