@@ -197,3 +197,29 @@ def test_return_statement_with_exp():
 
     expected = "return x;"
     assert result == expected
+
+def test_if_statement():
+    # TEMPORARY #
+    lexer = Lexer("if (x == 5) println(x);")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_statement()
+    code_generator = CodeGenerator()
+    result = code_generator.visit(ast)
+    ##############
+
+    expected = "if (x == 5) console.log(x);"
+    assert result == expected
+
+def test_if_else_statement():
+    # TEMPORARY #
+    lexer = Lexer("if (x == 5) println(x); else println(6);")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_statement()
+    code_generator = CodeGenerator()
+    result = code_generator.visit(ast)
+    ##############
+
+    expected = "if (x == 5) console.log(x); else console.log(6);"
+    assert result == expected

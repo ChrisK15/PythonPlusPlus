@@ -50,11 +50,16 @@ class CodeGenerator:
         if isinstance(node, BreakStatement):
             return "break;"
         if isinstance(node, ReturnStatement):
-            if node.exp is not None:
+            if node.exp:
                 exp = self.visit(node.exp)
                 return f"return {exp};"
             return "return;"
         if isinstance(node, IfStatement):
-            pass
+            exp = self.visit(node.exp)
+            then_stmt = self.visit(node.then_stmt)
+            if node.else_stmt:
+                else_stmt = self.visit(node.else_stmt)
+                return f"if ({exp}) {then_stmt} else {else_stmt}"
+            return f"if ({exp}) {then_stmt}"
         else:
             raise CodeGeneratorException()
