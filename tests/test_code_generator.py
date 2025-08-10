@@ -80,3 +80,17 @@ def test_this():
 
     expected = "this"
     assert result == expected
+
+def test_new():
+    # TEMPORARY #
+    lexer = Lexer("new Cat(7)")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_primary()
+    code_generator = CodeGenerator()
+    result = code_generator.visit(ast)
+    print(result)
+    ##############
+
+    expected = "new Cat(7)"
+    assert result == expected

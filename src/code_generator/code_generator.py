@@ -25,5 +25,9 @@ class CodeGenerator:
             return f"console.log({inner_expression})"
         if isinstance(node, ThisNode):
             return "this"
+        if isinstance(node, NewNode):
+            visited_args = [self.visit(argument) for argument in node.arguments]
+            arguments = ', '.join(visited_args)
+            return f"new {node.class_name}({arguments})"
         else:
             raise CodeGeneratorException()
