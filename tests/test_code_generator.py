@@ -171,3 +171,29 @@ def test_break_statement():
 
     expected = "break;"
     assert result == expected
+
+def test_return_statement_no_exp():
+    # TEMPORARY #
+    lexer = Lexer("return;")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_statement()
+    code_generator = CodeGenerator()
+    result = code_generator.visit(ast)
+    ##############
+
+    expected = "return;"
+    assert result == expected
+
+def test_return_statement_with_exp():
+    # TEMPORARY #
+    lexer = Lexer("return x;")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_statement()
+    code_generator = CodeGenerator()
+    result = code_generator.visit(ast)
+    ##############
+
+    expected = "return x;"
+    assert result == expected
