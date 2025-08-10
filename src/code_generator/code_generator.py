@@ -1,14 +1,24 @@
 from src.parser.ast_nodes import *
 
 
-class CodeGenerator:
-    def __init__(self, node: Node):
-        self.node = node
+class CodeGeneratorException(Exception):
+    pass
 
-    def visit(self):
-        if isinstance(self.node, IntegerNode):
-            return str(self.node.value)
-        elif isinstance(self.node, BooleanNode):
-            return str(self.node.value).lower()
-        elif isinstance(self.node, IdentifierNode):
-            return self.node.value
+
+class CodeGenerator:
+    def __init__(self):
+        pass
+
+    def visit(self, node: Node):
+        if isinstance(node, IntegerNode):
+            return str(node.value)
+        elif isinstance(node, BooleanNode):
+            return str(node.value).lower()
+        elif isinstance(node, IdentifierNode):
+            return node.value
+        elif isinstance(node, BinaryOpNode):
+            left = self.visit(node.left_child)
+            right = self.visit(node.right_child)
+            return f"{left} {node.op} {right}"
+        else:
+            raise CodeGeneratorException()
