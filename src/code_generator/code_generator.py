@@ -29,5 +29,10 @@ class CodeGenerator:
             visited_args = [self.visit(argument) for argument in node.arguments]
             arguments = ', '.join(visited_args)
             return f"new {node.class_name}({arguments})"
+        if isinstance(node, CallNode):
+            obj_name = self.visit(node.obj_node)
+            visited_args = [self.visit(argument) for argument in node.arguments]
+            arguments = ', '.join(visited_args)
+            return f"{obj_name}.{node.method_name}({arguments})"
         else:
             raise CodeGeneratorException()

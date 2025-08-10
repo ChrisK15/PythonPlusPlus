@@ -47,7 +47,6 @@ def test_binary_op():
     ast = parser.parse_addition()
     code_generator = CodeGenerator()
     result = code_generator.visit(ast)
-    print(result)
     ##############
 
     expected = "x + 5"
@@ -61,7 +60,6 @@ def test_print():
     ast = parser.parse_primary()
     code_generator = CodeGenerator()
     result = code_generator.visit(ast)
-    print(result)
     ##############
 
     expected = "console.log(x)"
@@ -75,7 +73,6 @@ def test_this():
     ast = parser.parse_primary()
     code_generator = CodeGenerator()
     result = code_generator.visit(ast)
-    print(result)
     ##############
 
     expected = "this"
@@ -89,8 +86,20 @@ def test_new():
     ast = parser.parse_primary()
     code_generator = CodeGenerator()
     result = code_generator.visit(ast)
-    print(result)
     ##############
 
     expected = "new Cat(7)"
+    assert result == expected
+
+def test_call_exp():
+    # TEMPORARY #
+    lexer = Lexer("cat.meow(0)")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_call()
+    code_generator = CodeGenerator()
+    result = code_generator.visit(ast)
+    ##############
+
+    expected = "cat.meow(0)"
     assert result == expected
