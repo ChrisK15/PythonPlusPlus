@@ -46,7 +46,7 @@ class CodeGenerator:
         if isinstance(node, WhileStatement):
             exp = self.visit(node.exp)
             stmt = self.visit(node.stmt)
-            return f"while ({exp}) {{ {stmt} }}"
+            return f"while ({exp}) {stmt}"
         if isinstance(node, BreakStatement):
             return "break;"
         if isinstance(node, ReturnStatement):
@@ -54,5 +54,7 @@ class CodeGenerator:
                 exp = self.visit(node.exp)
                 return f"return {exp};"
             return "return;"
+        if isinstance(node, IfStatement):
+            pass
         else:
             raise CodeGeneratorException()

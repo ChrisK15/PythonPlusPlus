@@ -156,7 +156,7 @@ def test_while_statement():
     result = code_generator.visit(ast)
     ##############
 
-    expected = "while (x < 5) { x = x + 1; }"
+    expected = "while (x < 5) x = x + 1;"
     assert result == expected
 
 def test_break_statement():
