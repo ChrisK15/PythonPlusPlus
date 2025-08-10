@@ -43,5 +43,9 @@ class CodeGenerator:
         if isinstance(node, AssignmentStatement):
             exp = self.visit(node.exp)
             return f"{node.var} = {exp};"
+        if isinstance(node, WhileStatement):
+            exp = self.visit(node.exp)
+            stmt = self.visit(node.stmt)
+            return f"while ({exp}) {{ {stmt} }}"
         else:
             raise CodeGeneratorException()

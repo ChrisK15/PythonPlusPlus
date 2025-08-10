@@ -142,3 +142,19 @@ def test_assignment_statement():
 
     expected = "y = 3;"
     assert result == expected
+
+def test_while_statement():
+    # TEMPORARY #
+    text = """
+    while (x < 5) x = x + 1;
+    """
+    lexer = Lexer(text)
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_statement()
+    code_generator = CodeGenerator()
+    result = code_generator.visit(ast)
+    ##############
+
+    expected = "while (x < 5) { x = x + 1; }"
+    assert result == expected
