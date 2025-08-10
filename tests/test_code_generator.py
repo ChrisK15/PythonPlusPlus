@@ -66,3 +66,17 @@ def test_print():
 
     expected = "console.log(x)"
     assert result == expected
+
+def test_this():
+    # TEMPORARY #
+    lexer = Lexer("this")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_primary()
+    code_generator = CodeGenerator()
+    result = code_generator.visit(ast)
+    print(result)
+    ##############
+
+    expected = "this"
+    assert result == expected

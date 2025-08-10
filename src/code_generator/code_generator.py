@@ -12,16 +12,18 @@ class CodeGenerator:
     def visit(self, node: Node):
         if isinstance(node, IntegerNode):
             return str(node.value)
-        elif isinstance(node, BooleanNode):
+        if isinstance(node, BooleanNode):
             return str(node.value).lower()
-        elif isinstance(node, IdentifierNode):
+        if isinstance(node, IdentifierNode):
             return node.value
-        elif isinstance(node, BinaryOpNode):
+        if isinstance(node, BinaryOpNode):
             left = self.visit(node.left_child)
             right = self.visit(node.right_child)
             return f"{left} {node.op} {right}"
-        elif isinstance(node, PrintNode):
+        if isinstance(node, PrintNode):
             inner_expression = self.visit(node.inner_expression)
             return f"console.log({inner_expression})"
+        if isinstance(node, ThisNode):
+            return "this"
         else:
             raise CodeGeneratorException()
