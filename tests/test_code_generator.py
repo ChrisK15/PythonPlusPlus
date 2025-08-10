@@ -52,3 +52,17 @@ def test_binary_op():
 
     expected = "x + 5"
     assert result == expected
+
+def test_print():
+    # TEMPORARY #
+    lexer = Lexer("println(x)")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_primary()
+    code_generator = CodeGenerator()
+    result = code_generator.visit(ast)
+    print(result)
+    ##############
+
+    expected = "console.log(x)"
+    assert result == expected

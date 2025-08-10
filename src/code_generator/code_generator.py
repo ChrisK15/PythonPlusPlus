@@ -20,5 +20,8 @@ class CodeGenerator:
             left = self.visit(node.left_child)
             right = self.visit(node.right_child)
             return f"{left} {node.op} {right}"
+        elif isinstance(node, PrintNode):
+            inner_expression = self.visit(node.inner_expression)
+            return f"console.log({inner_expression})"
         else:
             raise CodeGeneratorException()
