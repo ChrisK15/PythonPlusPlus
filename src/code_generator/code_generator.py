@@ -37,5 +37,8 @@ class CodeGenerator:
         if isinstance(node, ExpressionStatement):
             exp = self.visit(node.exp)
             return f"{exp};"
+        if isinstance(node, VarDecStatement):
+            val = self.visit(node.val)
+            return f"{node.var_type} {node.var} = {val}"
         else:
             raise CodeGeneratorException()
