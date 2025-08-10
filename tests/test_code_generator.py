@@ -158,3 +158,16 @@ def test_while_statement():
 
     expected = "while (x < 5) { x = x + 1; }"
     assert result == expected
+
+def test_break_statement():
+    # TEMPORARY #
+    lexer = Lexer("break;")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_statement()
+    code_generator = CodeGenerator()
+    result = code_generator.visit(ast)
+    ##############
+
+    expected = "break;"
+    assert result == expected
