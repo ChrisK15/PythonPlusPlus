@@ -236,3 +236,16 @@ def test_block():
 
     expected = "{ x = 5; y = 7; }"
     assert result == expected
+
+def test_method_def():
+    # TEMPORARY #
+    lexer = Lexer("int foo(int x, int y) { return(x + y); }") # THE FOLLOWING LINE DOES NOT HAVE 'DEF' FOR TESTING PURPOSES
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_methoddef()
+    code_generator = CodeGenerator()
+    result = code_generator.visit(ast)
+    ##############
+
+    expected = "function foo(x, y) { return x + y; }"
+    assert result == expected

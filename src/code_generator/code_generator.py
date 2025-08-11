@@ -65,5 +65,15 @@ class CodeGenerator:
             visited_stmts = [self.visit(stmt) for stmt in node.stmts]
             stmts = ' '.join(visited_stmts)
             return f"{{ {stmts} }}"
+        if isinstance(node, MethodDef):
+            # retList = []
+            #
+            # for param in node.parameters:
+            #     retList.append(param[1])
+            visited_params = [param[1] for param in node.parameters]
+            visited_stmts = [self.visit(stmt) for stmt in node.statements]
+            params = ", ".join(visited_params)
+            stmts = " ".join(visited_stmts)
+            return f"function {node.method_name}({params}) {{ {stmts} }}"
         else:
             raise CodeGeneratorException()
