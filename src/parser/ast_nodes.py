@@ -37,13 +37,13 @@ class ThisNode(Node):
 
 
 class NewNode(Node):
-    def __init__(self, class_name: str, arguments: list):
+    def __init__(self, class_name: str, arguments: list[Node]):
         self.class_name = class_name
         self.arguments = arguments
 
 
 class CallNode(Node):
-    def __init__(self, obj_node: Node, method_name: str, arguments: list):
+    def __init__(self, obj_node: Node, method_name: str, arguments: list[Node]):
         self.obj_node = obj_node
         self.method_name = method_name
         self.arguments = arguments
@@ -99,7 +99,7 @@ class IfStatement(StatementNode):
 
 
 class BlockStatement(StatementNode):
-    def __init__(self, stmts: list):
+    def __init__(self, stmts: list[StatementNode]):
         self.stmts = stmts
 
 
@@ -109,7 +109,7 @@ class DeclarationNode(Node):
 
 class MethodDef(DeclarationNode):
     def __init__(
-        self, method_type: str, method_name: str, parameters: list, statements: list
+        self, method_type: str, method_name: str, parameters: list[tuple], statements: list[StatementNode]
     ):
         self.method_type = method_type
         self.method_name = method_name
@@ -118,7 +118,7 @@ class MethodDef(DeclarationNode):
 
 
 class Constructor(DeclarationNode):
-    def __init__(self, parameters: list, super_args: Optional[list], statements: list):
+    def __init__(self, parameters: list[tuple], super_args: Optional[list[Node]], statements: list[StatementNode]):
         self.parameters = parameters
         self.super_args = super_args
         self.statements = statements
@@ -129,9 +129,9 @@ class ClassDef(DeclarationNode):
         self,
         class_name: str,
         extend_class_name: Optional[str],
-        class_instance_vars: list,
+        class_instance_vars: list[tuple],
         constructor: Constructor,
-        methods: list,
+        methods: list[MethodDef],
     ):
         self.class_name = class_name
         self.extend_class_name = extend_class_name
@@ -141,6 +141,6 @@ class ClassDef(DeclarationNode):
 
 
 class ProgramNode(Node):
-    def __init__(self, class_defs: list, statements: list):
+    def __init__(self, class_defs: list[ClassDef], statements: list[StatementNode]):
         self.class_defs = class_defs
         self.statements = statements
