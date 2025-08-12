@@ -109,7 +109,11 @@ class DeclarationNode(Node):
 
 class MethodDef(DeclarationNode):
     def __init__(
-        self, method_type: str, method_name: str, parameters: list[tuple], statements: list[StatementNode]
+        self,
+        method_type: str,
+        method_name: str,
+        parameters: list[tuple],
+        statements: list[StatementNode],
     ):
         self.method_type = method_type
         self.method_name = method_name
@@ -118,7 +122,12 @@ class MethodDef(DeclarationNode):
 
 
 class Constructor(DeclarationNode):
-    def __init__(self, parameters: list[tuple], super_args: Optional[list[Node]], statements: list[StatementNode]):
+    def __init__(
+        self,
+        parameters: list[tuple],
+        super_args: Optional[list[Node]],
+        statements: list[StatementNode],
+    ):
         self.parameters = parameters
         self.super_args = super_args
         self.statements = statements

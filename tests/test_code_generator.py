@@ -16,6 +16,7 @@ def test_integer():
     expected = "5"
     assert result == expected
 
+
 def test_boolean():
     # TEMPORARY #
     lexer = Lexer("true")
@@ -28,6 +29,7 @@ def test_boolean():
 
     expected = "true"
     assert result == expected
+
 
 def test_binary_op():
     # TEMPORARY #
@@ -42,6 +44,7 @@ def test_binary_op():
     expected = "x + 5"
     assert result == expected
 
+
 def test_print():
     # TEMPORARY #
     lexer = Lexer("println(x)")
@@ -54,6 +57,7 @@ def test_print():
 
     expected = "console.log(x)"
     assert result == expected
+
 
 def test_this():
     # TEMPORARY #
@@ -68,6 +72,7 @@ def test_this():
     expected = "this"
     assert result == expected
 
+
 def test_new():
     # TEMPORARY #
     lexer = Lexer("new Cat(7)")
@@ -80,6 +85,7 @@ def test_new():
 
     expected = "new Cat(7)"
     assert result == expected
+
 
 def test_call_exp():
     # TEMPORARY #
@@ -94,6 +100,7 @@ def test_call_exp():
     expected = "cat.meow(0)"
     assert result == expected
 
+
 def test_exp_statements():
     # TEMPORARY #
     lexer = Lexer("x + 5;")
@@ -106,6 +113,7 @@ def test_exp_statements():
 
     expected = "x + 5;"
     assert result == expected
+
 
 def test_vardec_statement():
     # TEMPORARY #
@@ -120,6 +128,7 @@ def test_vardec_statement():
     expected = "y = x + 5;"
     assert result == expected
 
+
 def test_assignment_statement():
     # TEMPORARY #
     lexer = Lexer("y = 3;")
@@ -132,6 +141,7 @@ def test_assignment_statement():
 
     expected = "y = 3;"
     assert result == expected
+
 
 def test_while_statement():
     # TEMPORARY #
@@ -149,6 +159,7 @@ def test_while_statement():
     expected = "while (x < 5) x = x + 1;"
     assert result == expected
 
+
 def test_break_statement():
     # TEMPORARY #
     lexer = Lexer("break;")
@@ -161,6 +172,7 @@ def test_break_statement():
 
     expected = "break;"
     assert result == expected
+
 
 def test_return_statement_no_exp():
     # TEMPORARY #
@@ -175,6 +187,7 @@ def test_return_statement_no_exp():
     expected = "return;"
     assert result == expected
 
+
 def test_return_statement_with_exp():
     # TEMPORARY #
     lexer = Lexer("return x;")
@@ -187,6 +200,7 @@ def test_return_statement_with_exp():
 
     expected = "return x;"
     assert result == expected
+
 
 def test_if_statement():
     # TEMPORARY #
@@ -201,6 +215,7 @@ def test_if_statement():
     expected = "if (x == 5) console.log(x);"
     assert result == expected
 
+
 def test_if_else_statement():
     # TEMPORARY #
     lexer = Lexer("if (x == 5) println(x); else println(6);")
@@ -213,6 +228,7 @@ def test_if_else_statement():
 
     expected = "if (x == 5) console.log(x); else console.log(6);"
     assert result == expected
+
 
 def test_block():
     # TEMPORARY #
@@ -227,9 +243,12 @@ def test_block():
     expected = "{ x = 5; y = 7; }"
     assert result == expected
 
+
 def test_method_def():
     # TEMPORARY #
-    lexer = Lexer("int foo(int x, int y) { return(x + y); }") # THE FOLLOWING LINE DOES NOT HAVE 'DEF' FOR TESTING PURPOSES
+    lexer = Lexer(
+        "int foo(int x, int y) { return(x + y); }"
+    )  # THE FOLLOWING LINE DOES NOT HAVE 'DEF' FOR TESTING PURPOSES
     tokens = lexer.tokenize()
     parser = Parser(tokens)
     ast = parser.parse_methoddef()
@@ -240,9 +259,12 @@ def test_method_def():
     expected = "foo(x, y) { return x + y; }"
     assert result == expected
 
+
 def test_empty_constructor():
     # TEMPORARY #
-    lexer = Lexer("() { }")  # THE FOLLOWING LINE DOES NOT HAVE 'INIT' FOR TESTING PURPOSES
+    lexer = Lexer(
+        "() { }"
+    )  # THE FOLLOWING LINE DOES NOT HAVE 'INIT' FOR TESTING PURPOSES
     tokens = lexer.tokenize()
     parser = Parser(tokens)
     ast = parser.parse_constructor()
@@ -253,9 +275,12 @@ def test_empty_constructor():
     expected = "constructor() {  }"
     assert result == expected
 
+
 def test_fully_loaded_constructor():
     # TEMPORARY #
-    lexer = Lexer("(int x, int y) { super(x); int y = 3; }")  # THE FOLLOWING LINE DOES NOT HAVE 'INIT' FOR TESTING PURPOSES
+    lexer = Lexer(
+        "(int x, int y) { super(x); int y = 3; }"
+    )  # THE FOLLOWING LINE DOES NOT HAVE 'INIT' FOR TESTING PURPOSES
     tokens = lexer.tokenize()
     parser = Parser(tokens)
     ast = parser.parse_constructor()
@@ -265,6 +290,7 @@ def test_fully_loaded_constructor():
 
     expected = "constructor(x, y) { super(x); y = 3; }"
     assert result == expected
+
 
 def test_class():
     # TEMPORARY #
@@ -284,6 +310,7 @@ def test_class():
 
     expected = "class Animal { constructor() {  } speak() { return console.log(0); } }"
     assert result == expected
+
 
 def test_class_with_instance_vars_and_extend():
     text = """
@@ -305,8 +332,11 @@ def test_class_with_instance_vars_and_extend():
     expected = "class Cat extends Animal { x; y; constructor() {  } speak() { return console.log(1); } }"
     assert result == expected
 
+
 def test_program():
-    lexer = Lexer("int x = 3;")  # THE FOLLOWING LINE DOES NOT HAVE 'CLASS' FOR TESTING PURPOSES
+    lexer = Lexer(
+        "int x = 3;"
+    )  # THE FOLLOWING LINE DOES NOT HAVE 'CLASS' FOR TESTING PURPOSES
     tokens = lexer.tokenize()
     parser = Parser(tokens)
     ast = parser.parse_program()
