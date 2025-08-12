@@ -57,7 +57,7 @@ class CodeGenerator:
         if isinstance(node, IfStatement):
             exp = self.visit(node.exp)
             then_stmt = self.visit(node.then_stmt)
-            if node.else_stmt:
+            if node.else_stmt is not None:
                 else_stmt = self.visit(node.else_stmt)
                 return f"if ({exp}) {then_stmt} else {else_stmt}"
             return f"if ({exp}) {then_stmt}"
@@ -76,7 +76,7 @@ class CodeGenerator:
             visited_stmts = [self.visit(stmt) for stmt in node.statements]
             params = ", ".join(list_params)
             stmts = " ".join(visited_stmts)
-            if node.super_args:
+            if node.super_args is not None:
                 visited_super_args = [
                     self.visit(super_arg) for super_arg in node.super_args
                 ]
