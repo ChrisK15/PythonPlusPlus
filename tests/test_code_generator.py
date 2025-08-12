@@ -125,7 +125,7 @@ def test_vardec_statement():
     result = code_generator.visit(ast)
     ##############
 
-    expected = "y = x + 5;"
+    expected = "let y = x + 5;"
     assert result == expected
 
 
@@ -288,7 +288,7 @@ def test_fully_loaded_constructor():
     result = code_generator.visit(ast)
     ##############
 
-    expected = "constructor(x, y) { super(x); y = 3; }"
+    expected = "constructor(x, y) { super(x); let y = 3; }"
     assert result == expected
 
 
@@ -329,7 +329,7 @@ def test_class_with_instance_vars_and_extend():
     result = code_generator.visit(ast)
     ##############
 
-    expected = "class Cat extends Animal { x; y; constructor() {  } speak() { return console.log(1); } }"
+    expected = "class Cat extends Animal { x; y; constructor() { super();  } speak() { return console.log(1); } }"
     assert result == expected
 
 
@@ -344,5 +344,5 @@ def test_program():
     result = code_generator.visit(ast)
     ##############
 
-    expected = "x = 3;"
+    expected = "let x = 3;"
     assert result == expected

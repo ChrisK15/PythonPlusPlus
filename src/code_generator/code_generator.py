@@ -39,7 +39,7 @@ class CodeGenerator:
             return f"{exp};"
         if isinstance(node, VarDecStatement):
             val = self.visit(node.val)
-            return f"{node.var} = {val};"
+            return f"let {node.var} = {val};"
         if isinstance(node, AssignmentStatement):
             exp = self.visit(node.exp)
             return f"{node.var} = {exp};"
