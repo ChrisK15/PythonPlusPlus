@@ -39,7 +39,7 @@ class CodeGenerator:
             return f"{exp};"
         if isinstance(node, VarDecStatement):
             val = self.visit(node.val)
-            return f"{node.var_type} {node.var} = {val}"
+            return f"{node.var} = {val};"
         if isinstance(node, AssignmentStatement):
             exp = self.visit(node.exp)
             return f"{node.var} = {exp};"
@@ -66,10 +66,21 @@ class CodeGenerator:
             stmts = ' '.join(visited_stmts)
             return f"{{ {stmts} }}"
         if isinstance(node, MethodDef):
-            visited_params = [param[1] for param in node.parameters]
+            list_params = [param[1] for param in node.parameters]
             visited_stmts = [self.visit(stmt) for stmt in node.statements]
-            params = ", ".join(visited_params)
+            params = ", ".join(list_params)
             stmts = " ".join(visited_stmts)
             return f"function {node.method_name}({params}) {{ {stmts} }}"
+        if isinstance(node, Constructor):
+            list_params = [param[1] for param in node.parameters]
+            visited_stmts = [self.visit(stmt) for stmt in node.statements]
+            params = ", ".join(list_params)
+            stmts = " ".join(visited_stmts)
+            if node.super_args:
+                visited_super_args = [self.visit(super_arg) for super_arg in node.super_args]
+                super_args = ", ".join(visited_super_args)
+                return f"constructor({params}) {{ super({super_args}); {stmts} }}"
+            # If no super:
+            return f"constructor({params}) {{ {stmts} }}"
         else:
             raise CodeGeneratorException()

@@ -127,7 +127,7 @@ def test_vardec_statement():
     result = code_generator.visit(ast)
     ##############
 
-    expected = "int y = x + 5"
+    expected = "y = x + 5;"
     assert result == expected
 
 def test_assignment_statement():
@@ -248,4 +248,30 @@ def test_method_def():
     ##############
 
     expected = "function foo(x, y) { return x + y; }"
+    assert result == expected
+
+def test_empty_constructor():
+    # TEMPORARY #
+    lexer = Lexer("() { }")  # THE FOLLOWING LINE DOES NOT HAVE 'INIT' FOR TESTING PURPOSES
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_constructor()
+    code_generator = CodeGenerator()
+    result = code_generator.visit(ast)
+    ##############
+
+    expected = "constructor() {  }"
+    assert result == expected
+
+def test_fully_loaded_constructor():
+    # TEMPORARY #
+    lexer = Lexer("(int x, int y) { super(x); int y = 3; }")  # THE FOLLOWING LINE DOES NOT HAVE 'INIT' FOR TESTING PURPOSES
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_constructor()
+    code_generator = CodeGenerator()
+    result = code_generator.visit(ast)
+    ##############
+
+    expected = "constructor(x, y) { super(x); y = 3; }"
     assert result == expected
