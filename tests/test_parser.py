@@ -617,3 +617,10 @@ def test_program():
     expected = ProgramNode([], [VarDecStatement("int", "x", IntegerNode(0))])
 
     assert nodes_equal(program, expected)
+
+def test_class_type():
+    program = init_parser("Animal cat = new Cat();")
+
+    expected = ProgramNode([], [VarDecStatement("Animal", "cat", NewNode("Cat", []))])
+
+    assert nodes_equal(program, expected)

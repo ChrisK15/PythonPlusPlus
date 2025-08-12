@@ -286,6 +286,11 @@ class Parser:
                 and self.tokens[self.position + 1].type == TokenType.ASSIGN
             ):
                 return self.parse_assignment()
+            elif (
+                self.position + 1 < len(self.tokens)
+                and self.tokens[self.position + 1].type == TokenType.IDENTIFIER
+            ):
+                return self.parse_vardec()
         elif self.current_token.type == TokenType.WHILE:
             return self.parse_while()
         elif self.current_token.type == TokenType.BREAK:
