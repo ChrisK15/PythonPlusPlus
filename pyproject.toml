@@ -12,7 +12,8 @@ dependencies = [
     "pytest-cov (>=6.2.1,<7.0.0)",
     "black (>=25.1.0,<26.0.0)",
     "isort (>=6.0.1,<7.0.0)",
-    "mypy (>=1.17.0,<2.0.0)"
+    "mypy (>=1.17.0,<2.0.0)",
+    "jsbeautifier (>=1.15.4,<2.0.0)"
 ]
 
 [tool.poetry]

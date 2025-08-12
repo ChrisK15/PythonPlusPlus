@@ -1,5 +1,6 @@
 import subprocess
 import sys
+import jsbeautifier
 
 from src.code_generator.code_generator import CodeGenerator
 from src.lexer.lexer import Lexer
@@ -21,7 +22,7 @@ def compile_file(input_path: str):
 
     # Create Code Generator and generate JavaScript code
     code_generator = CodeGenerator()
-    output_js_code = code_generator.visit(ast)
+    output_js_code = jsbeautifier.beautify(code_generator.visit(ast))
 
     # Create output JS file
     output_path = input_path.replace(".pp", ".js")
