@@ -78,6 +78,8 @@ dog.speak();
 ## 📝 How to Build
 *Note: The following instructions will change as the project grows*
 ```shell
+# Make sure you are running Python3.13!
+
 # Clone the repository
 https://github.com/ChrisK15/PythonPlusPlus.git
 
@@ -87,8 +89,11 @@ cd PythonPlusPlus
 # Install Poetry
 curl -sSL https://install.python-poetry.org | python3 -
 
-# Install dependencies
-poetry install --no-root
+# Install CLI commands and dependancies
+poetry install
+
+# Run test files (and create your own)
+ppp test_files/test.pp
 ```
 
 ## 📚 Useful Commands
@@ -104,4 +109,7 @@ poetry run mypy src/ --explicit-package-bases
 
 # Code formatting (Runs black and isort)
 bash housekeeping.bash
+
+# Run PythonPlusPlus files
+ppp "insert_file_path_here"
 ```

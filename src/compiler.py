@@ -1,8 +1,10 @@
-import sys
 import subprocess
+import sys
+
+from src.code_generator.code_generator import CodeGenerator
 from src.lexer.lexer import Lexer
 from src.parser.parser import Parser
-from src.code_generator.code_generator import CodeGenerator
+
 
 def compile_file(input_path: str):
     with open(input_path, "r") as file:
@@ -16,7 +18,6 @@ def compile_file(input_path: str):
     # Create Parser and parse tokens
     parser = Parser(tokens)
     ast = parser.parse_program()
-    print(parser.current_token)
 
     # Create Code Generator and generate JavaScript code
     code_generator = CodeGenerator()
@@ -34,6 +35,7 @@ def compile_file(input_path: str):
     print(result.stdout)
     if result.stderr:
         print(f"Error: {result.stderr}")
+
 
 def main():
     if len(sys.argv) < 2:
