@@ -20,7 +20,11 @@ def compile_file(input_path: str):
     code_generator = CodeGenerator()
     output_js_code = code_generator.visit(ast)
 
-    print(output_js_code)
+    # Create output JS file
+    output_path = input_path.replace(".pp", ".js")
+    with open(output_path, "w") as file:
+        file.write(output_js_code)
+    print(f"Generated: {output_path}")
 
 def main():
     if len(sys.argv) < 2:
