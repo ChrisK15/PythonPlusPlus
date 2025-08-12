@@ -4,7 +4,7 @@
 
 ## 🎓 Language Description and Goal:
 
-The goal of this project is for me to gain non-leetcode experience working with Python. The language will be similar to the likes of Java and C++in terms of classes and syntax.
+The goal of this project is for me to gain non-leetcode experience working with Python. The language will be similar to the likes of Java and C++ in terms of classes and syntax.
 
 ## 🚀 Key Features:
 
