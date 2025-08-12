@@ -3,16 +3,6 @@ from src.lexer.lexer import Lexer
 from src.parser.parser import Parser
 
 
-def init_code_generator(text_input: str):
-    lexer = Lexer(text_input)
-    tokens = lexer.tokenize()
-    parser = Parser(tokens)
-    ast = parser.parse_program()
-    code_generator = CodeGenerator()
-    result = code_generator.visit(ast)
-
-    return result
-
 def test_integer():
     # TEMPORARY #
     lexer = Lexer("5")
@@ -247,7 +237,7 @@ def test_method_def():
     result = code_generator.visit(ast)
     ##############
 
-    expected = "function foo(x, y) { return x + y; }"
+    expected = "foo(x, y) { return x + y; }"
     assert result == expected
 
 def test_empty_constructor():
@@ -274,4 +264,55 @@ def test_fully_loaded_constructor():
     ##############
 
     expected = "constructor(x, y) { super(x); y = 3; }"
+    assert result == expected
+
+def test_class():
+    # TEMPORARY #
+    text = """
+    Animal {
+    init() {}
+    def void speak() { return println(0); }
+}
+    """
+    lexer = Lexer(text)  # THE FOLLOWING LINE DOES NOT HAVE 'CLASS' FOR TESTING PURPOSES
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_classdef()
+    code_generator = CodeGenerator()
+    result = code_generator.visit(ast)
+    ##############
+
+    expected = "class Animal { constructor() {  } speak() { return console.log(0); } }"
+    assert result == expected
+
+def test_class_with_instance_vars_and_extend():
+    text = """
+    Cat extends Animal {
+    int x;
+    int y;
+    init() { super(); }
+    def void speak() { return println(1); }
+}
+    """
+    lexer = Lexer(text)  # THE FOLLOWING LINE DOES NOT HAVE 'CLASS' FOR TESTING PURPOSES
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_classdef()
+    code_generator = CodeGenerator()
+    result = code_generator.visit(ast)
+    ##############
+
+    expected = "class Cat extends Animal { x; y; constructor() {  } speak() { return console.log(1); } }"
+    assert result == expected
+
+def test_program():
+    lexer = Lexer("int x = 3;")  # THE FOLLOWING LINE DOES NOT HAVE 'CLASS' FOR TESTING PURPOSES
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_program()
+    code_generator = CodeGenerator()
+    result = code_generator.visit(ast)
+    ##############
+
+    expected = "x = 3;"
     assert result == expected

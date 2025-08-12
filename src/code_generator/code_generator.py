@@ -70,7 +70,7 @@ class CodeGenerator:
             visited_stmts = [self.visit(stmt) for stmt in node.statements]
             params = ", ".join(list_params)
             stmts = " ".join(visited_stmts)
-            return f"function {node.method_name}({params}) {{ {stmts} }}"
+            return f"{node.method_name}({params}) {{ {stmts} }}"
         if isinstance(node, Constructor):
             list_params = [param[1] for param in node.parameters]
             visited_stmts = [self.visit(stmt) for stmt in node.statements]
@@ -82,5 +82,23 @@ class CodeGenerator:
                 return f"constructor({params}) {{ super({super_args}); {stmts} }}"
             # If no super:
             return f"constructor({params}) {{ {stmts} }}"
+        if isinstance(node, ClassDef):
+            list_instance_vars = [instance_var[1] for instance_var in node.class_instance_vars]
+            constructor = self.visit(node.constructor)
+            visited_methods = [self.visit(method) for method in node.methods]
+            methods = " ".join(visited_methods)
+            instance_vars = "; ".join(list_instance_vars)
+            if instance_vars:
+                instance_vars += ";"
+            if node.extend_class_name:
+                return f"class {node.class_name} extends {node.extend_class_name} {{ {instance_vars} {constructor} {methods} }}"
+            # If no extend:
+            return f"class {node.class_name} {{{instance_vars} {constructor} {methods} }}"
+        if isinstance(node, ProgramNode):
+            visited_classes = [self.visit(classdef) for classdef in node.class_defs]
+            visited_statements = [self.visit(stmt) for stmt in node.statements]
+            classes = " ".join(visited_classes)
+            statements = " ".join(visited_statements)
+            return f"{classes}{statements}"
         else:
             raise CodeGeneratorException()
