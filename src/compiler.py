@@ -1,6 +1,6 @@
 import subprocess
 import sys
-import jsbeautifier
+import jsbeautifier # type: ignore
 
 from src.code_generator.code_generator import CodeGenerator
 from src.lexer.lexer import Lexer
