@@ -8,7 +8,7 @@ class Solution {
             floor_result = floor_result + 1;
         }
         let mod_result = i - floor_result * 3;
-        if (mod_result == 0) {
+        if (mod_result === 0) {
             x = i / 5;
             floor_result = 0;
             while (x >= 1) {
@@ -16,7 +16,7 @@ class Solution {
                 floor_result = floor_result + 1;
             }
             mod_result = i - floor_result * 5;
-            if (mod_result == 0) {
+            if (mod_result === 0) {
                 return console.log(10);
             }
         }
@@ -27,7 +27,7 @@ class Solution {
             floor_result = floor_result + 1;
         }
         mod_result = i - floor_result * 3;
-        if (mod_result == 0) {
+        if (mod_result === 0) {
             return console.log(1);
         }
         x = i / 5;
@@ -37,7 +37,7 @@ class Solution {
             floor_result = floor_result + 1;
         }
         mod_result = i - floor_result * 5;
-        if (mod_result == 0) {
+        if (mod_result === 0) {
             return console.log(0);
         }
     }

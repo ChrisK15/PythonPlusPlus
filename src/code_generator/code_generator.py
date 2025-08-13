@@ -19,7 +19,8 @@ class CodeGenerator:
         if isinstance(node, BinaryOpNode):
             left = self.visit(node.left_child)
             right = self.visit(node.right_child)
-            return f"{left} {node.op} {right}"
+            op = "===" if node.op == "==" else node.op
+            return f"{left} {op} {right}"
         if isinstance(node, PrintNode):
             inner_expression = self.visit(node.inner_expression)
             return f"console.log({inner_expression})"

@@ -212,7 +212,7 @@ def test_if_statement():
     result = code_generator.visit(ast)
     ##############
 
-    expected = "if (x == 5) console.log(x);"
+    expected = "if (x === 5) console.log(x);"
     assert result == expected
 
 
@@ -226,7 +226,7 @@ def test_if_else_statement():
     result = code_generator.visit(ast)
     ##############
 
-    expected = "if (x == 5) console.log(x); else console.log(6);"
+    expected = "if (x === 5) console.log(x); else console.log(6);"
     assert result == expected
 
 

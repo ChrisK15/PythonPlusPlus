@@ -50,7 +50,7 @@ No optimizations :(
 - program ::= classdef* stmt+ | stmt+ is the entry point
 ```
 
-## 🐶🐱 Example: Animals with a speak method
+## 🐶🐱 Example 1: Animals with a speak method
 
 ```
 class Animal {
@@ -72,6 +72,12 @@ Animal cat = new Cat();
 Animal dog = new Dog();
 cat.speak();
 dog.speak();
+```
+
+## ⚡ Example 2: Fizzbuzz
+
+```
+
 ```
 
 ## 📝 How to Build
