@@ -131,7 +131,6 @@ solution.fizzbuzz(15);
 ```
 
 ## 📝 How to Build
-*Note: The following instructions will change as the project grows*
 ```shell
 # Make sure you are running Python3.13!
 
