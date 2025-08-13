@@ -13,7 +13,7 @@ class Dog extends Animal {
     def void speak() { return println(2); }
 }
 
-cat = new Cat();
-dog = new Dog();
+Animal cat = new Cat();
+Animal dog = new Dog();
 cat.speak();
 dog.speak();

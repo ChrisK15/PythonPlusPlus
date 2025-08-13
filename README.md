@@ -4,7 +4,7 @@
 
 ## 🎓 Language Description and Goal:
 
-The goal of this project is for me to gain non-leetcode experience working with Python. The language will be similar to the likes of Java and C++ in terms of classes and syntax.
+The goal of this project is for me to gain non-leetcode experience working with Python and improve my understanding of object-oriented programming. The language will be similar to the likes of Java and C++ in terms of classes and syntax.
 
 ## 🚀 Key Features:
 
@@ -33,7 +33,8 @@ No optimizations :(
 - equality_exp ::= compare_exp (('==' | '!=') compare_exp)*
 - exp ::= equality_exp
 - vardec ::= type var `=` exp
-- stmt ::= exp `;` | Expression statements
+- stmt ::= 
+  - exp `;` | Expression statements
   - vardec `;` | Variable declaration
   - var `=` exp `;` | Assignment
   - `while` `(` exp `)` stmt | while loops
@@ -67,8 +68,8 @@ class Dog extends Animal {
     def void speak() { return println(2); }
 }
 
-cat = new Cat();
-dog = new Dog();
+Animal cat = new Cat();
+Animal dog = new Dog();
 cat.speak();
 dog.speak();
 ```
