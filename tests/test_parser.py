@@ -143,6 +143,11 @@ def test_boolean():
 
     assert nodes_equal(node, ProgramNode([], [ExpressionStatement(BooleanNode(True))]))
 
+def test_boolean_2():
+    node = init_parser("false;")
+
+    assert nodes_equal(node, ProgramNode([], [ExpressionStatement(BooleanNode(False))]))
+
 
 def test_comparison():
     node = init_parser("x == 10;")
