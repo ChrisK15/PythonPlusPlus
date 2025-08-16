@@ -44,6 +44,11 @@ def test_simple_addition():
         ),
     )
 
+def test_subtraction():
+    node = init_parser("3 - 9;")
+
+    assert nodes_equal(node, ProgramNode([], [ExpressionStatement(BinaryOpNode("-", IntegerNode(3), IntegerNode(9)))]))
+
 
 def test_parenthesis():
     node = init_parser("1 + (2 + 3);")
@@ -64,6 +69,12 @@ def test_parenthesis():
         ),
     )
 
+def test_parenthesized_expression_complex():
+    node = init_parser("(4 + 9) - (9 / 1);")
+
+    assert nodes_equal(node, ProgramNode([], [ExpressionStatement(BinaryOpNode("-",
+                                                                              BinaryOpNode("+", IntegerNode(4), IntegerNode(9)),
+                                                                              BinaryOpNode("/", IntegerNode(9), IntegerNode(1))))]))
 
 def test_invalid_parenthesis():
     with pytest.raises(ParserParenthesisException):
