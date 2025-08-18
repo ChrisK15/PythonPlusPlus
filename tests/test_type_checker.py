@@ -110,3 +110,14 @@ def test_var_dec_incompatible_type_error():
 
     with pytest.raises(IllTypeError):
         typechecker.visit(ast)
+
+def test_print_node():
+    lexer = Lexer("println(0)")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_primary()
+    typechecker = Typechecker()
+    result = typechecker.visit(ast)
+
+    expected = "void"
+    assert result == expected

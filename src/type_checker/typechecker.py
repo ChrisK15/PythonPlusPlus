@@ -40,7 +40,9 @@ class Typechecker:
             raise IllTypeError(f"Incompatible types being assigned to each other. Cannot assign {val_type} to {node.var_type}.")
         self.symbol_table[node.var] = node.var_type
 
-
+    def visit_print_node(self, node: PrintNode):
+        self.visit(node.inner_expression)
+        return "void"
 
     def visit(self, node: Node):
         if isinstance(node, IntegerNode):
@@ -53,3 +55,5 @@ class Typechecker:
             return self.visit_binary_op_node(node)
         if isinstance(node, VarDecStatement):
             return self.visit_var_dec(node)
+        if isinstance(node, PrintNode):
+            return self.visit_print_node(node)
