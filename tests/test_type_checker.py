@@ -78,3 +78,35 @@ def test_bin_op_equality_error():
 
     with pytest.raises(IllTypeError):
         typechecker.visit(ast)
+
+def test_var_dec_int():
+    lexer = Lexer("int x = 3;")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_statement()
+    typechecker = Typechecker()
+    typechecker.visit(ast)
+
+    assert "x" in typechecker.symbol_table
+    assert typechecker.symbol_table["x"] == "int"
+
+def test_var_dec_bool():
+    lexer = Lexer("bool res = true;")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_statement()
+    typechecker = Typechecker()
+    typechecker.visit(ast)
+
+    assert "res" in typechecker.symbol_table
+    assert typechecker.symbol_table["res"] == "bool"
+
+def test_var_dec_incompatible_type_error():
+    lexer = Lexer("int x = true;")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_statement()
+    typechecker = Typechecker()
+
+    with pytest.raises(IllTypeError):
+        typechecker.visit(ast)

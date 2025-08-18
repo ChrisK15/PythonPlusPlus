@@ -5,7 +5,7 @@ class IllTypeError(Exception):
 
 class Typechecker:
     def __init__(self):
-        pass
+        self.symbol_table = {}
 
     def visit_integer_node(self, node: IntegerNode):
         return "int"
@@ -14,7 +14,10 @@ class Typechecker:
         return "bool"
 
     def visit_identifier_node(self, node: IdentifierNode):
-        pass
+        if node.value in self.symbol_table:
+            return self.symbol_table[node.value]
+        else:
+            raise IllTypeError(f"Undefined variable: {node.value}")
 
     def visit_binary_op_node(self, node: BinaryOpNode):
         left_type = self.visit(node.left_child)
@@ -29,6 +32,15 @@ class Typechecker:
             return left_type
         raise IllTypeError()
 
+    def visit_var_dec(self, node: VarDecStatement):
+        if node.var in self.symbol_table:
+            raise IllTypeError(f"The variable {node.var} is already defined.")
+        val_type = self.visit(node.val)
+        if val_type != node.var_type:
+            raise IllTypeError(f"Incompatible types being assigned to each other. Cannot assign {val_type} to {node.var_type}.")
+        self.symbol_table[node.var] = node.var_type
+
+
 
     def visit(self, node: Node):
         if isinstance(node, IntegerNode):
@@ -36,6 +48,8 @@ class Typechecker:
         if isinstance(node, BooleanNode):
             return self.visit_boolean_node(node)
         if isinstance(node, IdentifierNode):
-            return self.visit_identifier_node()
+            return self.visit_identifier_node(node)
         if isinstance(node, BinaryOpNode):
             return self.visit_binary_op_node(node)
+        if isinstance(node, VarDecStatement):
+            return self.visit_var_dec(node)
