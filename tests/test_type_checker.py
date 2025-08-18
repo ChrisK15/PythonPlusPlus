@@ -121,3 +121,22 @@ def test_print_node():
 
     expected = "void"
     assert result == expected
+
+def test_exp_statement():
+    lexer = Lexer("8 + 9;")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_statement()
+    typechecker = Typechecker()
+    result = typechecker.visit(ast)
+
+    assert result is None # Checking if we don't crash
+
+def test_exp_statement_undefined_assignment():
+    lexer = Lexer("x + 9;")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_statement()
+    typechecker = Typechecker()
+    with pytest.raises(IllTypeError):
+        typechecker.visit(ast)
