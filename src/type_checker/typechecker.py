@@ -19,6 +19,10 @@ class Typechecker:
         else:
             raise IllTypeError(f"Undefined variable: {node.value}")
 
+    def visit_print_node(self, node: PrintNode):
+        self.visit(node.inner_expression)
+        return "void"
+
     def visit_binary_op_node(self, node: BinaryOpNode):
         left_type = self.visit(node.left_child)
         right_type = self.visit(node.right_child)
@@ -40,9 +44,12 @@ class Typechecker:
             raise IllTypeError(f"Incompatible types being assigned to each other. Cannot assign {val_type} to {node.var_type}.")
         self.symbol_table[node.var] = node.var_type
 
-    def visit_print_node(self, node: PrintNode):
-        self.visit(node.inner_expression)
-        return "void"
+    def visit_assignment(self, node: AssignmentStatement):
+        if node.var not in self.symbol_table:
+            raise IllTypeError(f"{node.var} has not been declared.")
+        exp_type = self.visit(node.exp)
+        if exp_type != self.symbol_table[node.var]:
+            raise IllTypeError(f"Incompatible types being assigned to each other. Cannot assign {exp_type} to {self.symbol_table[node.var]}.")
 
     def visit(self, node: Node):
         if isinstance(node, IntegerNode):
@@ -57,3 +64,5 @@ class Typechecker:
             return self.visit_var_dec(node)
         if isinstance(node, PrintNode):
             return self.visit_print_node(node)
+        if isinstance(node, AssignmentStatement):
+            return self.visit_assignment(node)
