@@ -180,3 +180,13 @@ def test_if_with_else():
     result = typechecker.visit(ast)
 
     assert result is None  # Checking if we don't crash
+
+def test_while():
+    lexer = Lexer("while(true) return(0);")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_statement()
+    typechecker = Typechecker()
+    result = typechecker.visit(ast)
+
+    assert result is None  # Checking if we don't crash
