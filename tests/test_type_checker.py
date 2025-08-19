@@ -181,6 +181,15 @@ def test_if_with_else():
 
     assert result is None  # Checking if we don't crash
 
+def test_if_no_bool_exp():
+    lexer = Lexer("if(x + 3) return(7); else return(36);")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_statement()
+    typechecker = Typechecker()
+    with pytest.raises(IllTypeError):
+        typechecker.visit(ast)
+
 def test_while():
     lexer = Lexer("while(true) return(0);")
     tokens = lexer.tokenize()
@@ -190,6 +199,15 @@ def test_while():
     result = typechecker.visit(ast)
 
     assert result is None  # Checking if we don't crash
+
+def test_while_no_bool_exp():
+    lexer = Lexer("while(x + 3) return(0);")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_statement()
+    typechecker = Typechecker()
+    with pytest.raises(IllTypeError):
+        typechecker.visit(ast)
 
 def test_block():
     lexer = Lexer("{int x = 0; int y = 1; int z = 2;}")

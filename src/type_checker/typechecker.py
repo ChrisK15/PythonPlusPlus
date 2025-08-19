@@ -59,13 +59,17 @@ class Typechecker:
             self.visit(node.exp)
 
     def visit_if(self, node: IfStatement):
-        self.visit(node.exp)
+        if_exp = self.visit(node.exp)
+        if if_exp != "bool":
+            raise IllTypeError(f"If statement needs a boolean expression, instead given {if_exp}.")
         self.visit(node.then_stmt)
         if node.else_stmt:
             self.visit(node.else_stmt)
 
     def visit_while(self, node: WhileStatement):
-        self.visit(node.exp)
+        while_exp = self.visit(node.exp)
+        if while_exp != "bool":
+            raise IllTypeError(f"While statement needs a boolean expression, instead given {while_exp}.")
         self.visit(node.stmt)
 
     def visit_block(self, node: BlockStatement):
