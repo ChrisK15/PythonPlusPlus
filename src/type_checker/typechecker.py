@@ -54,6 +54,10 @@ class Typechecker:
     def visit_expression(self, node: ExpressionStatement):
         self.visit(node.exp)
 
+    def visit_return(self, node: ReturnStatement):
+        if node.exp:
+            self.visit(node.exp)
+
     def visit(self, node: Node):
         if isinstance(node, IntegerNode):
             return self.visit_integer_node(node)
@@ -71,3 +75,5 @@ class Typechecker:
             return self.visit_assignment(node)
         if isinstance(node, ExpressionStatement):
             return self.visit_expression(node)
+        if isinstance(node, ReturnStatement):
+            return self.visit_return(node)
