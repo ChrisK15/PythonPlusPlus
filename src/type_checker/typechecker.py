@@ -58,6 +58,12 @@ class Typechecker:
         if node.exp:
             self.visit(node.exp)
 
+    def visit_if(self, node: IfStatement):
+        self.visit(node.exp)
+        self.visit(node.then_stmt)
+        if node.else_stmt:
+            self.visit(node.else_stmt)
+
     def visit(self, node: Node):
         if isinstance(node, IntegerNode):
             return self.visit_integer_node(node)
@@ -77,3 +83,5 @@ class Typechecker:
             return self.visit_expression(node)
         if isinstance(node, ReturnStatement):
             return self.visit_return(node)
+        if isinstance(node, IfStatement):
+            return self.visit_if(node)

@@ -160,3 +160,23 @@ def test_empty_return():
     result = typechecker.visit(ast)
 
     assert result is None  # Checking if we don't crash
+
+def test_if_no_else():
+    lexer = Lexer("if(true == true) return(7);")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_statement()
+    typechecker = Typechecker()
+    result = typechecker.visit(ast)
+
+    assert result is None # Checking if we don't crash
+
+def test_if_with_else():
+    lexer = Lexer("if(true == true) return(7); else return(36);")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_statement()
+    typechecker = Typechecker()
+    result = typechecker.visit(ast)
+
+    assert result is None  # Checking if we don't crash
