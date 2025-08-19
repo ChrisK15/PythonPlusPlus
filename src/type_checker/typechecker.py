@@ -68,6 +68,10 @@ class Typechecker:
         self.visit(node.exp)
         self.visit(node.stmt)
 
+    def visit_block(self, node: BlockStatement):
+        for stmt in node.stmts:
+            self.visit(stmt)
+
     def visit(self, node: Node):
         if isinstance(node, IntegerNode):
             return self.visit_integer_node(node)
@@ -91,3 +95,7 @@ class Typechecker:
             return self.visit_if(node)
         if isinstance(node, WhileStatement):
             return self.visit_while(node)
+        if isinstance(node, BreakStatement):
+            return None
+        if isinstance(node, BlockStatement):
+            return self.visit_block(node)

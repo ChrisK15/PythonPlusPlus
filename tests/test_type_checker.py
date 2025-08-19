@@ -190,3 +190,13 @@ def test_while():
     result = typechecker.visit(ast)
 
     assert result is None  # Checking if we don't crash
+
+def test_block():
+    lexer = Lexer("{int x = 0; int y = 1; int z = 2;}")
+    tokens = lexer.tokenize()
+    parser = Parser(tokens)
+    ast = parser.parse_statement()
+    typechecker = Typechecker()
+    result = typechecker.visit(ast)
+
+    assert result is None  # Checking if we don't crash
