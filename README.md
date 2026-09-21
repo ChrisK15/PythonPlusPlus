@@ -12,7 +12,7 @@ Objects + methods with class-based inheritance, subtyping, checking if a variabl
 
 ## ❌ Planned Restrictions:
 
-No optimizations :(
+No optimizations, no type-checker
 
 ## 📝 Concrete Syntax
 
